@@ -1,0 +1,15 @@
+tr
+0 a a R 1
+0 b a L 0
+0 a g L 1
+1 a a R 2
+2 b b R 3
+3 a a R 0
+acc
+3
+2
+max
+10
+run
+aab
+aac

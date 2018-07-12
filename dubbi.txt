@@ -1,0 +1,19 @@
+DUBBI:
+
+0) MACCHINA DI TOURING A NASTRO SINGOLO:
+	Una particolare variante della MT è quella a nastro singolo:
+	input, output e memoria sono tutti sullo stesso nastro
+
+1)	come allocare dinamicamente una matrice???
+		Per una matrice MATRIX di dimensione AxB alloco un vettore di dimensione A*B e trovo
+		l'elemento [i][j] come MATRIX[ i*B + j]
+
+2) Cosa significa avere _ come carattere di ingresso?
+	E' a trattare come un normale carattere
+
+
+3) il nastro singolo è anche quello di uscita?
+	Si, ed è anche quello di input. Quindi devo caricare tutto l'input sul nastro e iniziare dallo stato zero e dalla cella del primo carattere dell'input
+
+4) Come gestisco il fatto che i nastri sono teoricamente infiniti?
+	il nastro deve essere lungo il doppio del numero massimo di transizioni (max) e inizio dal centro
