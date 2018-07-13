@@ -38,12 +38,12 @@ int main(int argc, char *argv[])
 	size_t llinea = 0;	//dimensione della singola linea, da aggiornare ogni volta
 
 	//variabili per leggere la prima parte di input
-	//vett è il vettore che contiene tutte le transizioni
+	//vett e' il vettore che contiene tutte le transizioni
 	transizioni *vett = (transizioni *)malloc(10 * sizeof(transizioni));	//Alloco subito 10 transizioni
 	size_t dimVett = 10;	//DIMENSIONE DELL'ARRAY
 	int nTransizioni = 0;								//PRIMA CELLA LIBERA
 
-	//variabili per trovare lo stato più grande
+	//variabili per trovare lo stato piu' grande
 	int statoMassimo = 0;
 
 	//Variabili per la creazione della tabella che rappresenta la macchina di Touring del file
@@ -68,10 +68,10 @@ int main(int argc, char *argv[])
 	}	//controlla che il file input inizi per TR
 
 	llinea = getline(&temp, &llinea, stdin);
-	while(strcmp(temp, "acc\n")){		//finchè non trova acc
+	while(strcmp(temp, "acc\n")){		//finche' non trova acc
 		//operazioni sulle TRANSIZIONI
 
-		//Riallocazione di memoria -- Se serve più memoria alloco altri 10 spazi e vado avanti
+		//Riallocazione di memoria -- Se serve piu' memoria alloco altri 10 spazi e vado avanti
 		if(nTransizioni >= dimVett){
 			vett = (transizioni *)realloc(vett, (dimVett * sizeof(transizioni)) + (10 * sizeof(transizioni)));
 			dimVett += 10;
@@ -80,7 +80,7 @@ int main(int argc, char *argv[])
 		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vett[nTransizioni].inizio), &(vett[nTransizioni].letto), &(vett[nTransizioni].scritto), &(vett[nTransizioni].mossa), &(vett[nTransizioni].fine));
 		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
 
-		//qui sotto calcolo quale sia lo stato più grande
+		//qui sotto calcolo quale sia lo stato piu' grande
 		if(vett[nTransizioni].inizio > statoMassimo)
 			statoMassimo = vett[nTransizioni].inizio;
 
@@ -94,7 +94,7 @@ int main(int argc, char *argv[])
 	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
 	//dimVett contiene la quantita' di memoria occupata da vett
 	//nTransizioni contiene il numero di transizioni effettive contenute in vett
-	//statoMassimo contiene quale stato è il più grande numericamente, quindi se il più grande è k,
+	//statoMassimo contiene quale stato e' il piu' grande numericamente, quindi se il piu' grande e' k,
 	//esistono sicuramente tutti gli stati 0, 1, ... , k-1, 
 
 	//Ora devo creare una matrice di liste in cui per ogni coppia STATO - INPUT
@@ -124,8 +124,8 @@ int main(int argc, char *argv[])
 				stampaLista(matrice[pos(i, j, NCARATTERI)]);
 			}*/
 
-	//A questo punto dentro la matrice ho tutto ciò che mi serve e posso andare avanti a leggere il file di input
-	//Il vettore delle transizioni non serve più
+	//A questo punto dentro la matrice ho tutto cio' che mi serve e posso andare avanti a leggere il file di input
+	//Il vettore delle transizioni non serve piu'
 
 	//**********************************************************
 
@@ -135,11 +135,12 @@ int main(int argc, char *argv[])
 
 	//**********************************************************
 	free(vett);
+ 	
 
 
 	//Ora devo leggere quali sono gli stati di accettazione
-	//getline aveva già letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
-	statiAccettazione = (int *)calloc((statoMassimo + 1), sizeof(int));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' è di accettazione
+	//getline aveva gia'� letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
+	statiAccettazione = (int *)calloc((statoMassimo + 1), sizeof(int));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' e' di accettazione
 	llinea = getline(&temp, &llinea, stdin);	
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
 		sscanf(temp, "%d", &t);			//leggo un intero dalla linea appena letta e salvata in 'temp'
@@ -149,7 +150,7 @@ int main(int argc, char *argv[])
 
 	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
 	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
-	//C'è anche corrispondenza tra la posizione i e la posizione della colonna della matrice
+	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
 
 	//Ora leggo il numero massimo di mosse effettuabili
 	llinea = getline(&temp, &llinea, stdin);	
@@ -164,7 +165,7 @@ int main(int argc, char *argv[])
 	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
 	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
 	//											che devo possono essere eseguite
-	//statiAccettazione = 	vettore di 0 e 1 che è a 1 solo se i (indice) è uno stato di accettazione
+	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
 	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
 	
 	//DEVO LEGGERE LA PROSSIMA LINEA ED ESEGUIRE LA MACCHINA SU DI ESSA
@@ -192,7 +193,7 @@ int main(int argc, char *argv[])
 
 
 
-	free(temp);		//libero temp perchè non devo più leggere stringhe dall'input
+	free(temp);		//libero temp perche' non devo piu' leggere stringhe dall'input
 
 	//**********************************************************
 		//PARTE DA RIVEDERE
