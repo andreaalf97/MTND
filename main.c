@@ -29,6 +29,12 @@ listaTr *push(listaTr *, transizioni);
 void stampaLista(listaTr *);
 //semplice funzione che stampa la lista in input
 
+
+//char eseguiMacchina(listaTr **, char *, int *, int, int);
+//char eseguiMacchina(listaTr **matrice, char * stringaInput, int * statiAccettazione, int nStati, int maxTransizioni)
+//funzione che rivece in ingresso tutte le specifiche della macchina di Touring richiesta e stampa '1', '0', o 'U' a seconda che
+//la macchina accetti la stringa in ingresso, lo rifiuti o non termini.
+
 int main(int argc, char *argv[])
 {
 	// FASE DI INPUT
@@ -172,7 +178,7 @@ int main(int argc, char *argv[])
 
 
 
-	llinea = getline(&temp, &llinea, stdin); //ora 'temp' contiene la 
+	llinea = getline(&temp, &llinea, stdin); //ora 'temp' contiene la stringa da mettere sul nastro
 
 
 
@@ -234,5 +240,3 @@ void stampaLista(listaTr *head){
 	}
 	printf("--------------\n");
 }
-
-char eseguiMacchina(listaTr **matrice, )
