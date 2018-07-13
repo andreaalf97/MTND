@@ -18,18 +18,20 @@ typedef struct transizioni_s {
 
 typedef struct listaTransizioni_s {
 	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
-	char scritto, mossa;							
-	int fine;
+	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
+	int fine;													//stato in cui andare
 }	listaTr;
 
-int pos(int, int, int);
+int pos(int, int, int);			//int pos(int i, int j, int height);	
+//funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
 listaTr *push(listaTr *, transizioni);
+//funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 void stampaLista(listaTr *);
+//semplice funzione che stampa la lista in input
 
 int main(int argc, char *argv[])
 {
 	// FASE DI INPUT
-
 	int i, j;
 
 	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
@@ -61,7 +63,7 @@ int main(int argc, char *argv[])
 	//Ora 'temp' contiene tutta la linea compresa del \n e infine il terminatore
 
 	if(strcmp("tr\n", temp) != 0){
-		fprintf(stderr, "Il file non inizia per err\n");
+		fprintf(stderr, "Il file non inizia per tr\n");
 		return -1;
 	}	//controlla che il file input inizi per TR
 
@@ -104,7 +106,7 @@ int main(int argc, char *argv[])
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x NCARATTERI
 	dim = (statoMassimo + 1) * NCARATTERI; 
 	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
-	for(i = 0; i < dim; i++)
+	for(i = 0; i < dim; i++)		//inizializzo a zero la mia matrice delle transizioni
 		matrice[i] = NULL;
 
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
@@ -112,6 +114,7 @@ int main(int argc, char *argv[])
 	for(i = 0; i < nTransizioni; i++){
 		posizione = pos(vett[i].inizio, (int)vett[i].letto, NCARATTERI);
 		matrice[posizione] = push(matrice[posizione], vett[i]);
+		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
 	/*for(i = 0; i < statoMassimo + 1; i++)
@@ -123,21 +126,29 @@ int main(int argc, char *argv[])
 
 	//A questo punto dentro la matrice ho tutto ciò che mi serve e posso andare avanti a leggere il file di input
 	//Il vettore delle transizioni non serve più
+
+	//**********************************************************
+
+		//PRIMA DELLA CHIAMATA A free(vett) HO SIA LA MATRICE DELLE TRANSIZIONI
+		//CHE VETT ALLOCATI --> POTREBBERO OCCUPARE TROPPA MEMORIA
+
+
+	//**********************************************************
 	free(vett);
 
 
 	//Ora devo leggere quali sono gli stati di accettazione
 	//getline aveva già letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
-	statiAccettazione = (int *)calloc((statoMassimo + 1), sizeof(int));
+	statiAccettazione = (int *)calloc((statoMassimo + 1), sizeof(int));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' è di accettazione
 	llinea = getline(&temp, &llinea, stdin);	
-	while(strcmp(temp, "max\n")){
-		sscanf(temp, "%d", &t);
-		statiAccettazione[t] = 1;
+	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
+		sscanf(temp, "%d", &t);			//leggo un intero dalla linea appena letta e salvata in 'temp'
+		statiAccettazione[t] = 1;		//"pongo" lo stato di accettazione a 1
 		llinea = getline(&temp, &llinea, stdin);	
 	}
 
 	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
-	//0 o 1 a seconda che la posizione i è uno stato di accettazione o meno
+	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
 	//C'è anche corrispondenza tra la posizione i e la posizione della colonna della matrice
 
 	//Ora leggo il numero massimo di mosse effettuabili
@@ -150,8 +161,6 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
-	free(temp);
-
 	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
 	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
 	//											che devo possono essere eseguite
@@ -161,6 +170,36 @@ int main(int argc, char *argv[])
 	//DEVO LEGGERE LA PROSSIMA LINEA ED ESEGUIRE LA MACCHINA SU DI ESSA
 
 
+
+	llinea = getline(&temp, &llinea, stdin); //ora 'temp' contiene la 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	free(temp);		//libero temp perchè non devo più leggere stringhe dall'input
+
+	//**********************************************************
+		//PARTE DA RIVEDERE
+
+		//IN REALTA' TEMP MI SERVIRA' ANCORA!! 
+
+	//**********************************************************
 	free(statiAccettazione);
 	free(matrice);
 
@@ -169,10 +208,7 @@ int main(int argc, char *argv[])
 }
 
 
-int pos(int i, int j, int B)
-{
-	return ((i * B) + j);
-}
+int pos(int i, int j, int B) {return ((i * B) + j);}
 
 listaTr *push(listaTr *head, transizioni transizione){
 	listaTr *nuovo;
@@ -189,7 +225,6 @@ listaTr *push(listaTr *head, transizioni transizione){
 	return head;
 }
 
-
 void stampaLista(listaTr *head){
 	listaTr *p = head;
 	while(p){
@@ -198,3 +233,5 @@ void stampaLista(listaTr *head){
 	}
 	printf("--------------\n");
 }
+
+char eseguiMacchina(listaTr **matrice, )
