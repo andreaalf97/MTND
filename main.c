@@ -8,13 +8,14 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<stdbool.h>
 
 #define NCARATTERI 256
 
 typedef struct transizioni_s {
 	int inizio, fine;
 	char letto, scritto, mossa;
-} transizioni;
+} transizione;
 
 typedef struct listaTransizioni_s {
 	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
@@ -22,12 +23,15 @@ typedef struct listaTransizioni_s {
 	int fine;													//stato in cui andare
 }	listaTr;
 
-int pos(int, int, int);			//int pos(int i, int j, int height);	
+void stampaTransizione(transizione);
+void stampaNastro(char *nastro, int max, int testina);
+int pos(int, int, int);			//int pos(int i, int j, int height);
 //funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
-listaTr *push(listaTr *, transizioni);
+listaTr *push(listaTr *, transizione);
 //funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 void stampaLista(listaTr *);
 //semplice funzione che stampa la lista in input
+char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input);
 
 
 //char eseguiMacchina(listaTr **, char *, int *, int, int);
@@ -45,8 +49,8 @@ int main(int argc, char *argv[])
 
 	//variabili per leggere la prima parte di input
 	//vett e' il vettore che contiene tutte le transizioni
-	transizioni *vett = (transizioni *)malloc(10 * sizeof(transizioni));	//Alloco subito 10 transizioni
-	size_t dimVett = 10;	//DIMENSIONE DELL'ARRAY
+	transizione *vett = (transizione *)malloc(10 * sizeof(transizione));	//Alloco subito 10 transizioni
+	size_t dimVett = 10;								//DIMENSIONE DELL'ARRAY
 	int nTransizioni = 0;								//PRIMA CELLA LIBERA
 
 	//variabili per trovare lo stato piu' grande
@@ -57,13 +61,13 @@ int main(int argc, char *argv[])
 	int dim, posizione;
 
 	//variabili per riconoscere gli stati di accettazione
-	int *statiAccettazione;
+	bool *statiAccettazione;
 	int t;
 
 	//variabili per il numero massimo di mosse effettuabili
 	int max;
 
-	llinea = getline(&temp, &llinea, stdin);	
+	llinea = getline(&temp, &llinea, stdin);
 	//Prende una linea intera dallo stdin e la mette nel vettore temp
 	//alloca automaticamente la memoria e salva in n la lunghezza dell'array (compreso \n escluso \0)
 	//Ora 'temp' contiene tutta la linea compresa del \n e infine il terminatore
@@ -75,11 +79,9 @@ int main(int argc, char *argv[])
 
 	llinea = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
-		//operazioni sulle TRANSIZIONI
-
 		//Riallocazione di memoria -- Se serve piu' memoria alloco altri 10 spazi e vado avanti
 		if(nTransizioni >= dimVett){
-			vett = (transizioni *)realloc(vett, (dimVett * sizeof(transizioni)) + (10 * sizeof(transizioni)));
+			vett = (transizione *)realloc(vett, (dimVett * sizeof(transizione)) + (10 * sizeof(transizione)));
 			dimVett += 10;
 		}
 
@@ -101,7 +103,8 @@ int main(int argc, char *argv[])
 	//dimVett contiene la quantita' di memoria occupata da vett
 	//nTransizioni contiene il numero di transizioni effettive contenute in vett
 	//statoMassimo contiene quale stato e' il piu' grande numericamente, quindi se il piu' grande e' k,
-	//esistono sicuramente tutti gli stati 0, 1, ... , k-1, 
+	//esistono sicuramente tutti gli stati 0, 1, ... , k-1,
+
 
 	//Ora devo creare una matrice di liste in cui per ogni coppia STATO - INPUT
 	//ho una sequenza di possibili transizioni
@@ -110,7 +113,7 @@ int main(int argc, char *argv[])
 	//l'elemento [i][j] come MATRIX[ i*B + j]
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x NCARATTERI
-	dim = (statoMassimo + 1) * NCARATTERI; 
+	dim = (statoMassimo + 1) * NCARATTERI;
 	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
 	for(i = 0; i < dim; i++)		//inizializzo a zero la mia matrice delle transizioni
 		matrice[i] = NULL;
@@ -141,25 +144,26 @@ int main(int argc, char *argv[])
 
 	//**********************************************************
 	free(vett);
- 	
+
 
 
 	//Ora devo leggere quali sono gli stati di accettazione
-	//getline aveva gia'  letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
-	statiAccettazione = (int *)calloc((statoMassimo + 1), sizeof(int));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' e' di accettazione
-	llinea = getline(&temp, &llinea, stdin);	
+	//getline aveva gia' letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
+	statiAccettazione = (bool *)calloc((statoMassimo + 1), sizeof(bool));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' e' di accettazione
+	llinea = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
 		sscanf(temp, "%d", &t);			//leggo un intero dalla linea appena letta e salvata in 'temp'
 		statiAccettazione[t] = 1;		//"pongo" lo stato di accettazione a 1
-		llinea = getline(&temp, &llinea, stdin);	
+		llinea = getline(&temp, &llinea, stdin);
 	}
+
 
 	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
 	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
 	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
 
 	//Ora leggo il numero massimo di mosse effettuabili
-	llinea = getline(&temp, &llinea, stdin);	
+	llinea = getline(&temp, &llinea, stdin);
 	sscanf(temp, "%d", &max);
 
 	llinea = getline(&temp, &llinea, stdin);	//ora temp dovrebbe contenere la parola 'run'
@@ -168,18 +172,26 @@ int main(int argc, char *argv[])
 		return -1;
 	}
 
+	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
+	//corrispondere proprio alla prima stringa in ingresso
+	for(i = 0; temp[i] != '\n'; i++);	//ciclo fino allo \n
+	temp[i] = '\0';										//sostituisco lo \n con il terminatore
+
+
 	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
 	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
 	//											che devo possono essere eseguite
 	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
 	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
-	
-	//DEVO LEGGERE LA PROSSIMA LINEA ED ESEGUIRE LA MACCHINA SU DI ESSA
+	//temp = stringa da porre sul nastro
 
 
-
-	llinea = getline(&temp, &llinea, stdin); //ora 'temp' contiene la stringa da mettere sul nastro
-
+	while(!feof(stdin)){
+		printf("Risultato: %c\n\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
+		llinea = getline(&temp, &llinea, stdin);
+		for(i = 0; temp[i] != '\n'; i++);
+		temp[i] = '\0';
+	}
 
 
 
@@ -204,7 +216,7 @@ int main(int argc, char *argv[])
 	//**********************************************************
 		//PARTE DA RIVEDERE
 
-		//IN REALTA' TEMP MI SERVIRA' ANCORA!! 
+		//IN REALTA' TEMP MI SERVIRA' ANCORA!!
 
 	//**********************************************************
 	free(statiAccettazione);
@@ -214,16 +226,22 @@ int main(int argc, char *argv[])
 	return 0;
 }
 
+void stampaTransizione(transizione t){
+	printf("Inizio: %d, fine: %d\n", t.inizio, t.fine);
+	printf("Letto: %c, scritto: %c, mossa: %c\n", t.letto, t.scritto, t.mossa);
+	printf("*********************\n");
+}
+
 
 int pos(int i, int j, int B) {return ((i * B) + j);}
 
-listaTr *push(listaTr *head, transizioni transizione){
+listaTr *push(listaTr *head, transizione t){
 	listaTr *nuovo;
 	if(nuovo = (listaTr *)malloc(sizeof(listaTr))){
-		nuovo->scritto =	transizione.scritto;
-		nuovo->mossa = transizione.mossa;
-		nuovo->fine = transizione.fine;
-		nuovo->next = head; 
+		nuovo->scritto =	t.scritto;
+		nuovo->mossa = t.mossa;
+		nuovo->fine = t.fine;
+		nuovo->next = head;
 		head = nuovo;
 	}
 	else
@@ -239,4 +257,84 @@ void stampaLista(listaTr *head){
 		p = p->next;
 	}
 	printf("--------------\n");
+}
+
+char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input){
+	int i, posizione;
+
+	//FASE DI INIZIALIZZAZIONE
+
+	int stato = 0;
+	char *nastro;
+	int testina = max;
+	int dimNastro = (2 * max) + 1;
+	int nMosse = 0;
+
+	if(statiAccettazione[0])	//se lo stato iniziale e' di accettazione termino subito
+		return '1';
+
+
+	nastro = (char *)malloc(dimNastro * sizeof(char));
+	for(i = 0; i < max; i++)
+		nastro[i] = '_';
+	for(i = 0; input[i] != '\0'; i++)
+		nastro[max + i] = input[i];
+	for(i = max + i; i < dimNastro; i++)
+		nastro[i] = '_';
+
+
+	//STAMPO IL NASTRO PER DEBUGGING
+	/*
+	printf("Nastro:\n");
+	for(i = 0; i < dimNastro; i++)
+		printf("%c ", nastro[i]);
+	printf("\n");
+	for(i = 0; i < dimNastro; i++){
+		if(i != max)
+			printf("  ");
+		else
+			printf("^");
+	}
+	printf("\n");
+	*/
+	//******************************
+
+
+	//Ora ho:
+	//nastro: vettore che contiene il nastro
+	//dimNastro: intero che indica la dimensione del nastro
+	//testina: posizione della testina sul nastro
+	//stato: stato in cui mi trovo
+
+	//simulo l'esecuzione come se fosse deterministico
+	while(!statiAccettazione[stato]){	//continuo finche' non trovo uno stato di accettazione
+		posizione = pos(stato, (int)nastro[testina], NCARATTERI);
+		if(!matrice[posizione])
+			return '0';
+		nastro[testina] = matrice[posizione]->scritto;
+		stato = matrice[posizione]->fine;
+		if(matrice[posizione]->mossa == 'R')
+			testina++;
+		else if(matrice[posizione]->mossa == 'L')
+			testina--;
+		if(nMosse > max)
+			return 'U';
+		nMosse++;
+	}
+
+
+	stampaNastro(nastro, max, testina);
+
+	return '1';
+}
+
+void stampaNastro(char *nastro, int max, int testina) {
+	int i;
+	for(i = 0; i < 2 * max + 1; i++)
+		printf("%c ", nastro[i]);
+	printf("\n");
+	for(i = 0; i < testina; i++)
+		printf("  ");
+	printf("^ \n");
+	return;
 }
