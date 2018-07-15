@@ -23,15 +23,32 @@ typedef struct listaTransizioni_s {
 	int fine;													//stato in cui andare
 }	listaTr;
 
+typedef struct listaInt_s {
+	struct listaInt_s *next;
+	int pid;
+}	listaInt;
+
+typedef struct nastro_s {
+	char *left, *right;
+	int dimLeft, dimRight;
+	listaInt *whoShares;
+} nstr;
+
+typedef struct processo_s {
+	nstr nastro;
+	int testina;
+	int stato;
+} processo;
+
 void stampaTransizione(transizione);
-void stampaNastro(char *nastro, int max, int testina);
+void stampaNastro(nstr, int);
 int pos(int, int, int);			//int pos(int i, int j, int height);
 //funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
 listaTr *push(listaTr *, transizione);
 //funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 void stampaLista(listaTr *);
 //semplice funzione che stampa la lista in input
-char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input);
+char executeMachine(listaTr **, int, int, bool *, int, char *);
 
 
 //char eseguiMacchina(listaTr **, char *, int *, int, int);
@@ -49,8 +66,8 @@ int main(int argc, char *argv[])
 
 	//variabili per leggere la prima parte di input
 	//vett e' il vettore che contiene tutte le transizioni
-	transizione *vett = (transizione *)malloc(10 * sizeof(transizione));	//Alloco subito 10 transizioni
-	size_t dimVett = 10;								//DIMENSIONE DELL'ARRAY
+	transizione *vett = (transizione *)malloc(2 * sizeof(transizione));	//Alloco subito 2 transizioni
+	size_t dimVett = 2;								//DIMENSIONE DELL'ARRAY
 	int nTransizioni = 0;								//PRIMA CELLA LIBERA
 
 	//variabili per trovare lo stato piu' grande
@@ -263,79 +280,54 @@ void stampaLista(listaTr *head){
 char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input){
 	int i, posizione;
 
-	//FASE DI INIZIALIZZAZIONE
 
-	int stato = 0;
-	char *nastro;
-	int testina = max;
-	int dimNastro = (2 * max) + 1;
-	int nMosse = 0;
+	//FASE DI INIZIALIZZAZIONE:
+	//creo un processo iniziale (cioe' una configurazione della MT da cui partire) dal
+	//quale forkero' ogni volta che incontro un non determinismo
+	//bisogna capire come gestire la copia del nastro in quanto deve essere condiviso
+	//nel caso in cui venga modificato da un sottoprocesso
+	processo init;
+	init.stato = 0;
+	init.testina = 0;
+	init.nastro.right = (char *)malloc(max * sizeof(char));
+	init.nastro.dimRight = max;
+	init.nastro.left = (char *)malloc(max * sizeof(char));
+	init.nastro.dimLeft = max;
 
-	if(statiAccettazione[0])	//se lo stato iniziale e' di accettazione termino subito
-		return '1';
-
-
-	nastro = (char *)malloc(dimNastro * sizeof(char));
-	for(i = 0; i < max; i++)
-		nastro[i] = '_';
+	for(i = 0; i < init.nastro.dimLeft; i++)
+		init.nastro.left[i] = '_';
 	for(i = 0; input[i] != '\0'; i++)
-		nastro[max + i] = input[i];
-	for(i = max + i; i < dimNastro; i++)
-		nastro[i] = '_';
+		init.nastro.right[i] = input[i];
+	for(; i < init.nastro.dimRight; i++)
+		init.nastro.right[i] = '_';
 
-
-	//STAMPO IL NASTRO PER DEBUGGING
-	/*
-	printf("Nastro:\n");
-	for(i = 0; i < dimNastro; i++)
-		printf("%c ", nastro[i]);
-	printf("\n");
-	for(i = 0; i < dimNastro; i++){
-		if(i != max)
-			printf("  ");
-		else
-			printf("^");
-	}
-	printf("\n");
-	*/
-	//******************************
-
-
-	//Ora ho:
-	//nastro: vettore che contiene il nastro
-	//dimNastro: intero che indica la dimensione del nastro
-	//testina: posizione della testina sul nastro
-	//stato: stato in cui mi trovo
-
-	//simulo l'esecuzione come se fosse deterministico
-	while(!statiAccettazione[stato]){	//continuo finche' non trovo uno stato di accettazione
-		posizione = pos(stato, (int)nastro[testina], NCARATTERI);
-		if(!matrice[posizione])
-			return '0';
-		nastro[testina] = matrice[posizione]->scritto;
-		stato = matrice[posizione]->fine;
-		if(matrice[posizione]->mossa == 'R')
-			testina++;
-		else if(matrice[posizione]->mossa == 'L')
-			testina--;
-		if(nMosse > max)
-			return 'U';
-		nMosse++;
-	}
-
-
-	stampaNastro(nastro, max, testina);
+	stampaNastro(init.nastro, init.testina);
 
 	return '1';
+
 }
 
-void stampaNastro(char *nastro, int max, int testina) {
+void stampaNastro(nstr nastro, int testina) {
 	int i;
-	for(i = 0; i < 2 * max + 1; i++)
-		printf("%c ", nastro[i]);
+	for(i = 0; i < nastro.dimLeft; i++)
+		printf("%c ", nastro.left[i]);
+	for(i = 0; i < nastro.dimRight; i++)
+		printf("%c ", nastro.right[i]);
 	printf("\n");
-	for(i = 0; i < testina; i++)
-		printf("  ");
-	printf("^ \n");
+
+	if(testina >= 0){
+		for(i = 0; i < nastro.dimLeft; i++)
+			printf("  ");
+		for(i = 0; i < testina; i++)
+			printf("  ");
+		printf("^");
+	}
+	else{
+		testina = -testina;
+		for(i = 0; i < testina; i++)
+			printf("  ");
+		printf(" ^");
+	}
+	printf("\n");
 	return;
 }
