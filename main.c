@@ -38,7 +38,13 @@ typedef struct processo_s {
 	nstr nastro;
 	int testina;
 	int stato;
+	unsigned long pid;
 } processo;
+
+typedef struct listaProcessi_s {
+	struct listaProcessi_s *next;
+	processo p;
+} listaProcessi;
 
 void stampaTransizione(transizione);
 void stampaNastro(nstr, int);
@@ -49,6 +55,12 @@ listaTr *push(listaTr *, transizione);
 void stampaLista(listaTr *);
 //semplice funzione che stampa la lista in input
 char executeMachine(listaTr **, int, int, bool *, int, char *);
+listaProcessi *pushProcesso(listaProcessi *, processo);
+listaProcessi *removeProcess(listaProcessi *, unsigned long );
+char carattereSulNatro(nstr, int);
+
+
+
 
 
 //char eseguiMacchina(listaTr **, char *, int *, int, int);
@@ -278,17 +290,24 @@ void stampaLista(listaTr *head){
 }
 
 char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input){
-	int i, posizione;
+	int i, posizione, pidCounter;
 
 
 	//FASE DI INIZIALIZZAZIONE:
-	//creo un processo iniziale (cioe' una configurazione della MT da cui partire) dal
+	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
 	//quale forkero' ogni volta che incontro un non determinismo
 	//bisogna capire come gestire la copia del nastro in quanto deve essere condiviso
 	//nel caso in cui venga modificato da un sottoprocesso
-	processo init;
+	processo init;	//processo iniziale
+	listaProcessi *list = NULL;	//lista che controlla ogni istante quanti processi stanno lavorando con la macchina
+	listaProcessi *indice;	//serve a scorrere all'interno della lista dei processi
+	char exitStatus = '0';	//variabile per controllare alla fine se ritornare 0 o U
+
+
 	init.stato = 0;
 	init.testina = 0;
+	init.pid = 0;
+	pidCounter = 0;
 	init.nastro.right = (char *)malloc(max * sizeof(char));
 	init.nastro.dimRight = max;
 	init.nastro.left = (char *)malloc(max * sizeof(char));
@@ -301,7 +320,40 @@ char executeMachine(listaTr **matrice, int width, int height, bool *statiAccetta
 	for(; i < init.nastro.dimRight; i++)
 		init.nastro.right[i] = '_';
 
-	stampaNastro(init.nastro, init.testina);
+	list = pushProcesso(list, init);
+
+	//INIZIO DELL'ESECUZIONE
+	while(list){		//finche' ci sono processi da eseguire
+		indice = list;
+		while(indice){	//per ogni processo ancora in esecuzione
+			//4 casi:
+			// -lo stato in cui mi trovo e' finale e quindi ritorno subito 1
+			// -non ci sono piu' transizioni di uscita
+			// -c'e' una sola transizione possibile
+			// -ci sono due o piu' transizioni possibili
+
+			if(statiAccettazione[indice->p.stato])	//se mi trovo in uno stato di accettazione per uno qualsiasi dei sottoprocessi ritorno subito 1
+				return '1';
+
+			posizione = pos(indice->p.stato, carattereSulNatro(indice->p.nastro, indice->p.testina), NCARATTERI);
+			if(matrice[posizione]){
+
+			}
+			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
+				//devo rimuovere il processo da quelli in esecuzione
+				list = removeProcess(list, indice->p.pid);
+			}
+
+
+
+
+
+			indice = indice->next;
+		}
+	}
+
+
+
 
 	return '1';
 
@@ -330,4 +382,39 @@ void stampaNastro(nstr nastro, int testina) {
 	}
 	printf("\n");
 	return;
+}
+
+
+listaProcessi *pushProcesso(listaProcessi *head, processo t){
+	listaProcessi *nuovo;
+	if(nuovo = (listaProcessi *)malloc(sizeof(listaProcessi))){
+		nuovo->p = t;
+		nuovo->next = head;
+		head = nuovo;
+	}
+	else
+		fprintf(stderr, "Errore allocazione memoria lista\n");
+
+	return head;
+}
+
+listaProcessi *removeProcess(listaProcessi *currP, unsigned long pid){
+	if(currP == NULL)
+		return NULL;
+
+	if(currP->p.pid == pid){
+		listaProcessi *tempNextP = currP->next;
+		free(currP);
+		return tempNextP;
+	}
+
+	currP->next = removeProcess(currP->next, pid);
+	return currP;
+}
+
+char carattereSulNatro(nstr nastro, int testina){
+	if(testina >= 0)
+		return nastro.right[testina];
+	testina = -testina;
+	return nastro.left[testina];
 }
