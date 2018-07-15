@@ -79,10 +79,10 @@ int main(int argc, char *argv[])
 
 	llinea = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
-		//Riallocazione di memoria -- Se serve piu' memoria alloco altri 10 spazi e vado avanti
+		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
 		if(nTransizioni >= dimVett){
-			vett = (transizione *)realloc(vett, (dimVett * sizeof(transizione)) + (10 * sizeof(transizione)));
-			dimVett += 10;
+			vett = (transizione *)realloc(vett, (dimVett * sizeof(transizione)) * 2);
+			dimVett *= 2;
 		}
 
 		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vett[nTransizioni].inizio), &(vett[nTransizioni].letto), &(vett[nTransizioni].scritto), &(vett[nTransizioni].mossa), &(vett[nTransizioni].fine));
@@ -98,6 +98,7 @@ int main(int argc, char *argv[])
 		nTransizioni++;
 		llinea = getline(&temp, &llinea, stdin);
 	}
+
 
 	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
 	//dimVett contiene la quantita' di memoria occupata da vett
@@ -187,9 +188,9 @@ int main(int argc, char *argv[])
 
 
 	while(!feof(stdin)){
-		printf("Risultato: %c\n\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
+		printf("%c\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
 		llinea = getline(&temp, &llinea, stdin);
-		for(i = 0; temp[i] != '\n'; i++);
+		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
 		temp[i] = '\0';
 	}
 

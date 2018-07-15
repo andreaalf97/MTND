@@ -1,10 +1,13 @@
 tr
-0 a a R 1
-1 a a R 2
-2 b a R 3
+0 a _ R 1
+1 b _ R 2
+2 c _ R 3
+3 _ x R 4
+3 a _ R 1
 acc
-3
-max
 4
+max
+20
 run
-aab
+abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc
+abcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabcabc
