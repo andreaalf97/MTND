@@ -3,7 +3,7 @@ College Project:<br/>
 The purpose of the project is to develop a NON DETERMINISTIC Touring Machine Simulator that needs to run in as little time as possible and that needs to use as little memory as possible.<br/>
 <br/>
 The input file looks like this:<br/>
-tr<br/>	<b>States that the list of possible transactions begins on next row</b>
+tr		<b>States that the list of possible transactions begins on next row</b><br/>
 0 a _ R 1<br/>
 0 a _ R 5<br/>
 0 a _ R 9<br/>
