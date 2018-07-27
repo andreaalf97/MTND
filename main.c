@@ -70,6 +70,9 @@ char carattereSulNatro(nstr, int);
 
 int main(int argc, char *argv[])
 {
+	char rowToChar;
+	int k;
+
 	// FASE DI INPUT
 	int i, j;
 
@@ -167,7 +170,6 @@ int main(int argc, char *argv[])
 
 	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
 	//cui e' presente quel carattere nella tabella
-
 	for(i = 0, j = 0; i < 256; i++){
 		if(caratteriPresenti[i]){
 			caratteriPresenti[i] = j;
@@ -177,17 +179,28 @@ int main(int argc, char *argv[])
 			caratteriPresenti[i] = -1;
 	}
 
-	for(i = 0; i < 256; i++){
-		if(caratteriPresenti[i] > -1)
-			printf("Il carattere '%c' si trova alla riga %d\n", (char)i, caratteriPresenti[i]);
-	}
-
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
 	//tale transizione.
 	for(i = 0; i < nTransizioni; i++){
-		posizione = pos(vett[i].inizio, (int)vett[i].letto, NCARATTERI);
+		//posizione = pos(vett[i].inizio, (int)vett[i].letto, NCARATTERI);
+		posizione = pos(vett[i].inizio, caratteriPresenti[(int)vett[i].letto], nCaratteriPresenti);
 		matrice[posizione] = push(matrice[posizione], vett[i]);
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
+	}
+
+	for(i = 0; i < statoMassimo; i++){
+		for(j = 0; j < nCaratteriPresenti; j++){
+			if(matrice[pos(i, j, nCaratteriPresenti)] != NULL){
+				for(k = 0; k < 256; k++){
+					if(caratteriPresenti[k] == j){
+						rowToChar = (char)k;
+						break;
+					}
+				}
+				printf("Dallo stato %d, leggendo %c:\n", i, rowToChar);
+				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
+			}
+		}
 	}
 
 	/*for(i = 0; i < statoMassimo + 1; i++)
