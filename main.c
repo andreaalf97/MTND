@@ -169,7 +169,7 @@ int main(int argc, char *argv[])
 	//cui e' presente quel carattere nella tabella
 
 	for(i = 0, j = 0; i < 256; i++){
-		if(caratteriPresenti[i] == 1){
+		if(caratteriPresenti[i]){
 			caratteriPresenti[i] = j;
 			j++;
 		}
@@ -177,7 +177,7 @@ int main(int argc, char *argv[])
 			caratteriPresenti[i] = -1;
 	}
 
-	for(i = 0; i < nCaratteriPresenti; i++){
+	for(i = 0; i < 256; i++){
 		if(caratteriPresenti[i] > -1)
 			printf("Il carattere '%c' si trova alla riga %d\n", (char)i, caratteriPresenti[i]);
 	}
