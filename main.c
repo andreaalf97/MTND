@@ -143,18 +143,16 @@ int main(int argc, char *argv[])
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
-	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
-	for(i = 0; i < 256; i++){
-		if(caratteriPresenti[i])
-			printf("%c\n", (char)i);
-	}
-
 
 	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
 	//dimVett contiene la quantita' di memoria occupata da vett
 	//nTransizioni contiene il numero di transizioni effettive contenute in vett
 	//statoMassimo contiene quale stato e' il piu' grande numericamente, quindi se il piu' grande e' k,
 	//esistono sicuramente tutti gli stati 0, 1, ... , k-1,
+
+	//Per quanto riguarda i caratteri:
+	//caratteriPresenti: vettore 'booleano' in cui la cella 'i' e' a 1 sse il carattere (char)i e' presente tra quelli da leggere
+	//nCaratteriPresenti: intero che rappresenta quanti caratteri sono presenti in lettura
 
 
 	//Ora devo creare una matrice di liste in cui per ogni coppia STATO - INPUT
@@ -163,11 +161,26 @@ int main(int argc, char *argv[])
 	//Per una matrice MATRIX di dimensione AxB alloco un vettore di dimensione A*B e trovo
 	//l'elemento [i][j] come MATRIX[ i*B + j]
 
-	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x NCARATTERI
-	dim = (statoMassimo + 1) * NCARATTERI;
-	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
-	for(i = 0; i < dim; i++)		//inizializzo a zero la mia matrice delle transizioni
-		matrice[i] = NULL;
+	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
+	dim = (statoMassimo + 1) * nCaratteriPresenti;
+	matrice = (listaTr **)calloc(dim * sizeof(listaTr *));
+
+	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
+	//cui e' presente quel carattere nella tabella
+
+	for(i = 0, j = 0; i < nCaratteriPresenti; i++){
+		if(caratteriPresenti[i] == 1){
+			caratteriPresenti[i] = j;
+			j++;
+		}
+		else
+			caratteriPresenti[i] = -1;
+	}
+
+	for(i = 0; i < nCaratteriPresenti; i++){
+		if(caratteriPresenti[i] > -1)
+			printf("Il carattere '%c' si trova alla riga %d\n", (char)i, caratteriPresenti[i]);
+	}
 
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
 	//tale transizione.
