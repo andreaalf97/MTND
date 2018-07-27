@@ -39,6 +39,7 @@ typedef struct processo_s {
 	int testina;
 	int stato;
 	int pid;
+	int nMosseFatte;
 } processo;
 
 typedef struct listaProcessi_s {
@@ -371,6 +372,9 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	//inizializzazione stato
 	init.stato = 0;
 
+	//inizializzazione mosse fatte
+	init.nMosseFatte = 0;
+
 
 	processiAttiviHead = pushProcesso(processiAttiviHead, init);
 	exitStatus = '0'; //0 di default; se trovo un U diventa U, se trovo 1 ritorno subito 1
@@ -392,6 +396,9 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				//LIBERA TUTTA LA MEMORIA CHE NON VIENE LIBERATA DALLA RETURN
 				return '1';
 			}
+
+			if(indice->p.nMosseFatte > max)
+				return 'U';
 
 			//guardo sul nastro a che carattere sta puntando la testina
 			if(indice->p.testina >= 0)
