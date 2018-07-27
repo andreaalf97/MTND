@@ -394,7 +394,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 			else
 				tempChar = indice->p.nastro.left[-(indice->p.testina) -1];
 			
-			tempInt = righeCaratteri[(int)tempChar]
+			tempInt = righeCaratteri[(int)tempChar];
 
 			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
 			if(matrice[posizione]){
@@ -404,7 +404,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				//devo rimuovere il processo da quelli in esecuzione
 				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN TEREMINATO NASTRO
 				//LIBERA UN PO' DI MEMORIA MA NON SO ANCORA QUALE
-				list = removeProcess(processiAttiviHead, indice->p.pid);
+				processiAttiviHead = removeProcess(processiAttiviHead, indice->p.pid);
 			}
 
 
