@@ -38,7 +38,7 @@ typedef struct processo_s {
 	nstr nastro;
 	int testina;
 	int stato;
-	unsigned long pid;
+	int pid;
 } processo;
 
 typedef struct listaProcessi_s {
@@ -54,7 +54,7 @@ int pos(int, int, int);			//int pos(int i, int j, int height);
 listaTr *push(listaTr *, transizione);
 //semplice funzione che stampa la lista in input
 void stampaLista(listaTr *);
-char executeMachine(listaTr **, int, int, bool *, int, char *);
+char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
 listaProcessi *pushProcesso(listaProcessi *, processo);
 listaProcessi *removeProcess(listaProcessi *, unsigned long );
 char carattereSulNatro(nstr, int);
@@ -70,9 +70,6 @@ char carattereSulNatro(nstr, int);
 
 int main(int argc, char *argv[])
 {
-	char rowToChar;
-	int k;
-
 	// FASE DI INPUT
 	int i, j;
 
@@ -188,6 +185,7 @@ int main(int argc, char *argv[])
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
+/*
 	for(i = 0; i < statoMassimo; i++){
 		for(j = 0; j < nCaratteriPresenti; j++){
 			if(matrice[pos(i, j, nCaratteriPresenti)] != NULL){
@@ -202,13 +200,7 @@ int main(int argc, char *argv[])
 			}
 		}
 	}
-
-	/*for(i = 0; i < statoMassimo + 1; i++)
-		for(j = 0; j < NCARATTERI; j++)
-			if(matrice[pos(i, j, NCARATTERI)] != NULL){
-				printf("Dallo stato %d, leggendo %c:\n", i, (char)j);
-				stampaLista(matrice[pos(i, j, NCARATTERI)]);
-			}*/
+*/
 
 	//A questo punto dentro la matrice ho tutto cio' che mi serve e posso andare avanti a leggere il file di input
 	//Il vettore delle transizioni non serve piu'
@@ -264,7 +256,7 @@ int main(int argc, char *argv[])
 
 
 	while(!feof(stdin)){
-		//printf("%c\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
+		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, caratteriPresenti));
 		llinea = getline(&temp, &llinea, stdin);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
 		temp[i] = '\0';
@@ -289,13 +281,6 @@ int main(int argc, char *argv[])
 
 
 	free(temp);		//libero temp perche' non devo piu' leggere stringhe dall'input
-
-	//**********************************************************
-		//PARTE DA RIVEDERE
-
-		//IN REALTA' TEMP MI SERVIRA' ANCORA!!
-
-	//**********************************************************
 	free(statiAccettazione);
 	free(matrice);
 
@@ -336,29 +321,35 @@ void stampaLista(listaTr *head){
 	printf("--------------\n");
 }
 
-char executeMachine(listaTr **matrice, int width, int height, bool *statiAccettazione, int max, char *input){
-	int i, posizione, pidCounter;
-
+//executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp)
+char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
+	int i,	//per i loop
+	posizione,	//per calcolare la posizione <i, j> nella matrice
+	pidCounter;	//contiene il valore da assegnare al prossimo processo che verra' creato
 
 	//FASE DI INIZIALIZZAZIONE:
 	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
 	//quale forkero' ogni volta che incontro un non determinismo
-	//bisogna capire come gestire la copia del nastro in quanto deve essere condiviso
-	//nel caso in cui venga modificato da un sottoprocesso
+	//bisogna capire come gestire la copia del nastro nel caso in cui venga modificato
+	//da un sottoprocesso --> deve essere condiviso
+
 	processo init;	//processo iniziale
-	listaProcessi *list = NULL;	//lista che controlla ogni istante quanti processi stanno lavorando con la macchina
+	listaProcessi *processiAttiviHead = NULL;	//lista che tiene traccia di quanti processi non hanno ancora terminato
 	listaProcessi *indice;	//serve a scorrere all'interno della lista dei processi
-	char exitStatus = '0';	//variabile per controllare alla fine se ritornare 0 o U
+	char exitStatus;	//variabile per controllare alla fine se ritornare 0 o U (deve essere 0 di default)
+	
 
+	pidCounter = 0; //init e' sempre il processo 0
+	//FASE DI INIZIALIZZAZIONE DI INIT:
+	//assegnazione del PID
+	init.pid = pidCounter; // = 0
 
-	init.stato = 0;
-	init.testina = 0;
-	init.pid = 0;
-	pidCounter = 0;
+	//Costruzione del nastro
 	init.nastro.right = (char *)malloc(max * sizeof(char));
 	init.nastro.dimRight = max;
 	init.nastro.left = (char *)malloc(max * sizeof(char));
 	init.nastro.dimLeft = max;
+	init.nastro.whoShares = pushListaInt(init.nastro.whoShares, init.pid);
 
 	for(i = 0; i < init.nastro.dimLeft; i++)
 		init.nastro.left[i] = '_';
@@ -367,11 +358,19 @@ char executeMachine(listaTr **matrice, int width, int height, bool *statiAccetta
 	for(; i < init.nastro.dimRight; i++)
 		init.nastro.right[i] = '_';
 
-	list = pushProcesso(list, init);
+	//inizializzazione testina
+	init.testina = 0;
+
+	//inizializzazione stato
+	init.stato = 0;
+
+
+	processiAttiviHead = pushProcesso(processiAttiviHead, init);
+	exitStatus = '0'; //0 di default; se trovo un U diventa U, se trovo 1 ritorno subito 1
 
 	//INIZIO DELL'ESECUZIONE
-	while(list){		//finche' ci sono processi da eseguire
-		indice = list;
+	while(processiAttiviHead){		//finche' ci sono processi attivi
+		indice = processiAttiviHead;
 		while(indice){	//per ogni processo ancora in esecuzione
 			//4 casi:
 			// -lo stato in cui mi trovo e' finale e quindi ritorno subito 1
@@ -379,10 +378,13 @@ char executeMachine(listaTr **matrice, int width, int height, bool *statiAccetta
 			// -c'e' una sola transizione possibile
 			// -ci sono due o piu' transizioni possibili
 
-			if(statiAccettazione[indice->p.stato])	//se mi trovo in uno stato di accettazione per uno qualsiasi dei sottoprocessi ritorno subito 1
+			if(statiAccettazione[indice->p.stato]){	//se mi trovo in uno stato di accettazione per uno qualsiasi dei sottoprocessi ritorno subito 1
+				//LIBERA TUTTA LA MEMORIA CHE NON VIENE LIBERATA DALLA RETURN
 				return '1';
+			}
 
-			posizione = pos(indice->p.stato, carattereSulNatro(indice->p.nastro, indice->p.testina), NCARATTERI);
+
+			posizione = pos(indice->p.stato, J, nCaratteriPresenti);
 			if(matrice[posizione]){
 
 			}
@@ -402,8 +404,7 @@ char executeMachine(listaTr **matrice, int width, int height, bool *statiAccetta
 
 
 
-	return '1';
-
+	return exitStatus;
 }
 
 void stampaNastro(nstr nastro, int testina) {
@@ -464,4 +465,17 @@ char carattereSulNatro(nstr nastro, int testina){
 		return nastro.right[testina];
 	testina = -testina;
 	return nastro.left[testina];
+}
+
+listaInt *pushListaInt(listaInt *head, int pid){
+	listaInt *nuovo;
+	if(nuovo = (listaInt *)malloc(sizeof(listaInt))){
+		nuovo->pid = pid;
+		nuovo->next = head;
+		head = nuovo;
+	}
+	else
+		fprintf(stderr, "Errore allocazione memoria lista\n");
+
+	return head;
 }
