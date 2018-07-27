@@ -52,12 +52,14 @@ void stampaNastro(nstr, int);
 int pos(int, int, int);			//int pos(int i, int j, int height);
 //funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 listaTr *push(listaTr *, transizione);
+//push per la lista di chi condivide un determinato nastro
+listaInt *pushListaInt(listaInt *, int);
 //semplice funzione che stampa la lista in input
 void stampaLista(listaTr *);
 char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
 listaProcessi *pushProcesso(listaProcessi *, processo);
 listaProcessi *removeProcess(listaProcessi *, unsigned long );
-char carattereSulNatro(nstr, int);
+char carattereSulNastro(nstr, int);
 
 
 
@@ -327,6 +329,9 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	posizione,	//per calcolare la posizione <i, j> nella matrice
 	pidCounter;	//contiene il valore da assegnare al prossimo processo che verra' creato
 
+	char tempChar;	//usato per calcoli intermedi
+	int tempInt;		//usato per calcoli intermedi
+
 	//FASE DI INIZIALIZZAZIONE:
 	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
 	//quale forkero' ogni volta che incontro un non determinismo
@@ -383,14 +388,23 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				return '1';
 			}
 
+			//guardo sul nastro a che carattere sta puntando la testina
+			if(indice->p.testina >= 0)
+				tempChar = indice->p.nastro.right[indice->p.testina];
+			else
+				tempChar = indice->p.nastro.left[-(indice->p.testina) -1];
+			
+			tempInt = righeCaratteri[(int)tempChar]
 
-			posizione = pos(indice->p.stato, J, nCaratteriPresenti);
+			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
 			if(matrice[posizione]){
 
 			}
 			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
 				//devo rimuovere il processo da quelli in esecuzione
-				list = removeProcess(list, indice->p.pid);
+				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN TEREMINATO NASTRO
+				//LIBERA UN PO' DI MEMORIA MA NON SO ANCORA QUALE
+				list = removeProcess(processiAttiviHead, indice->p.pid);
 			}
 
 
@@ -460,7 +474,7 @@ listaProcessi *removeProcess(listaProcessi *currP, unsigned long pid){
 	return currP;
 }
 
-char carattereSulNatro(nstr nastro, int testina){
+char carattereSulNastro(nstr nastro, int testina){
 	if(testina >= 0)
 		return nastro.right[testina];
 	testina = -testina;
