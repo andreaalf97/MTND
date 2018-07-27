@@ -332,6 +332,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 
 	char tempChar;	//usato per calcoli intermedi
 	int tempInt;		//usato per calcoli intermedi
+	listaTr *tempListaTr;
 
 	//FASE DI INIZIALIZZAZIONE:
 	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
@@ -402,8 +403,37 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 
 			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, tempChar);
 			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
-			if(matrice[posizione]){
-
+			tempListaTr = matrice[posizione];
+			if(tempListaTr){
+				if(!tempListaTr->next){	//se c'e' solo una transizione possibile
+					//COSE DA FARE:
+					//1 - scrivere sul nastro quella che la transizione vuole che scriva
+					if(indice->p.testina >= 0)
+						indice->p.nastro.right[indice->p.testina] = tempListaTr.scritto;
+					else
+						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr.scritto;
+					//2 - spostare la testina
+					if(tempListaTr.mossa == 'R')
+						indice->p.testina++;
+					else if(tempListaTr.mossa == 'L')
+						indice->p.testina--;
+					//3 - aggiornare lo stato
+					indice->p.stato = tempListaTr.fine;
+				}
+				else{//se ci sono piu' transizioni possibili
+					//*****************************************************************
+					//FALSO, ONLY FOR TESTING
+					if(indice->p.testina >= 0)
+						indice->p.nastro.right[indice->p.testina] = tempListaTr.scritto;
+					else
+						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr.scritto;
+					if(tempListaTr.mossa == 'R')
+						indice->p.testina++;
+					else if(tempListaTr.mossa == 'L')
+						indice->p.testina--;
+					indice->p.stato = tempListaTr.fine;
+					//*****************************************************************
+				}
 			}
 			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
 				//devo rimuovere il processo da quelli in esecuzione
