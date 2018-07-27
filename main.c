@@ -86,6 +86,7 @@ int main(int argc, char *argv[])
 	//variabili per trovare lo stato piu' grande
 	int statoMassimo = 0;
 
+	int nCaratteriPresenti;
 	int *caratteriPresenti; //questo vettore viene utilizzato due volte:
 	//prima lo utilizzo quando leggo l'input riempiendolo di 0 o 1 a seconda che il carattere sia presente o meno nelle transizioni
 	//nella seconda parte lo utilizzo per indicare quale riga della matrice della transizioni e' quella che rappresenta quel carattere
@@ -107,6 +108,7 @@ int main(int argc, char *argv[])
 	//alloca automaticamente la memoria e salva in llinea la lunghezza dell'array (compreso \n escluso \0)
 	//Ora 'temp' contiene tutta la linea compresa del \n e infine il terminatore
 
+	nCaratteriPresenti = 0;
 	caratteriPresenti = (int *)calloc(256, sizeof(int)); //inizializzo a 0 il vettore dei caratteri presenti
 
 	if(strcmp("tr\n", temp) != 0){
@@ -132,12 +134,16 @@ int main(int argc, char *argv[])
 		if(vett[nTransizioni].fine > statoMassimo)
 			statoMassimo = vett[nTransizioni].fine;
 
-		caratteriPresenti[(int)vett[nTransizioni].letto] = 1;
+		if(!caratteriPresenti[(int)vett[nTransizioni].letto]){
+			caratteriPresenti[(int)vett[nTransizioni].letto] = 1;
+			nCaratteriPresenti++;
+		}
 
 		nTransizioni++;
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
+	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
 	for(i = 0; i < 256; i++){
 		if(caratteriPresenti[i])
 			printf("%c\n", (char)i);
