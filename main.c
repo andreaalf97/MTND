@@ -258,7 +258,7 @@ int main(int argc, char *argv[])
 
 
 	while(!feof(stdin)){
-		printf("Stringa %s\n", llinea);
+		printf("Stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, caratteriPresenti));
 		llinea = getline(&temp, &llinea, stdin);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
