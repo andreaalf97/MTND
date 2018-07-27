@@ -48,12 +48,12 @@ typedef struct listaProcessi_s {
 
 void stampaTransizione(transizione);
 void stampaNastro(nstr, int);
-int pos(int, int, int);			//int pos(int i, int j, int height);
 //funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
-listaTr *push(listaTr *, transizione);
+int pos(int, int, int);			//int pos(int i, int j, int height);
 //funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
-void stampaLista(listaTr *);
+listaTr *push(listaTr *, transizione);
 //semplice funzione che stampa la lista in input
+void stampaLista(listaTr *);
 char executeMachine(listaTr **, int, int, bool *, int, char *);
 listaProcessi *pushProcesso(listaProcessi *, processo);
 listaProcessi *removeProcess(listaProcessi *, unsigned long );
@@ -74,6 +74,7 @@ int main(int argc, char *argv[])
 	int i, j;
 
 	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
+	//infatti leggo l'input una riga per volta e ne salvo le informazioni che mi servono
 	size_t llinea = 0;	//dimensione della singola linea, da aggiornare ogni volta
 
 	//variabili per leggere la prima parte di input
@@ -84,6 +85,11 @@ int main(int argc, char *argv[])
 
 	//variabili per trovare lo stato piu' grande
 	int statoMassimo = 0;
+
+	int *caratteriPresenti; //questo vettore viene utilizzato due volte:
+	//prima lo utilizzo quando leggo l'input riempiendolo di 0 o 1 a seconda che il carattere sia presente o meno nelle transizioni
+	//nella seconda parte lo utilizzo per indicare quale riga della matrice della transizioni e' quella che rappresenta quel carattere
+	//ad es. se il carattere '%' (ASCII 37) è presente e caratteriPresenti[37] e' uguale a 4, sapro' che la 5^ riga della matrice rappresenta '%'
 
 	//Variabili per la creazione della tabella che rappresenta la macchina di Touring del file
 	listaTr **matrice;
@@ -98,8 +104,10 @@ int main(int argc, char *argv[])
 
 	llinea = getline(&temp, &llinea, stdin);
 	//Prende una linea intera dallo stdin e la mette nel vettore temp
-	//alloca automaticamente la memoria e salva in n la lunghezza dell'array (compreso \n escluso \0)
+	//alloca automaticamente la memoria e salva in llinea la lunghezza dell'array (compreso \n escluso \0)
 	//Ora 'temp' contiene tutta la linea compresa del \n e infine il terminatore
+
+	caratteriPresenti = (int *)calloc(256, sizeof(int)); //inizializzo a 0 il vettore dei caratteri presenti
 
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
@@ -124,8 +132,15 @@ int main(int argc, char *argv[])
 		if(vett[nTransizioni].fine > statoMassimo)
 			statoMassimo = vett[nTransizioni].fine;
 
+		caratteriPresenti[(int)vett[nTransizioni].letto] = 1;
+
 		nTransizioni++;
 		llinea = getline(&temp, &llinea, stdin);
+	}
+
+	for(i = 0; i < 256; i++){
+		if(caratteriPresenti[i])
+			printf("%c\n", (char)i);
 	}
 
 
@@ -217,7 +232,7 @@ int main(int argc, char *argv[])
 
 
 	while(!feof(stdin)){
-		printf("%c\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
+		//printf("%c\n", executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp));
 		llinea = getline(&temp, &llinea, stdin);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
 		temp[i] = '\0';
