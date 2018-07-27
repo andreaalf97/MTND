@@ -331,9 +331,9 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	posizione,	//per calcolare la posizione <i, j> nella matrice
 	pidCounter;	//contiene il valore da assegnare al prossimo processo che verra' creato
 
-	char tempChar;	//usato per calcoli intermedi
+	char *tempChar;	//usato per calcoli intermedi
 	int tempInt;		//usato per calcoli intermedi
-	listaTr *tempListaTr;
+	listaTr *tempListaTrHead;
 
 	//FASE DI INIZIALIZZAZIONE:
 	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
@@ -399,47 +399,58 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 
 			//guardo sul nastro a che carattere sta puntando la testina
 			if(indice->p.testina >= 0)
-				tempChar = indice->p.nastro.right[indice->p.testina];
+				tempChar = &(indice->p.nastro.right[indice->p.testina]);
 			else
-				tempChar = indice->p.nastro.left[-(indice->p.testina) -1];
+				tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
 			
-			tempInt = righeCaratteri[(int)tempChar];
+			tempInt = righeCaratteri[(int)*tempChar];
 
-			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, tempChar);
+			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, *tempChar);
 			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
-			tempListaTr = matrice[posizione];
-			if(tempListaTr){
-				if(!tempListaTr->next){	//se c'e' solo una transizione possibile
+			tempListaTrHead = matrice[posizione];
+			if(tempListaTrHead){
+				if(!tempListaTrHead->next){	//se c'e' solo una transizione possibile
 					//COSE DA FARE:
 					//1 - scrivere sul nastro quella che la transizione vuole che scriva
+						//SE non devo cambiare il valore che c'e' sul nastro --> NON FARE NULLA
+						//ALTRIMENTI --> 
+							//SE il nastro NON e' condiviso --> scrivi e basta
+							//ALTRIMENTI --> creane una copia e scrivi
 					if(indice->p.testina >= 0)
-						indice->p.nastro.right[indice->p.testina] = tempListaTr->scritto;
+						tempChar = &(indice->p.nastro.right[indice->p.testina]);	
 					else
-						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr->scritto;
+						tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
+					//tempChar e' il carattere appena letto sul nastro
+					if(*tempChar != tempListaTrHead->scritto){
+						if(0){
+
+						}
+						else{	//se il nastro non e' condiviso posso scrivere e basta
+							*tempChar = tempListaTrHead->scritto;
+						}
+					}
+
+
+									/*if(indice->p.testina >= 0)
+										indice->p.nastro.right[indice->p.testina] = tempListaTrHead->scritto;
+									else
+										indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTrHead->scritto;*/
+
 					//2 - spostare la testina
-					if(tempListaTr->mossa == 'R')
+					if(tempListaTrHead->mossa == 'R')
 						indice->p.testina++;
-					else if(tempListaTr->mossa == 'L')
+					else if(tempListaTrHead->mossa == 'L')
 						indice->p.testina--;
 					//3 - aggiornare lo stato
-					indice->p.stato = tempListaTr->fine;
+					indice->p.stato = tempListaTrHead->fine;
 					//Aumentare il numero di mosse eseguite
 					indice->p.nMosseFatte++;
 				}
 				else{//se ci sono piu' transizioni possibili
-					//*****************************************************************
-					//FALSO, ONLY FOR TESTING
-					if(indice->p.testina >= 0)
-						indice->p.nastro.right[indice->p.testina] = tempListaTr->scritto;
-					else
-						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr->scritto;
-					if(tempListaTr->mossa == 'R')
-						indice->p.testina++;
-					else if(tempListaTr->mossa == 'L')
-						indice->p.testina--;
-					indice->p.stato = tempListaTr->fine;
-					indice->p.nMosseFatte++;
-					//*****************************************************************
+					//COSA DEVO FARE:
+					//eseguire la transizione del processo che sto eseguendo
+					//creare un nuovo processo per ogni transizione in più che trovo
+
 				}
 			}
 			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
