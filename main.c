@@ -416,14 +416,16 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 						//ALTRIMENTI --> 
 							//SE il nastro NON e' condiviso --> scrivi e basta
 							//ALTRIMENTI --> creane una copia e scrivi
+
 					if(indice->p.testina >= 0)
 						tempChar = &(indice->p.nastro.right[indice->p.testina]);	
 					else
 						tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
 					//tempChar e' il carattere appena letto sul nastro
-					if(*tempChar != tempListaTrHead->scritto){
-						if(0){
 
+					if(*tempChar != tempListaTrHead->scritto){	//se quello che devo scrivere e' diverso da quello che c'e' gia' scritto sul nastro
+						if(indice->p.nastro->whoShares->next){	//cioe' e' condiviso da piu' di un processo
+							//COPIA DEL NASTRO
 						}
 						else{	//se il nastro non e' condiviso posso scrivere e basta
 							*tempChar = tempListaTrHead->scritto;
