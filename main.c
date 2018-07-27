@@ -409,29 +409,29 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					//COSE DA FARE:
 					//1 - scrivere sul nastro quella che la transizione vuole che scriva
 					if(indice->p.testina >= 0)
-						indice->p.nastro.right[indice->p.testina] = tempListaTr.scritto;
+						indice->p.nastro.right[indice->p.testina] = tempListaTr->scritto;
 					else
-						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr.scritto;
+						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr->scritto;
 					//2 - spostare la testina
-					if(tempListaTr.mossa == 'R')
+					if(tempListaTr->mossa == 'R')
 						indice->p.testina++;
-					else if(tempListaTr.mossa == 'L')
+					else if(tempListaTr->mossa == 'L')
 						indice->p.testina--;
 					//3 - aggiornare lo stato
-					indice->p.stato = tempListaTr.fine;
+					indice->p.stato = tempListaTr->fine;
 				}
 				else{//se ci sono piu' transizioni possibili
 					//*****************************************************************
 					//FALSO, ONLY FOR TESTING
 					if(indice->p.testina >= 0)
-						indice->p.nastro.right[indice->p.testina] = tempListaTr.scritto;
+						indice->p.nastro.right[indice->p.testina] = tempListaTr->scritto;
 					else
-						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr.scritto;
-					if(tempListaTr.mossa == 'R')
+						indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTr->scritto;
+					if(tempListaTr->mossa == 'R')
 						indice->p.testina++;
-					else if(tempListaTr.mossa == 'L')
+					else if(tempListaTr->mossa == 'L')
 						indice->p.testina--;
-					indice->p.stato = tempListaTr.fine;
+					indice->p.stato = tempListaTr->fine;
 					//*****************************************************************
 				}
 			}
