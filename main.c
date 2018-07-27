@@ -168,7 +168,7 @@ int main(int argc, char *argv[])
 	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
 	//cui e' presente quel carattere nella tabella
 
-	for(i = 0, j = 0; i < nCaratteriPresenti; i++){
+	for(i = 0, j = 0; i < 256; i++){
 		if(caratteriPresenti[i] == 1){
 			caratteriPresenti[i] = j;
 			j++;
