@@ -361,7 +361,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 
 	for(i = 0; i < init.nastro.dimLeft; i++)
 		init.nastro.left[i] = '_';
-	for(i = 0; input[i] != '\0'; i++)
+	for(i = 0; input[i] != '\0' && i < init.nastro.dimRight; i++)
 		init.nastro.right[i] = input[i];
 	for(; i < init.nastro.dimRight; i++)
 		init.nastro.right[i] = '_';
