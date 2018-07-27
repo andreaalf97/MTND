@@ -397,9 +397,6 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				return '1';
 			}
 
-			if(indice->p.nMosseFatte > max)
-				return 'U';
-
 			//guardo sul nastro a che carattere sta puntando la testina
 			if(indice->p.testina >= 0)
 				tempChar = indice->p.nastro.right[indice->p.testina];
@@ -450,7 +447,10 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 			}
 
 
-
+			if(indice->p.nMosseFatte > max){
+				processiAttiviHead = removeProcess(processiAttiviHead, indice->p.pid);
+				exitStatus = 'U';
+			}
 
 
 			indice = indice->next;
