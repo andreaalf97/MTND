@@ -424,7 +424,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					//3 - aggiornare lo stato
 					indice->p.stato = tempListaTr->fine;
 					//Aumentare il numero di mosse eseguite
-					indice->p.nMosseFatte;
+					indice->p.nMosseFatte++;
 				}
 				else{//se ci sono piu' transizioni possibili
 					//*****************************************************************
@@ -438,7 +438,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					else if(tempListaTr->mossa == 'L')
 						indice->p.testina--;
 					indice->p.stato = tempListaTr->fine;
-					indice->p.nMosseFatte;
+					indice->p.nMosseFatte++;
 					//*****************************************************************
 				}
 			}
