@@ -258,6 +258,7 @@ int main(int argc, char *argv[])
 
 
 	while(!feof(stdin)){
+		printf("Stringa %s\n", llinea);
 		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, caratteriPresenti));
 		llinea = getline(&temp, &llinea, stdin);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
@@ -373,6 +374,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	processiAttiviHead = pushProcesso(processiAttiviHead, init);
 	exitStatus = '0'; //0 di default; se trovo un U diventa U, se trovo 1 ritorno subito 1
 
+	printf("Inizializzato INIT, inizio l'esecuzione\n");
 	//INIZIO DELL'ESECUZIONE
 	while(processiAttiviHead){		//finche' ci sono processi attivi
 		indice = processiAttiviHead;
@@ -382,6 +384,8 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 			// -non ci sono piu' transizioni di uscita
 			// -c'e' una sola transizione possibile
 			// -ci sono due o piu' transizioni possibili
+
+			printf("Sto eseguendo il processo %d\n", indice->p.pid);
 
 			if(statiAccettazione[indice->p.stato]){	//se mi trovo in uno stato di accettazione per uno qualsiasi dei sottoprocessi ritorno subito 1
 				//LIBERA TUTTA LA MEMORIA CHE NON VIENE LIBERATA DALLA RETURN
@@ -396,6 +400,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 			
 			tempInt = righeCaratteri[(int)tempChar];
 
+			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, tempChar);
 			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
 			if(matrice[posizione]){
 
