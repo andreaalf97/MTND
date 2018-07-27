@@ -163,7 +163,7 @@ int main(int argc, char *argv[])
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
 	dim = (statoMassimo + 1) * nCaratteriPresenti;
-	matrice = (listaTr **)calloc(dim * sizeof(listaTr *));
+	matrice = (listaTr **)calloc(dim, sizeof(listaTr *));
 
 	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
 	//cui e' presente quel carattere nella tabella
