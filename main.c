@@ -9,6 +9,17 @@ typedef struct transizioni_s {
 	char letto, scritto, mossa;
 } transizione;
 
+typedef struct listaTransizioni_s {
+	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
+	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
+	int fine;													//stato in cui andare
+}	listaTr;
+
+typedef struct listaPid_s {
+	struct listaPid_s *next;
+	int pid;
+}	listaPid;
+
 typedef struct nastro_s {
 	char *left, *right;
 	int dimLeft, dimRight;
@@ -22,17 +33,6 @@ typedef struct processo_s {
 	int pid;
 	int nMosseFatte;
 } processo;
-
-typedef struct listaTransizioni_s {
-	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
-	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
-	int fine;													//stato in cui andare
-}	listaTr;
-
-typedef struct listaPid_s {
-	struct listaPid_s *next;
-	int pid;
-}	listaPid;
 
 typedef struct listaProcessi_s {
 	struct listaProcessi_s *next;
@@ -54,6 +54,9 @@ int leggiInput(listaTr **, bool *, int *, int *);
 int main(int argc, char *argv[]){
 	// FASE DI INPUT
 	int i, j;
+	size_t llinea;
+	char *temp;
+
 
 	//variabili per trovare lo stato piu' grande
 	int statoMassimo;
@@ -64,12 +67,21 @@ int main(int argc, char *argv[]){
 	listaTr **matrice;
 	bool *statiAccettazione;
 	int max;
+	int nCaratteriPresenti = 0;
 
-	statoMassimo = leggiInput(matrice, statiAccettazione, int *max, righeCaratteri);
+	statoMassimo = leggiInput(matrice, statiAccettazione, &max, righeCaratteri);
 	if(!statoMassimo){
 		fprintf(stderr, "Errore lettura input\n");
 		return -1;
 	}
+	for(i = 0; i < 256; i++)
+		if(righeCaratteri[i] >= 0)
+			nCaratteriPresenti++;
+
+
+	for(i = 0; i < statoMassimo + 1; i++)
+		printf("%d -- %d\n", i, statiAccettazione[i]);
+	return 0;
 
 	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
 	//corrispondere proprio alla prima stringa in ingresso
@@ -114,7 +126,7 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 
 	int statoMassimo = 0; //tiene conto dello stato piu' grande trovato
 	//se esiste lo stato x, allora esistono tutti gli stati 0, 1, ..., x-1
-	
+
 	int nCaratteriPresenti = 0;
 
 	int dim, posizione;
@@ -177,7 +189,7 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 	dim = (statoMassimo + 1) * nCaratteriPresenti;
 	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
 	for(i = 0; i < dim; i++)
-		matrice[i] = NULL;		
+		matrice[i] = NULL;
 
 	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
 	//cui e' presente quel carattere nella tabella
@@ -205,8 +217,8 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 	statiAccettazione = (bool *)calloc((statoMassimo + 1), sizeof(bool));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' e' di accettazione
 	llinea = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
-		sscanf(temp, "%d", &t);			//leggo un intero dalla linea appena letta e salvata in 'temp'
-		statiAccettazione[t] = 1;		//"pongo" lo stato di accettazione a 1
+		sscanf(temp, "%d", &i);			//leggo un intero dalla linea appena letta e salvata in 'temp'
+		statiAccettazione[i] = 1;		//"pongo" lo stato di accettazione a 1
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
@@ -250,7 +262,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	listaProcessi *processiAttiviHead = NULL;	//lista che tiene traccia di quanti processi non hanno ancora terminato
 	listaProcessi *indice;	//serve a scorrere all'interno della lista dei processi
 	char exitStatus;	//variabile per controllare alla fine se ritornare 0 o U (deve essere 0 di default)
-	
+
 
 	pidCounter = 0; //init e' sempre il processo 0
 	//FASE DI INIZIALIZZAZIONE DI INIT:
@@ -307,7 +319,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				tempChar = &(indice->p.nastro.right[indice->p.testina]);
 			else
 				tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
-			
+
 			tempInt = righeCaratteri[(int)*tempChar];
 			//dentro a tempInt ho la riga della matrice a cui si trova il carattere appena letto dal nastro
 			//dentro a tempChar ho il carattere appena letto dal nastro
@@ -320,13 +332,13 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					//COSE DA FARE:
 					//1 - scrivere sul nastro quello che la transizione vuole che scriva
 						//SE non devo cambiare il valore che c'e' sul nastro --> NON FARE NULLA
-						//ALTRIMENTI --> 
+						//ALTRIMENTI -->
 							//SE il nastro NON e' condiviso --> scrivi e basta
 							//ALTRIMENTI --> creane una copia e scrivi
 
 					//questa parte e' commentata perche' in teoria tempChar e tempInt vanno gia' bene
 					/*if(indice->p.testina >= 0)
-						tempChar = &(indice->p.nastro.right[indice->p.testina]);	
+						tempChar = &(indice->p.nastro.right[indice->p.testina]);
 					else
 						tempChar = &(indice->p.nastro.left[-(indice->p.testina) - 1]);
 					//tempChar e' il carattere appena letto sul nastro
@@ -494,12 +506,12 @@ int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
 
 	for(i = 0; i < vecchioNastro.dimLeft; i++)
 		(*nuovoNastro).left[i] = vecchioNastro.left[i];
-	
+
 	for(i = 0; i < vecchioNastro.dimRight; i++)
 		(*nuovoNastro).right[i] = vecchioNastro.right[i];
 
 	(*nuovoNastro).dimLeft = vecchioNastro.dimLeft;
 	(*nuovoNastro).dimRight = vecchioNastro.dimRight;
-	
+
 	return 1;
 }
