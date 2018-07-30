@@ -552,7 +552,7 @@ listaInt *rimuoviPidDaLista(listaInt *currP, int pid){
 	if(currP == NULL)
 		return NULL;
 
-	if(currP->p.pid == pid){
+	if(currP->pid == pid){
 		listaInt *tempNextP = currP->next;
 		free(currP);
 		return tempNextP;
