@@ -431,7 +431,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					*/
 
 					if(*tempChar != tempListaTrHead->scritto){	//se quello che devo scrivere e' diverso da quello che c'e' gia' scritto sul nastro
-						if(indice->p.nastro->whoShares->next){	//cioe' e' condiviso da piu' di un processo
+						if(indice->p.nastro.whoShares->next){	//cioe' e' condiviso da piu' di un processo
 							//COPIA DEL NASTRO
 							if(!copiaNastro(indice->p.nastro, nuovoNastro)){fprintf(stderr, "Errore durante la copia del nastro\n");}
 						}
