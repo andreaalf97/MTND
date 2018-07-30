@@ -1,37 +1,18 @@
-// Lettura della transizioni
-//tr
-//0 a c R 1
-//...
-//2 b d L 3
-//acc
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
 
-#define NCARATTERI 256
 
 typedef struct transizioni_s {
 	int inizio, fine;
 	char letto, scritto, mossa;
 } transizione;
 
-typedef struct listaTransizioni_s {
-	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
-	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
-	int fine;													//stato in cui andare
-}	listaTr;
-
-typedef struct listaInt_s {
-	struct listaInt_s *next;
-	int pid;
-}	listaInt;
-
 typedef struct nastro_s {
 	char *left, *right;
 	int dimLeft, dimRight;
-	listaInt *whoShares;
+	listaPid *whoShares;
 } nstr;
 
 typedef struct processo_s {
@@ -42,83 +23,110 @@ typedef struct processo_s {
 	int nMosseFatte;
 } processo;
 
+typedef struct listaTransizioni_s {
+	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
+	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
+	int fine;													//stato in cui andare
+}	listaTr;
+
+typedef struct listaPid_s {
+	struct listaPid_s *next;
+	int pid;
+}	listaPid;
+
 typedef struct listaProcessi_s {
 	struct listaProcessi_s *next;
 	processo p;
 } listaProcessi;
 
-void stampaTransizione(transizione);
-void stampaNastro(nstr, int);
-//funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
-int pos(int, int, int);			//int pos(int i, int j, int height);
-//funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
-listaTr *push(listaTr *, transizione);
-//push per la lista di chi condivide un determinato nastro
-listaInt *pushListaInt(listaInt *, int);
-//semplice funzione che stampa la lista in input
-void stampaLista(listaTr *);
+
+int pos(int, int, int);
+listaTr *pushTransizione(listaTr *, transizione);
+listaPid *pushListaInt(listaPid *, int);
 char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
 listaProcessi *pushProcesso(listaProcessi *, processo);
-listaProcessi *removeProcess(listaProcessi *, int);
-char carattereSulNastro(nstr, int);
-
-int copiaNastro(nstr, nstr *); //funzione che copia il vecchio nastro su quello nuovo
-listaInt *rimuoviPidDaLista(listaInt *, int);
-
+listaProcessi *removeProcesso(listaProcessi *, int);
+int copiaNastro(nstr, nstr *);
+listaPid *rimuoviPidDaWhoshares(listaPid *, int);
+int leggiInput(listaTr **, bool *, int *, int *);
 
 
-
-//char eseguiMacchina(listaTr **, char *, int *, int, int);
-//char eseguiMacchina(listaTr **matrice, char * stringaInput, int * statiAccettazione, int nStati, int maxTransizioni)
-//funzione che rivece in ingresso tutte le specifiche della macchina di Touring richiesta e stampa '1', '0', o 'U' a seconda che
-//la macchina accetti la stringa in ingresso, lo rifiuti o non termini.
-
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
 	// FASE DI INPUT
 	int i, j;
 
+	//variabili per trovare lo stato piu' grande
+	int statoMassimo;
+	int *righeCaratteri; //questo vettore viene utilizzato due volte:
+	//prima lo utilizzo quando leggo l'input riempiendolo di 0 o 1 a seconda che il carattere sia presente o meno nelle transizioni
+	//nella seconda parte lo utilizzo per indicare quale riga della matrice della transizioni e' quella che rappresenta quel carattere
+	//ad es. se il carattere '%' (ASCII 37) è presente e caratteriPresenti[37] e' uguale a 4, sapro' che la 5^ riga della matrice rappresenta '%'
+	listaTr **matrice;
+	bool *statiAccettazione;
+	int max;
+
+	statoMassimo = leggiInput(matrice, statiAccettazione, int *max, righeCaratteri);
+	if(!statoMassimo){
+		fprintf(stderr, "Errore lettura input\n");
+		return -1;
+	}
+
+	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
+	//corrispondere proprio alla prima stringa in ingresso
+	for(i = 0; temp[i] != '\n'; i++);	//ciclo fino allo \n
+	temp[i] = '\0';										//sostituisco lo \n con il terminatore
+
+
+	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
+	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
+	//											che devo possono essere eseguite
+	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
+	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
+	//temp = stringa da porre sul nastro
+
+
+	while(!feof(stdin)){
+		printf("Stringa %s\n", temp);
+		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		llinea = getline(&temp, &llinea, stdin);
+		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
+		temp[i] = '\0';
+	}
+
+
+	free(temp);		//libero temp perche' non devo piu' leggere stringhe dall'input
+	free(statiAccettazione);
+	free(matrice);
+
+	//FASE DI OUTPUT
+	return 0;
+}
+
+int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
+	int i, j;
+
 	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
-	//infatti leggo l'input una riga per volta e ne salvo le informazioni che mi servono
 	size_t llinea = 0;	//dimensione della singola linea, da aggiornare ogni volta
 
-	//variabili per leggere la prima parte di input
-	//vett e' il vettore che contiene tutte le transizioni
 	transizione *vett = (transizione *)malloc(2 * sizeof(transizione));	//Alloco subito 2 transizioni
 	size_t dimVett = 2;								//DIMENSIONE DELL'ARRAY
 	int nTransizioni = 0;								//PRIMA CELLA LIBERA
 
-	//variabili per trovare lo stato piu' grande
-	int statoMassimo = 0;
+	int statoMassimo = 0; //tiene conto dello stato piu' grande trovato
+	//se esiste lo stato x, allora esistono tutti gli stati 0, 1, ..., x-1
+	
+	int nCaratteriPresenti = 0;
 
-	int nCaratteriPresenti;
-	int *caratteriPresenti; //questo vettore viene utilizzato due volte:
-	//prima lo utilizzo quando leggo l'input riempiendolo di 0 o 1 a seconda che il carattere sia presente o meno nelle transizioni
-	//nella seconda parte lo utilizzo per indicare quale riga della matrice della transizioni e' quella che rappresenta quel carattere
-	//ad es. se il carattere '%' (ASCII 37) è presente e caratteriPresenti[37] e' uguale a 4, sapro' che la 5^ riga della matrice rappresenta '%'
-
-	//Variabili per la creazione della tabella che rappresenta la macchina di Touring del file
-	listaTr **matrice;
 	int dim, posizione;
-
-	//variabili per riconoscere gli stati di accettazione
-	bool *statiAccettazione;
-	int t;
-
-	//variabili per il numero massimo di mosse effettuabili
-	int max;
 
 	llinea = getline(&temp, &llinea, stdin);
 	//Prende una linea intera dallo stdin e la mette nel vettore temp
 	//alloca automaticamente la memoria e salva in llinea la lunghezza dell'array (compreso \n escluso \0)
-	//Ora 'temp' contiene tutta la linea compresa del \n e infine il terminatore
 
-	nCaratteriPresenti = 0;
 	caratteriPresenti = (int *)calloc(256, sizeof(int)); //inizializzo a 0 il vettore dei caratteri presenti
-
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
-		return -1;
+		return 0;
 	}	//controlla che il file input inizi per TR
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -148,7 +156,6 @@ int main(int argc, char *argv[])
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
-
 	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
 	//dimVett contiene la quantita' di memoria occupata da vett
 	//nTransizioni contiene il numero di transizioni effettive contenute in vett
@@ -168,7 +175,9 @@ int main(int argc, char *argv[])
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
 	dim = (statoMassimo + 1) * nCaratteriPresenti;
-	matrice = (listaTr **)calloc(dim, sizeof(listaTr *));
+	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
+	for(i = 0; i < dim; i++)
+		matrice[i] = NULL;		
 
 	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
 	//cui e' presente quel carattere nella tabella
@@ -184,42 +193,12 @@ int main(int argc, char *argv[])
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
 	//tale transizione.
 	for(i = 0; i < nTransizioni; i++){
-		//posizione = pos(vett[i].inizio, (int)vett[i].letto, NCARATTERI);
 		posizione = pos(vett[i].inizio, caratteriPresenti[(int)vett[i].letto], nCaratteriPresenti);
-		matrice[posizione] = push(matrice[posizione], vett[i]);
+		matrice[posizione] = pushTransizione(matrice[posizione], vett[i]);
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
-/*
-	for(i = 0; i < statoMassimo; i++){
-		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(i, j, nCaratteriPresenti)] != NULL){
-				for(k = 0; k < 256; k++){
-					if(caratteriPresenti[k] == j){
-						rowToChar = (char)k;
-						break;
-					}
-				}
-				printf("Dallo stato %d, leggendo %c:\n", i, rowToChar);
-				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
-			}
-		}
-	}
-*/
-
-	//A questo punto dentro la matrice ho tutto cio' che mi serve e posso andare avanti a leggere il file di input
-	//Il vettore delle transizioni non serve piu'
-
-	//**********************************************************
-
-		//PRIMA DELLA CHIAMATA A free(vett) HO SIA LA MATRICE DELLE TRANSIZIONI
-		//CHE VETT ALLOCATI --> POTREBBERO OCCUPARE TROPPA MEMORIA
-
-
-	//**********************************************************
 	free(vett);
-
-
 
 	//Ora devo leggere quali sono gli stati di accettazione
 	//getline aveva gia' letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
@@ -231,103 +210,25 @@ int main(int argc, char *argv[])
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
-
 	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
 	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
 	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
 
 	//Ora leggo il numero massimo di mosse effettuabili
 	llinea = getline(&temp, &llinea, stdin);
-	sscanf(temp, "%d", &max);
+	sscanf(temp, "%d", max);
 
 	llinea = getline(&temp, &llinea, stdin);	//ora temp dovrebbe contenere la parola 'run'
 	if(strcmp(temp, "run\n") != 0){
 		fprintf(stderr, "Non ho letto la parola 'run'\n");
-		return -1;
-	}
-
-	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
-	//corrispondere proprio alla prima stringa in ingresso
-	for(i = 0; temp[i] != '\n'; i++);	//ciclo fino allo \n
-	temp[i] = '\0';										//sostituisco lo \n con il terminatore
-
-
-	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
-	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
-	//											che devo possono essere eseguite
-	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
-	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
-	//temp = stringa da porre sul nastro
-
-
-	while(!feof(stdin)){
-		printf("Stringa %s\n", temp);
-		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, caratteriPresenti));
-		llinea = getline(&temp, &llinea, stdin);
-		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
-		temp[i] = '\0';
+		return 0;
 	}
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	free(temp);		//libero temp perche' non devo piu' leggere stringhe dall'input
-	free(statiAccettazione);
-	free(matrice);
-
-	//FASE DI OUTPUT
-	return 0;
+	return statoMassimo;
 }
 
-void stampaTransizione(transizione t){
-	printf("Inizio: %d, fine: %d\n", t.inizio, t.fine);
-	printf("Letto: %c, scritto: %c, mossa: %c\n", t.letto, t.scritto, t.mossa);
-	printf("*********************\n");
-}
-
-
-int pos(int i, int j, int B) {return ((i * B) + j);}
-
-listaTr *push(listaTr *head, transizione t){
-	listaTr *nuovo;
-	if(nuovo = (listaTr *)malloc(sizeof(listaTr))){
-		nuovo->scritto =	t.scritto;
-		nuovo->mossa = t.mossa;
-		nuovo->fine = t.fine;
-		nuovo->next = head;
-		head = nuovo;
-	}
-	else
-		fprintf(stderr, "Errore allocazione memoria lista\n");
-
-	return head;
-}
-
-void stampaLista(listaTr *head){
-	listaTr *p = head;
-	while(p){
-		printf("Scritto: %c, Mossa: %c, Vai allo stato %d\n", p->scritto, p->mossa, p->fine);
-		p = p->next;
-	}
-	printf("--------------\n");
-}
-
-//executeMachine(matrice, statoMassimo+1, NCARATTERI, statiAccettazione, max, temp)
+//funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
 	int i,	//per i loop
 	posizione,	//per calcolare la posizione <i, j> nella matrice
@@ -436,7 +337,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 							//COPIA DEL NASTRO
 							if(!copiaNastro(indice->p.nastro, nuovoNastro)){fprintf(stderr, "Errore durante la copia del nastro\n");}
 							//ho allocato e creato il nuovo nastro
-							rimuoviPidDaLista(indice->p.nastro.whoShares, indice->p.pid);
+							rimuoviPidDaWhoshares(indice->p.nastro.whoShares, indice->p.pid);
 							//rimuovo questo pid dalla lista di quelli che condividono il nastro vecchio
 							(*nuovoNastro).whoShares = pushListaInt((*nuovoNastro).whoShares, indice->p.pid);
 							//aggiungo questo pid alla lista di quelli che condividono il nastro nuovo
@@ -475,12 +376,12 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				//devo rimuovere il processo da quelli in esecuzione
 				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN DETERMINATO NASTRO
 				//LIBERA UN PO' DI MEMORIA MA NON SO ANCORA QUALE
-				processiAttiviHead = removeProcess(processiAttiviHead, indice->p.pid);
+				processiAttiviHead = removeProcesso(processiAttiviHead, indice->p.pid);
 			}
 
 
 			if(indice->p.nMosseFatte > max){
-				processiAttiviHead = removeProcess(processiAttiviHead, indice->p.pid);
+				processiAttiviHead = removeProcesso(processiAttiviHead, indice->p.pid);
 				exitStatus = 'U';
 			}
 
@@ -495,29 +396,25 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	return exitStatus;
 }
 
-void stampaNastro(nstr nastro, int testina) {
-	int i;
-	for(i = 0; i < nastro.dimLeft; i++)
-		printf("%c ", nastro.left[i]);
-	for(i = 0; i < nastro.dimRight; i++)
-		printf("%c ", nastro.right[i]);
-	printf("\n");
+//funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
+int pos(int i, int j, int B) {
+	return ((i * B) + j);
+}
 
-	if(testina >= 0){
-		for(i = 0; i < nastro.dimLeft; i++)
-			printf("  ");
-		for(i = 0; i < testina; i++)
-			printf("  ");
-		printf("^");
+//funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
+listaTr *pushTransizione(listaTr *head, transizione t){
+	listaTr *nuovo;
+	if(nuovo = (listaTr *)malloc(sizeof(listaTr))){
+		nuovo->scritto =	t.scritto;
+		nuovo->mossa = t.mossa;
+		nuovo->fine = t.fine;
+		nuovo->next = head;
+		head = nuovo;
 	}
-	else{
-		testina = -testina;
-		for(i = 0; i < testina; i++)
-			printf("  ");
-		printf(" ^");
-	}
-	printf("\n");
-	return;
+	else
+		fprintf(stderr, "Errore allocazione memoria lista\n");
+
+	return head;
 }
 
 
@@ -534,7 +431,7 @@ listaProcessi *pushProcesso(listaProcessi *head, processo t){
 	return head;
 }
 
-listaProcessi *removeProcess(listaProcessi *currP, int pid){
+listaProcessi *removeProcesso(listaProcessi *currP, int pid){
 	if(currP == NULL)
 		return NULL;
 
@@ -544,21 +441,21 @@ listaProcessi *removeProcess(listaProcessi *currP, int pid){
 		return tempNextP;
 	}
 
-	currP->next = removeProcess(currP->next, pid);
+	currP->next = removeProcesso(currP->next, pid);
 	return currP;
 }
 
-listaInt *rimuoviPidDaLista(listaInt *currP, int pid){
+listaPid *rimuoviPidDaWhoshares(listaPid *currP, int pid){
 	if(currP == NULL)
 		return NULL;
 
 	if(currP->pid == pid){
-		listaInt *tempNextP = currP->next;
+		listaPid *tempNextP = currP->next;
 		free(currP);
 		return tempNextP;
 	}
 
-	currP->next = rimuoviPidDaLista(currP->next, pid);
+	currP->next = rimuoviPidDaWhoshares(currP->next, pid);
 	return currP;
 }
 
@@ -569,9 +466,10 @@ char carattereSulNastro(nstr nastro, int testina){
 	return nastro.left[testina];
 }
 
-listaInt *pushListaInt(listaInt *head, int pid){
-	listaInt *nuovo;
-	if(nuovo = (listaInt *)malloc(sizeof(listaInt))){
+//push per la lista di chi condivide un determinato nastro
+listaPid *pushListaInt(listaPid *head, int pid){
+	listaPid *nuovo;
+	if(nuovo = (listaPid *)malloc(sizeof(listaPid))){
 		nuovo->pid = pid;
 		nuovo->next = head;
 		head = nuovo;
@@ -582,6 +480,7 @@ listaInt *pushListaInt(listaInt *head, int pid){
 	return head;
 }
 
+//copia il vecchio nastro su quello nuovo
 int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
 	int i;
 
