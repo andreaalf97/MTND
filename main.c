@@ -62,6 +62,7 @@ listaProcessi *pushProcesso(listaProcessi *, processo);
 listaProcessi *removeProcess(listaProcessi *, unsigned long );
 char carattereSulNastro(nstr, int);
 
+int copiaNastro(nstr, nstr *); //funzione che copia il vecchio nastro su quello nuovo
 
 
 
@@ -335,6 +336,8 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 	int tempInt;		//usato per calcoli intermedi
 	listaTr *tempListaTrHead;
 
+	nstr *nuovoNastro;
+
 	//FASE DI INIZIALIZZAZIONE:
 	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
 	//quale forkero' ogni volta che incontro un non determinismo
@@ -404,33 +407,39 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 				tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
 			
 			tempInt = righeCaratteri[(int)*tempChar];
+			//dentro a tempInt ho la riga della matrice a cui si trova il carattere appena letto dal nastro
+			//dentro a tempChar ho il carattere appena letto dal nastro
 
 			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, *tempChar);
 			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
-			tempListaTrHead = matrice[posizione];
+			tempListaTrHead = matrice[posizione]; //ora ho un riferimento alla lista delle possibili transizioni partendo da questo stato
 			if(tempListaTrHead){
 				if(!tempListaTrHead->next){	//se c'e' solo una transizione possibile
 					//COSE DA FARE:
-					//1 - scrivere sul nastro quella che la transizione vuole che scriva
+					//1 - scrivere sul nastro quello che la transizione vuole che scriva
 						//SE non devo cambiare il valore che c'e' sul nastro --> NON FARE NULLA
 						//ALTRIMENTI --> 
 							//SE il nastro NON e' condiviso --> scrivi e basta
 							//ALTRIMENTI --> creane una copia e scrivi
 
-					if(indice->p.testina >= 0)
+					//questa parte e' commentata perche' in teoria tempChar e tempInt vanno gia' bene
+					/*if(indice->p.testina >= 0)
 						tempChar = &(indice->p.nastro.right[indice->p.testina]);	
 					else
-						tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
+						tempChar = &(indice->p.nastro.left[-(indice->p.testina) - 1]);
 					//tempChar e' il carattere appena letto sul nastro
+					*/
 
 					if(*tempChar != tempListaTrHead->scritto){	//se quello che devo scrivere e' diverso da quello che c'e' gia' scritto sul nastro
 						if(indice->p.nastro->whoShares->next){	//cioe' e' condiviso da piu' di un processo
 							//COPIA DEL NASTRO
+							if(!copiaNastro(indice->p.nastro, nuovoNastro)){fprintf(stderr, "Errore durante la copia del nastro\n");}
 						}
 						else{	//se il nastro non e' condiviso posso scrivere e basta
 							*tempChar = tempListaTrHead->scritto;
 						}
 					}
+					//else{NON FARE NULLA}
 
 
 									/*if(indice->p.testina >= 0)
@@ -452,12 +461,11 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 					//COSA DEVO FARE:
 					//eseguire la transizione del processo che sto eseguendo
 					//creare un nuovo processo per ogni transizione in più che trovo
-
 				}
 			}
 			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
 				//devo rimuovere il processo da quelli in esecuzione
-				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN TEREMINATO NASTRO
+				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN DETERMINATO NASTRO
 				//LIBERA UN PO' DI MEMORIA MA NON SO ANCORA QUALE
 				processiAttiviHead = removeProcess(processiAttiviHead, indice->p.pid);
 			}
@@ -550,4 +558,27 @@ listaInt *pushListaInt(listaInt *head, int pid){
 		fprintf(stderr, "Errore allocazione memoria lista\n");
 
 	return head;
+}
+
+int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
+	int i;
+
+	if(!nuovoNastro = (nstr *)malloc(sizeof(nstr)))
+		return 0;
+
+	if(!(*nuovoNastro).left = (char *)malloc(sizeof(char) * vecchioNastro.dimLeft))
+		return 0;
+	if(!(*nuovoNastro).right = (char *)malloc(sizeof(char) * vecchioNastro.dimRight)))
+		return 0;
+
+	for(i = 0; i < vecchioNastro.dimLeft; i++)
+		(*nuovoNastro).left[i] = vecchioNastro.left[i];
+	
+	for(i = 0; i < vecchioNastro.dimRight; i++)
+		(*nuovoNastro).right[i] = vecchioNastro.right[i];
+
+	(*nuovoNastro).dimLeft = vecchioNastro.dimLeft;
+	(*nuovoNastro).dimRight = vecchioNastro.dimRight;
+	
+	return 1;
 }
