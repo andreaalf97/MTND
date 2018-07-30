@@ -59,10 +59,11 @@ listaInt *pushListaInt(listaInt *, int);
 void stampaLista(listaTr *);
 char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
 listaProcessi *pushProcesso(listaProcessi *, processo);
-listaProcessi *removeProcess(listaProcessi *, unsigned long );
+listaProcessi *removeProcess(listaProcessi *, int);
 char carattereSulNastro(nstr, int);
 
 int copiaNastro(nstr, nstr *); //funzione che copia il vecchio nastro su quello nuovo
+listaInt *rimuoviPidDaLista(listaInt *, int);
 
 
 
@@ -533,7 +534,7 @@ listaProcessi *pushProcesso(listaProcessi *head, processo t){
 	return head;
 }
 
-listaProcessi *removeProcess(listaProcessi *currP, unsigned long pid){
+listaProcessi *removeProcess(listaProcessi *currP, int pid){
 	if(currP == NULL)
 		return NULL;
 
@@ -544,6 +545,20 @@ listaProcessi *removeProcess(listaProcessi *currP, unsigned long pid){
 	}
 
 	currP->next = removeProcess(currP->next, pid);
+	return currP;
+}
+
+listaInt *rimuoviPidDaLista(listaInt *currP, int pid){
+	if(currP == NULL)
+		return NULL;
+
+	if(currP->p.pid == pid){
+		listaInt *tempNextP = currP->next;
+		free(currP);
+		return tempNextP;
+	}
+
+	currP->next = rimuoviPidDaLista(currP->next, pid);
 	return currP;
 }
 
