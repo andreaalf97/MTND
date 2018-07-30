@@ -563,12 +563,12 @@ listaInt *pushListaInt(listaInt *head, int pid){
 int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
 	int i;
 
-	if(!nuovoNastro = (nstr *)malloc(sizeof(nstr)))
+	if(!(nuovoNastro = (nstr *)malloc(sizeof(nstr))))
 		return 0;
 
-	if(!(*nuovoNastro).left = (char *)malloc(sizeof(char) * vecchioNastro.dimLeft))
+	if(!((*nuovoNastro).left = (char *)malloc(sizeof(char) * vecchioNastro.dimLeft)))
 		return 0;
-	if(!(*nuovoNastro).right = (char *)malloc(sizeof(char) * vecchioNastro.dimRight)))
+	if(!((*nuovoNastro).right = (char *)malloc(sizeof(char) * vecchioNastro.dimRight)))
 		return 0;
 
 	for(i = 0; i < vecchioNastro.dimLeft; i++)
