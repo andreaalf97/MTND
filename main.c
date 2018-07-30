@@ -434,6 +434,13 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 						if(indice->p.nastro.whoShares->next){	//cioe' e' condiviso da piu' di un processo
 							//COPIA DEL NASTRO
 							if(!copiaNastro(indice->p.nastro, nuovoNastro)){fprintf(stderr, "Errore durante la copia del nastro\n");}
+							//ho allocato e creato il nuovo nastro
+							rimuoviPidDaLista(indice->p.nastro.whoShares, indice->p.pid);
+							//rimuovo questo pid dalla lista di quelli che condividono il nastro vecchio
+							(*nuovoNastro).whoShares = pushListaInt((*nuovoNastro).whoShares, indice->p.pid);
+							//aggiungo questo pid alla lista di quelli che condividono il nastro nuovo
+							&(indice->p.nastro) = nuovoNastro;
+							//cambio il riferimento al nastro di questo processo
 						}
 						else{	//se il nastro non e' condiviso posso scrivere e basta
 							*tempChar = tempListaTrHead->scritto;
