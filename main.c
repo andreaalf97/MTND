@@ -440,7 +440,7 @@ char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *
 							//rimuovo questo pid dalla lista di quelli che condividono il nastro vecchio
 							(*nuovoNastro).whoShares = pushListaInt((*nuovoNastro).whoShares, indice->p.pid);
 							//aggiungo questo pid alla lista di quelli che condividono il nastro nuovo
-							indice->p.nastro = nuovoNastro;
+							&(indice->p.nastro) = nuovoNastro;
 							//cambio il riferimento al nastro di questo processo
 						}
 						else{	//se il nastro non e' condiviso posso scrivere e basta
