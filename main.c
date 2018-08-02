@@ -60,6 +60,23 @@ listaProcessi *pushListaProcessi(listaProcessi *, processo *);
 listaProcessi *popListaProcessi(listaProcessi *, processo *);
 void deleteListaInt(listaInt *);
 
+void freeListaProcessi(listaProcessi *);
+char carattereLetto(processo *);
+bool nastroIsShared(processo *);
+void scriviSuNastro(processo *, char);
+void muoviTestina(processo *, char);
+void popWhoShares(processo *, listaProcessi *);
+listaInt *popListaInt(listaInt *, int);
+void copyOwnNastro(processo *);
+listaProcessi *copyProcesso(listaProcessi *, processo *, int);
+
+
+
+
+
+
+
+
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni;
