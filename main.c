@@ -56,7 +56,7 @@ void leggiMax(int *);
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni;
-	int nTransizioni;
+	int nTransizioni = 0;
 	int statoMassimo = 0;
 	int *righeCaratteri = (int *)calloc(256, sizeof(int));
 	int nCaratteriPresenti = 0;
@@ -156,7 +156,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni
 			*nCaratteriPresenti++;
 		}
 
-		*nTransizioni++;
+		(*nTransizioni)++;
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
