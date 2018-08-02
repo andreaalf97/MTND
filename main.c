@@ -280,8 +280,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
 	//creazione processo iniziale:
-	nastroInit = createNastro(nastroInit, stringa, max);
-	init = createProcess(init, 0, 0, 0, nastroInit);
+	nastroInit = createNastro(nastroInit, input, max);
+	init = createProcess(init, 0, 0, 0, *nastroInit);
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
 	newPidCounter = 1;
@@ -295,7 +295,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
 
 			if(testCounter > 10)
-				processiAttiviHead = popListaProcessi(processiAttiviHead, processo *p);
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indice->p);
 
 			testCounter++;
 			indice = indice->next;
@@ -408,9 +408,9 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		temp = processiAttiviHead;
 		processiAttiviHead = processiAttiviHead->next;
 
-		free(temp->p->nastro->left);
-		free(temp->p->nastro->right);
-		deleteListaInt(temp->p->nastro->whoShares);
+		free(temp->p->nastro.left);
+		free(temp->p->nastro.right);
+		deleteListaInt(temp->p->nastro.whoShares);
 		free(temp->p);
 		free(temp);
 	}
