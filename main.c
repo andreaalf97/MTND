@@ -114,7 +114,7 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 //*****************************************************************
-transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni; int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
+transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp;
 	size_t llinea = 0;
 
