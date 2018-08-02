@@ -49,13 +49,14 @@ listaProcessi *removeProcesso(listaProcessi *, int);
 int copiaNastro(nstr, nstr *);
 listaPid *rimuoviPidDaWhoshares(listaPid *, int);
 
-transizione *leggiTransizioni(transizione *, int *, int *, int *);
+transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni;
+	int nTransizioni;
 	int statoMassimo = 0;
 	int *righeCaratteri = (int *)calloc(256, sizeof(int));
 	int nCaratteriPresenti = 0;
@@ -72,7 +73,7 @@ int main(int argc, char *argv[]){
 	char *temp;
 
 	//**********LETTURA INPUT*******************
-	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
+	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
 	leggiStatiAccettazione(statiAccettazione);
 	leggiMax(&max);
@@ -113,12 +114,12 @@ int main(int argc, char *argv[]){
 	return 0;
 }
 //*****************************************************************
-transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
+transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni; int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp;
 	size_t llinea = 0;
 
 	size_t dimVett = 2;
-	int nTransizioni = 0;
+	*nTransizioni = 0;
 	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione));
 
 	llinea = getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
@@ -130,31 +131,29 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo
 	llinea = getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
 		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
-		if(nTransizioni >= dimVett){
+		if(*nTransizioni >= dimVett){
 			vettoreTransizioni = (transizione *)realloc(vettoreTransizioni, (dimVett * sizeof(transizione)) * 2);
 			dimVett *= 2;
 		}
 
-		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vettoreTransizioni[nTransizioni].inizio), &(vettoreTransizioni[nTransizioni].letto), &(vettoreTransizioni[nTransizioni].scritto), &(vettoreTransizioni[nTransizioni].mossa), &(vettoreTransizioni[nTransizioni].fine));
+		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vettoreTransizioni[*nTransizioni].inizio), &(vettoreTransizioni[*nTransizioni].letto), &(vettoreTransizioni[*nTransizioni].scritto), &(vettoreTransizioni[*nTransizioni].mossa), &(vettoreTransizioni[*nTransizioni].fine));
 		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
 
 		//qui sotto calcolo quale sia lo stato piu' grande
-		if(vettoreTransizioni[nTransizioni].inizio > *statoMassimo)
-			*statoMassimo = vettoreTransizioni[nTransizioni].inizio;
+		if(vettoreTransizioni[*nTransizioni].inizio > *statoMassimo)
+			*statoMassimo = vettoreTransizioni[*nTransizioni].inizio;
 
-		if(vettoreTransizioni[nTransizioni].fine > *statoMassimo)
-			*statoMassimo = vettoreTransizioni[nTransizioni].fine;
+		if(vettoreTransizioni[*nTransizioni].fine > *statoMassimo)
+			*statoMassimo = vettoreTransizioni[*nTransizioni].fine;
 
-		if(!caratteriPresenti[(int)vettoreTransizioni[nTransizioni].letto]){
-			caratteriPresenti[(int)vettoreTransizioni[nTransizioni].letto] = 1;
+		if(!caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].letto]){
+			caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].letto] = 1;
 			*nCaratteriPresenti++;
 		}
 
-		nTransizioni++;
+		*nTransizioni++;
 		llinea = getline(&temp, &llinea, stdin);
 	}
-
-	printf("Ci sono %d transizioni\n", nTransizioni);
 
 	free(temp);
 	return vettoreTransizioni;
