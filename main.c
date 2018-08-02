@@ -268,14 +268,14 @@ void stampaLista(listaTr *head){
 void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
 	int i, j;
 	printf(" ");
-	for(i = 0; i < statoMassimo+1; i++)
+	for(i = 0; i < nCaratteriPresenti; i++)
 		printf("%d ", i);
 	printf("\n");
 
 	for(i = 0; i < statoMassimo+1; i++){
 		printf("%d ", i);
 		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(j, i, nCaratteriPresenti)])
+			if(matrice[pos(i, j, nCaratteriPresenti)])
 				printf("O ");
 			else
 				printf("X ");
