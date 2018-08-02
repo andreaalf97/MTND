@@ -53,7 +53,7 @@ transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
 void creaRigheCaratteri(int *);
-listaTr **creaMatrice(listaTr **, transizione *, int, int *, int);
+listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
@@ -110,7 +110,7 @@ int main(int argc, char *argv[]){
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
 	printf("****************************\n");
 
-	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -223,12 +223,12 @@ void creaRigheCaratteri(int *righeCaratteri){
 			righeCaratteri[i] = -1;
 	}
 
-	return 1;
+	return;
 }
 
-listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int statoMassimo, int *righeCaratteri, int nCaratteriPresenti){
+listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nTransizioni, int statoMassimo, int *righeCaratteri, int nCaratteriPresenti){
 	int i, j;
-	int dim;
+	int dim, posizione;
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
 	dim = (statoMassimo + 1) * nCaratteriPresenti;
