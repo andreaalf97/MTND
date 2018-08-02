@@ -270,11 +270,12 @@ void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
 	printf(" ");
 	for(i = 0; i < statoMassimo+1; i++)
 		printf("%d ", i);
+	printf("\n");
 
 	for(i = 0; i < statoMassimo+1; i++){
 		printf("%d ", i);
 		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(i, j, nCaratteriPresenti)])
+			if(matrice[pos(j, i, nCaratteriPresenti)])
 				printf("O ");
 			else
 				printf("X ");
