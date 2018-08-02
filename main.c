@@ -48,8 +48,10 @@ listaProcessi *pushProcesso(listaProcessi *, processo);
 listaProcessi *removeProcesso(listaProcessi *, int);
 int copiaNastro(nstr, nstr *);
 listaPid *rimuoviPidDaWhoshares(listaPid *, int);
-int leggiInput(listaTr **, bool *, int *, int *);
 
+transizione *leggiTransizioni(transizione *, int *, int *, int *);
+void leggiStatiAccettazione(bool *);
+void leggiMax(int *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -113,7 +115,6 @@ int main(int argc, char *argv[]){
 }
 //*****************************************************************
 transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
-
 	char *temp;
 	size_t llinea = 0;
 
