@@ -315,14 +315,14 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			indiceProcesso = indice->p;
 			printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
 
-			if(statiAccettazione[indiceProcesso.stato]){ //se sono in uno stato di accettazione ho finito
+			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
 
 
 			carattere = carattereLetto(indiceProcesso);
-			posizione = pos(indiceProcesso.stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
+			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
 			indiceTransizione = matrice[posizione]; //testa della lista di transizioni
 
 
@@ -499,9 +499,9 @@ void freeListaProcessi(listaProcessi *head){
 
 char carattereLetto(processo *p){
 	if(p->testina >= 0)
-		return (p->nastro.right)[testina];
+		return (p->nastro.right)[p->testina];
 	
-	return (p->nastro.left)[-testina - 1];
+	return (p->nastro.left)[-(p->testina) - 1];
 }
 
 bool nastroIsShared(processo *p){
@@ -511,10 +511,10 @@ bool nastroIsShared(processo *p){
 }
 
 void scriviSuNastro(processo *p, char toWrite){
-	if(testina >= 0)
-		(p->nastro.right)[testina] = toWrite;
+	if(p->testina >= 0)
+		(p->nastro.right)[p->testina] = toWrite;
 	else
-		(p->nastro.left)[-testina - 1] = toWrite;
+		(p->nastro.left)[-(p->testina) - 1] = toWrite;
 	return;
 }
 
@@ -570,19 +570,19 @@ void copyOwnNastro(processo *p){
 	nstr *nuovo;
 	nuovo = (nstr *)malloc(sizeof(nstr));
 
-	nuovo.dimLeft = p->nastro.dimLeft;
-	nuovo.dimRight = p->nastro.dimRight;
+	nuovo->dimLeft = p->nastro.dimLeft;
+	nuovo->dimRight = p->nastro.dimRight;
 
-	nuovo.left = (char *)malloc(dimLeft * sizeof(char));
-	nuovo.right = (char *)malloc(dimRight * sizeof(char));
+	nuovo->left = (char *)malloc(nuovo->dimLeft * sizeof(char));
+	nuovo->right = (char *)malloc(nuovo->dimRight * sizeof(char));
 
-	for(i = 0; i < nuovo.dimLeft; i++)
-		(nuovo.left)[i] = (p->nastro.left)[i];
-	for(i = 0; i < nuovo.dimRight; i++)
-		(nuovo.right)[i] = (p->nastro.right)[i];
+	for(i = 0; i < nuovo->dimLeft; i++)
+		(nuovo->left)[i] = (p->nastro.left)[i];
+	for(i = 0; i < nuovo->dimRight; i++)
+		(nuovo->right)[i] = (p->nastro.right)[i];
 
-	nuovo.whoShares = NULL;
-	nuovo.whoShares = pushListaInt(nuovo.whoShares, p->pid);
+	nuovo->whoShares = NULL;
+	nuovo->whoShares = pushListaInt(nuovo->whoShares, p->pid);
 
 	&(p->nastro) = nuovo;
 	return;
