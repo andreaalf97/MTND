@@ -246,9 +246,11 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 
 	for(i = 0; i < statoMassimo+1; i++)
 		for(j = 0; j < nCaratteriPresenti; j++){
-			printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
-			stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
-			printf("****************************\n");
+			if(matrice[pos(i, j, nCaratteriPresenti)]){
+				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
+				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
+				printf("****************************\n");
+			}
 		}
 	
 
