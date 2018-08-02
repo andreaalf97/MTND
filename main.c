@@ -318,6 +318,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					indiceTransizione = headTransizione->next;
 					while(indiceTransizione){
 						//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
+						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter);
+						newPidCounter++;
 						//...
 						indiceTransizione = indiceTransizione->next;
 					}
@@ -325,7 +327,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					//eseguo la transizione:
 					if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){
 						popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
-						copyNastro(indiceProcesso);
+						copyOwnNastro(indiceProcesso);
 					}
 
 					scriviSuNastro(indiceProcesso, headTransizione->scritto);
@@ -546,7 +548,7 @@ listaInt *popListaInt(listaInt *head, int pid){
 	}
 }
 
-void copyNastro(processo *p){
+void copyOwnNastro(processo *p){
 	int i;
 	nstr *nuovo;
 	nuovo = (nstr *)malloc(sizeof(nstr));
@@ -567,6 +569,22 @@ void copyNastro(processo *p){
 
 	&(p->nastro) = nuovo;
 	return;
+}
+
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid){
+	processo *nuovo;
+
+	nuovo = (processo *)malloc(sizeof(processo));
+	nuovo->pid = newPid;
+
+	toCopy->nastro.whoShares = pushListaInt(toCopy->nastro.whoShares, newPid);
+	nuovo->stato = toCopy->stato;
+	nuovo->testina = toCopy->testina;
+
+	&(nuovo->nastro) = &(toCopy->nastro);
+
+	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
+	return processiAttiviHead;
 }
 //*****************TESTING*****************************************
 
