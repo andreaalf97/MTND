@@ -124,11 +124,6 @@ int main(int argc, char *argv[]){
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
-
-	free(temp);		//libero temp perche' non devo piu' leggere stringhe dall'input
-	free(statiAccettazione);
-	free(matrice);
-
 	//FASE DI OUTPUT
 	return 0;
 }
