@@ -116,7 +116,7 @@ int main(int argc, char *argv[]){
 	//temp = stringa da porre sul nastro
 
 
-	while(!feof(stdin) && strcmp('\n', temp) != 0){
+	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		printf("Stringa %s\n", temp);
