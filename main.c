@@ -15,15 +15,15 @@ typedef struct listaTransizioni_s {
 	int fine;													//stato in cui andare
 }	listaTr;
 
-typedef struct listaPid_s {
-	struct listaPid_s *next;
+typedef struct listaInt_s {
+	struct listaInt_s *next;
 	int pid;
-}	listaPid;
+}	listaInt;
 
 typedef struct nastro_s {
 	char *left, *right;
 	int dimLeft, dimRight;
-	listaPid *whoShares;
+	listaInt *whoShares;
 } nstr;
 
 typedef struct processo_s {
