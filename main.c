@@ -52,36 +52,34 @@ int leggiInput(listaTr **, bool *, int *, int *);
 
 
 int main(int argc, char *argv[]){
-	// FASE DI INPUT
+	//**********VARIABILI PER LETTURA INPUT**********
+	transizione *vettoreTransizioni;
+	int statoMassimo = 0;
+	int *righeCaratteri = (int *)calloc(256, sizeof(int));
+	int nCaratteriPresenti = 0;
+
+	bool *statiAccettazione;
+
+	int max;
+
+	listaTr **matrice;
+	//***********************************************
+
 	int i, j;
 	size_t llinea;
 	char *temp;
 
-
-	//variabili per trovare lo stato piu' grande
-	int statoMassimo;
-	int *righeCaratteri; //questo vettore viene utilizzato due volte:
-	//prima lo utilizzo quando leggo l'input riempiendolo di 0 o 1 a seconda che il carattere sia presente o meno nelle transizioni
-	//nella seconda parte lo utilizzo per indicare quale riga della matrice della transizioni e' quella che rappresenta quel carattere
-	//ad es. se il carattere '%' (ASCII 37) è presente e caratteriPresenti[37] e' uguale a 4, sapro' che la 5^ riga della matrice rappresenta '%'
-	listaTr **matrice;
-	bool *statiAccettazione;
-	int max;
-	int nCaratteriPresenti = 0;
-
-	statoMassimo = leggiInput(matrice, statiAccettazione, &max, righeCaratteri);
-	if(!statoMassimo){
-		fprintf(stderr, "Errore lettura input\n");
-		return -1;
-	}
-	for(i = 0; i < 256; i++)
-		if(righeCaratteri[i] >= 0)
-			nCaratteriPresenti++;
+	//**********LETTURA INPUT*******************
+	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
+	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
+	leggiStatiAccettazione(statiAccettazione);
+	leggiMax(&max);
 
 
-	for(i = 0; i < statoMassimo + 1; i++)
-		printf("%d -- %d\n", i, statiAccettazione[i]);
+	printf("Max: %d\n", max);
 	return 0;
+	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
 	//corrispondere proprio alla prima stringa in ingresso
@@ -113,8 +111,78 @@ int main(int argc, char *argv[]){
 	//FASE DI OUTPUT
 	return 0;
 }
+//*****************************************************************
+transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 
-int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
+	char *temp;
+	size_t llinea = 0;
+
+	size_t dimVett = 2;
+	int nTransizioni = 0;
+	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione));
+
+	llinea = getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
+	if(strcmp("tr\n", temp) != 0){
+		fprintf(stderr, "Il file non inizia per tr\n");
+		return 0;
+	}	//controlla che il file input inizi per TR
+
+	llinea = getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
+	while(strcmp(temp, "acc\n")){		//finche' non trova acc
+		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
+		if(nTransizioni >= dimVett){
+			vettoreTransizioni = (transizione *)realloc(vettoreTransizioni, (dimVett * sizeof(transizione)) * 2);
+			dimVett *= 2;
+		}
+
+		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vettoreTransizioni[nTransizioni].inizio), &(vettoreTransizioni[nTransizioni].letto), &(vettoreTransizioni[nTransizioni].scritto), &(vettoreTransizioni[nTransizioni].mossa), &(vettoreTransizioni[nTransizioni].fine));
+		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
+
+		//qui sotto calcolo quale sia lo stato piu' grande
+		if(vettoreTransizioni[nTransizioni].inizio > *statoMassimo)
+			*statoMassimo = vettoreTransizioni[nTransizioni].inizio;
+
+		if(vettoreTransizioni[nTransizioni].fine > *statoMassimo)
+			*statoMassimo = vettoreTransizioni[nTransizioni].fine;
+
+		if(!caratteriPresenti[(int)vettoreTransizioni[nTransizioni].letto]){
+			caratteriPresenti[(int)vettoreTransizioni[nTransizioni].letto] = 1;
+			*nCaratteriPresenti++;
+		}
+
+		nTransizioni++;
+		llinea = getline(&temp, &llinea, stdin);
+	}
+
+	free(temp);
+	return vettoreTransizioni;
+}
+void leggiStatiAccettazione(bool *statiAccettazione){
+	char *temp;
+	size_t llinea = 0;
+
+	llinea = getline(&temp, &llinea, stdin);
+	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
+		sscanf(temp, "%d", &i);			//leggo un intero dalla linea appena letta e salvata in 'temp'
+		statiAccettazione[i] = 1;		//"pongo" lo stato di accettazione a 1
+		llinea = getline(&temp, &llinea, stdin);
+	}
+
+	free(temp);
+	return;
+}
+void leggiMax(int *max){
+	char *temp;
+	size_t llinea = 0;
+
+	llinea = getline(&temp, &llinea, stdin);
+	sscanf(temp, "%d", max);
+
+	free(temp);
+	return;
+}
+//*****************************************************************
+/*int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
 	int i, j;
 
 	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
@@ -131,42 +199,6 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 
 	int dim, posizione;
 
-	llinea = getline(&temp, &llinea, stdin);
-	//Prende una linea intera dallo stdin e la mette nel vettore temp
-	//alloca automaticamente la memoria e salva in llinea la lunghezza dell'array (compreso \n escluso \0)
-
-	caratteriPresenti = (int *)calloc(256, sizeof(int)); //inizializzo a 0 il vettore dei caratteri presenti
-	if(strcmp("tr\n", temp) != 0){
-		fprintf(stderr, "Il file non inizia per tr\n");
-		return 0;
-	}	//controlla che il file input inizi per TR
-
-	llinea = getline(&temp, &llinea, stdin);
-	while(strcmp(temp, "acc\n")){		//finche' non trova acc
-		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
-		if(nTransizioni >= dimVett){
-			vett = (transizione *)realloc(vett, (dimVett * sizeof(transizione)) * 2);
-			dimVett *= 2;
-		}
-
-		sscanf(temp, "%d%*c%c%*c%c%*c%c%d", &(vett[nTransizioni].inizio), &(vett[nTransizioni].letto), &(vett[nTransizioni].scritto), &(vett[nTransizioni].mossa), &(vett[nTransizioni].fine));
-		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
-
-		//qui sotto calcolo quale sia lo stato piu' grande
-		if(vett[nTransizioni].inizio > statoMassimo)
-			statoMassimo = vett[nTransizioni].inizio;
-
-		if(vett[nTransizioni].fine > statoMassimo)
-			statoMassimo = vett[nTransizioni].fine;
-
-		if(!caratteriPresenti[(int)vett[nTransizioni].letto]){
-			caratteriPresenti[(int)vett[nTransizioni].letto] = 1;
-			nCaratteriPresenti++;
-		}
-
-		nTransizioni++;
-		llinea = getline(&temp, &llinea, stdin);
-	}
 
 	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
 	//dimVett contiene la quantita' di memoria occupata da vett
@@ -212,23 +244,10 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 
 	free(vett);
 
-	//Ora devo leggere quali sono gli stati di accettazione
-	//getline aveva gia' letto 'acc' quindi con questa chiamata legge il primo numero dopo acc
-	statiAccettazione = (bool *)calloc((statoMassimo + 1), sizeof(bool));	//creo un vettore di booleani che dice se lo stato alla posizione 'i' e' di accettazione
-	llinea = getline(&temp, &llinea, stdin);
-	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
-		sscanf(temp, "%d", &i);			//leggo un intero dalla linea appena letta e salvata in 'temp'
-		statiAccettazione[i] = 1;		//"pongo" lo stato di accettazione a 1
-		llinea = getline(&temp, &llinea, stdin);
-	}
-
 	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
 	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
 	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
 
-	//Ora leggo il numero massimo di mosse effettuabili
-	llinea = getline(&temp, &llinea, stdin);
-	sscanf(temp, "%d", max);
 
 	llinea = getline(&temp, &llinea, stdin);	//ora temp dovrebbe contenere la parola 'run'
 	if(strcmp(temp, "run\n") != 0){
@@ -238,7 +257,7 @@ int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratt
 
 
 	return statoMassimo;
-}
+}*/
 
 //funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
