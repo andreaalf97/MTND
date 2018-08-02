@@ -31,7 +31,6 @@ typedef struct processo_s {
 	int testina;
 	int stato;
 	int pid;
-	int nMosseFatte;
 } processo;
 
 typedef struct listaProcessi_s {
@@ -266,16 +265,21 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 //funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
 	char exitStatus = '0';
-
-	int testCounter = 0;
+	int nMosseFatte = 0;
 
 	//****************************
 	processo *init = NULL;
 	nstr *nastroInit = NULL;
+	nstr *nastroTemp = NULL;
 	listaProcessi *processiAttiviHead = NULL;
 	listaProcessi *indice = NULL;
 	processo *indiceProcesso = NULL;
 	int newPidCounter;
+	listaTr *headTransizione = NULL;
+	listaTr *indiceTransizione = NULL;
+
+	int posizione;
+	char carattere;
 	//****************************
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
@@ -294,10 +298,46 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			indiceProcesso = indice->p;
 			printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
 
-			if(testCounter > 10)
-				processiAttiviHead = popListaProcessi(processiAttiviHead, indice->p);
+			if(statiAccettazione[indiceProcesso.stato]){ //se sono in uno stato di accettazione ho finito
+				freeListaProcessi(processiAttiviHead);
+				return '1';
+			}
 
-			testCounter++;
+
+			carattere = carattereLetto(indiceProcesso);
+			posizione = pos(indiceProcesso.stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
+			indiceTransizione = matrice[posizione]; //testa della lista di transizioni
+
+
+			if(nMosseFatte > max){
+				exitStatus = 'U';
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+			}
+			else{
+				if(headTransizione){
+					indiceTransizione = headTransizione->next;
+					while(indiceTransizione){
+						//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
+						//...
+						indiceTransizione = indiceTransizione->next;
+					}
+
+					//eseguo la transizione:
+					if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){
+						popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
+						copyNastro(indiceProcesso);
+					}
+
+					scriviSuNastro(indiceProcesso, headTransizione->scritto);
+					muoviTestina(indiceProcesso, headTransizione->mossa);
+				}
+				else
+					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+			}
+
+
+
+			nMosseFatte++;
 			indice = indice->next;
 		}
 	}
@@ -432,6 +472,102 @@ void deleteListaInt(listaInt *head){
 	return;
 }
 
+void freeListaProcessi(listaProcessi *head){
+	listaProcessi *temp = head;
+	popListaProcessi(temp, temp->p);
+	freeListaProcessi(head);
+}
+
+char carattereLetto(processo *p){
+	if(p->testina >= 0)
+		return (p->nastro.right)[testina];
+	
+	return (p->nastro.left)[-testina - 1];
+}
+
+bool nastroIsShared(processo *p){
+	if((p->nastro.whoShares)->next)
+		return 1;
+	return 0;
+}
+
+void scriviSuNastro(processo *p, char toWrite){
+	if(testina >= 0)
+		(p->nastro.right)[testina] = toWrite;
+	else
+		(p->nastro.left)[-testina - 1] = toWrite;
+	return;
+}
+
+void muoviTestina(processo *p, char mossa){
+	if(mossa == 'R'){
+		(p->testina)++;
+		return;
+	}
+
+	if(mossa == 'L'){
+		(p->testina)--;
+		return;
+	}
+
+	return;
+}
+
+void popWhoShares(processo *indiceProcesso, listaProcessi *processiAttiviHead){
+	int pid = indiceProcesso->pid;
+	listaProcessi *temp;
+	processo *processoTemp;
+
+	temp = processiAttiviHead;
+	while(temp){
+		processoTemp = temp->p;
+		processoTemp->nastro.whoShares = popListaInt(processoTemp->nastro.whoShares, pid);
+		temp = temp->next;
+	}
+
+	return;
+}
+
+listaInt *popListaInt(listaInt *head, int pid){
+	listaInt *temp;
+	if(!head)
+		return head;
+
+	if(head->pid == pid){
+		temp = head;
+		head = head->next;
+
+		free(temp);
+		return head;
+	}
+	else{
+		head->next = popListaInt(head->next, pid);
+		return head;
+	}
+}
+
+void copyNastro(processo *p){
+	int i;
+	nstr *nuovo;
+	nuovo = (nstr *)malloc(sizeof(nstr));
+
+	nuovo.dimLeft = p->nastro.dimLeft;
+	nuovo.dimRight = p->nastro.dimRight;
+
+	nuovo.left = (char *)malloc(dimLeft * sizeof(char));
+	nuovo.right = (char *)malloc(dimRight * sizeof(char));
+
+	for(i = 0; i < nuovo.dimLeft; i++)
+		(nuovo.left)[i] = (p->nastro.left)[i];
+	for(i = 0; i < nuovo.dimRight; i++)
+		(nuovo.right)[i] = (p->nastro.right)[i];
+
+	nuovo.whoShares = NULL;
+	nuovo.whoShares = pushListaInt(nuovo.whoShares, p->pid);
+
+	&(p->nastro) = nuovo;
+	return;
+}
 //*****************TESTING*****************************************
 
 char rigaToCarattere(int j, int* righeCaratteri){
