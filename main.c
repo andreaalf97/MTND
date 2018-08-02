@@ -42,12 +42,7 @@ typedef struct listaProcessi_s {
 
 int pos(int, int, int);
 listaTr *pushTransizione(listaTr *, transizione);
-listaPid *pushListaInt(listaPid *, int);
 char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
-listaProcessi *pushProcesso(listaProcessi *, processo);
-listaProcessi *removeProcesso(listaProcessi *, int);
-int copiaNastro(nstr, nstr *);
-listaPid *rimuoviPidDaWhoshares(listaPid *, int);
 
 transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
@@ -58,6 +53,13 @@ listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
 void showMatrix(listaTr **, int, int, int *);
+
+processo *createProcess(processo *, int, int, int, nstr);
+nstr *createNastro(nstr *, char *, int);
+listaInt *pushListaInt(listaInt *, int);
+listaProcessi *pushListaProcessi(listaProcessi *, processo *);
+listaProcessi *popListaProcessi(listaProcessi *, processo *);
+void deleteListaInt(listaInt *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -262,168 +264,43 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 
 //*****************************************************************
 //funzione che esegue la macchina sull'input dato
-char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
-	int i,	//per i loop
-	posizione,	//per calcolare la posizione <i, j> nella matrice
-	pidCounter;	//contiene il valore da assegnare al prossimo processo che verra' creato
+char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
+	char exitStatus = '0';
 
-	char *tempChar;	//usato per calcoli intermedi
-	int tempInt;		//usato per calcoli intermedi
-	listaTr *tempListaTrHead;
+	int testCounter = 0;
 
-	nstr *nuovoNastro;
+	//****************************
+	processo *init = NULL;
+	nstr *nastroInit = NULL;
+	listaProcessi *processiAttiviHead = NULL;
+	listaProcessi *indice = NULL;
+	processo *indiceProcesso = NULL;
+	int newPidCounter;
+	//****************************
+	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
-	//FASE DI INIZIALIZZAZIONE:
-	//creo un processo iniziale init(cioe' una configurazione della MT da cui partire) dal
-	//quale forkero' ogni volta che incontro un non determinismo
-	//bisogna capire come gestire la copia del nastro nel caso in cui venga modificato
-	//da un sottoprocesso --> deve essere condiviso
+	//creazione processo iniziale:
+	nastroInit = createNastro(nastroInit, stringa, max);
+	init = createProcess(init, 0, 0, 0, nastroInit);
 
-	processo init;	//processo iniziale
-	listaProcessi *processiAttiviHead = NULL;	//lista che tiene traccia di quanti processi non hanno ancora terminato
-	listaProcessi *indice;	//serve a scorrere all'interno della lista dei processi
-	char exitStatus;	//variabile per controllare alla fine se ritornare 0 o U (deve essere 0 di default)
-
-
-	pidCounter = 0; //init e' sempre il processo 0
-	//FASE DI INIZIALIZZAZIONE DI INIT:
-	//assegnazione del PID
-	init.pid = pidCounter; // = 0
-
-	//Costruzione del nastro
-	init.nastro.right = (char *)malloc(max * sizeof(char));
-	init.nastro.dimRight = max;
-	init.nastro.left = (char *)malloc(max * sizeof(char));
-	init.nastro.dimLeft = max;
-	init.nastro.whoShares = pushListaInt(init.nastro.whoShares, init.pid);
-
-	for(i = 0; i < init.nastro.dimLeft; i++)
-		init.nastro.left[i] = '_';
-	for(i = 0; input[i] != '\0' && i < init.nastro.dimRight; i++)
-		init.nastro.right[i] = input[i];
-	for(; i < init.nastro.dimRight; i++)
-		init.nastro.right[i] = '_';
-
-	//inizializzazione testina
-	init.testina = 0;
-
-	//inizializzazione stato
-	init.stato = 0;
-
-	//inizializzazione mosse fatte
-	init.nMosseFatte = 0;
+	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
+	newPidCounter = 1;
 
 
-	processiAttiviHead = pushProcesso(processiAttiviHead, init);
-	exitStatus = '0'; //0 di default; se trovo un U diventa U, se trovo 1 ritorno subito 1
 
-	printf("Inizializzato INIT, inizio l'esecuzione\n");
-	//INIZIO DELL'ESECUZIONE
-	while(processiAttiviHead){		//finche' ci sono processi attivi
+	while(processiAttiviHead){
 		indice = processiAttiviHead;
-		while(indice){	//per ogni processo ancora in esecuzione
-			//4 casi:
-			// -lo stato in cui mi trovo e' finale e quindi ritorno subito 1
-			// -non ci sono piu' transizioni di uscita
-			// -c'e' una sola transizione possibile
-			// -ci sono due o piu' transizioni possibili
+		while(indice){
+			indiceProcesso = indice->p;
+			printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
 
-			printf("Sto eseguendo il processo %d\n", indice->p.pid);
+			if(testCounter > 10)
+				processiAttiviHead = popListaProcessi(processiAttiviHead, processo *p);
 
-			if(statiAccettazione[indice->p.stato]){	//se mi trovo in uno stato di accettazione per uno qualsiasi dei sottoprocessi ritorno subito 1
-				//LIBERA TUTTA LA MEMORIA CHE NON VIENE LIBERATA DALLA RETURN
-				return '1';
-			}
-
-			//guardo sul nastro a che carattere sta puntando la testina
-			if(indice->p.testina >= 0)
-				tempChar = &(indice->p.nastro.right[indice->p.testina]);
-			else
-				tempChar = &(indice->p.nastro.left[-(indice->p.testina) -1]);
-
-			tempInt = righeCaratteri[(int)*tempChar];
-			//dentro a tempInt ho la riga della matrice a cui si trova il carattere appena letto dal nastro
-			//dentro a tempChar ho il carattere appena letto dal nastro
-
-			printf("Sono nello stato %d, sto leggendo %c\n", indice->p.stato, *tempChar);
-			posizione = pos(indice->p.stato, tempInt, nCaratteriPresenti);
-			tempListaTrHead = matrice[posizione]; //ora ho un riferimento alla lista delle possibili transizioni partendo da questo stato
-			if(tempListaTrHead){
-				if(!tempListaTrHead->next){	//se c'e' solo una transizione possibile
-					//COSE DA FARE:
-					//1 - scrivere sul nastro quello che la transizione vuole che scriva
-						//SE non devo cambiare il valore che c'e' sul nastro --> NON FARE NULLA
-						//ALTRIMENTI -->
-							//SE il nastro NON e' condiviso --> scrivi e basta
-							//ALTRIMENTI --> creane una copia e scrivi
-
-					//questa parte e' commentata perche' in teoria tempChar e tempInt vanno gia' bene
-					/*if(indice->p.testina >= 0)
-						tempChar = &(indice->p.nastro.right[indice->p.testina]);
-					else
-						tempChar = &(indice->p.nastro.left[-(indice->p.testina) - 1]);
-					//tempChar e' il carattere appena letto sul nastro
-					*/
-
-					if(*tempChar != tempListaTrHead->scritto){	//se quello che devo scrivere e' diverso da quello che c'e' gia' scritto sul nastro
-						if(indice->p.nastro.whoShares->next){	//cioe' e' condiviso da piu' di un processo
-							//COPIA DEL NASTRO
-							if(!copiaNastro(indice->p.nastro, nuovoNastro)){fprintf(stderr, "Errore durante la copia del nastro\n");}
-							//ho allocato e creato il nuovo nastro
-							rimuoviPidDaWhoshares(indice->p.nastro.whoShares, indice->p.pid);
-							//rimuovo questo pid dalla lista di quelli che condividono il nastro vecchio
-							(*nuovoNastro).whoShares = pushListaInt((*nuovoNastro).whoShares, indice->p.pid);
-							//aggiungo questo pid alla lista di quelli che condividono il nastro nuovo
-							indice->p.nastro = *nuovoNastro;
-							//cambio il riferimento al nastro di questo processo
-						}
-						else{	//se il nastro non e' condiviso posso scrivere e basta
-							*tempChar = tempListaTrHead->scritto;
-						}
-					}
-					//else{NON FARE NULLA}
-
-
-									/*if(indice->p.testina >= 0)
-										indice->p.nastro.right[indice->p.testina] = tempListaTrHead->scritto;
-									else
-										indice->p.nastro.left[-(indice->p.testina) -1] = tempListaTrHead->scritto;*/
-
-					//2 - spostare la testina
-					if(tempListaTrHead->mossa == 'R')
-						indice->p.testina++;
-					else if(tempListaTrHead->mossa == 'L')
-						indice->p.testina--;
-					//3 - aggiornare lo stato
-					indice->p.stato = tempListaTrHead->fine;
-					//Aumentare il numero di mosse eseguite
-					indice->p.nMosseFatte++;
-				}
-				else{//se ci sono piu' transizioni possibili
-					//COSA DEVO FARE:
-					//eseguire la transizione del processo che sto eseguendo
-					//creare un nuovo processo per ogni transizione in più che trovo
-				}
-			}
-			else{	//cioe' da questo stato con questo carattere non ci sono transizioni possibili
-				//devo rimuovere il processo da quelli in esecuzione
-				//RIMUOVI IL PROCESSO DALLA LISTA DI QUELLI CHE CONDIVIDONO UN DETERMINATO NASTRO
-				//LIBERA UN PO' DI MEMORIA MA NON SO ANCORA QUALE
-				processiAttiviHead = removeProcesso(processiAttiviHead, indice->p.pid);
-			}
-
-
-			if(indice->p.nMosseFatte > max){
-				processiAttiviHead = removeProcesso(processiAttiviHead, indice->p.pid);
-				exitStatus = 'U';
-			}
-
-
+			testCounter++;
 			indice = indice->next;
 		}
 	}
-
-
 
 
 	return exitStatus;
@@ -450,93 +327,110 @@ listaTr *pushTransizione(listaTr *head, transizione t){
 	return head;
 }
 
+//Execute Machine Functions
 
-listaProcessi *pushProcesso(listaProcessi *head, processo t){
-	listaProcessi *nuovo;
-	if(nuovo = (listaProcessi *)malloc(sizeof(listaProcessi))){
-		nuovo->p = t;
-		nuovo->next = head;
-		head = nuovo;
+processo *createProcess(processo *p, int testina, int stato, int pid, nstr nastro){
+
+	p = (processo *)malloc(sizeof(processo));
+	if(!p){
+		fprintf(stderr, "Errore allocazione memoria nuovo nastro\n");
+		return p;
 	}
-	else
-		fprintf(stderr, "Errore allocazione memoria lista\n");
+	//assegnazione del PID
+	p->pid = pid;
+	p->testina = testina;
+	p->stato = stato;
+	p->nastro = nastro;
 
-	return head;
+	return p;
 }
 
-listaProcessi *removeProcesso(listaProcessi *currP, int pid){
-	if(currP == NULL)
-		return NULL;
-
-	if(currP->p.pid == pid){
-		listaProcessi *tempNextP = currP->next;
-		free(currP);
-		return tempNextP;
-	}
-
-	currP->next = removeProcesso(currP->next, pid);
-	return currP;
-}
-
-listaPid *rimuoviPidDaWhoshares(listaPid *currP, int pid){
-	if(currP == NULL)
-		return NULL;
-
-	if(currP->pid == pid){
-		listaPid *tempNextP = currP->next;
-		free(currP);
-		return tempNextP;
-	}
-
-	currP->next = rimuoviPidDaWhoshares(currP->next, pid);
-	return currP;
-}
-
-char carattereSulNastro(nstr nastro, int testina){
-	if(testina >= 0)
-		return nastro.right[testina];
-	testina = -testina;
-	return nastro.left[testina];
-}
-
-//push per la lista di chi condivide un determinato nastro
-listaPid *pushListaInt(listaPid *head, int pid){
-	listaPid *nuovo;
-	if(nuovo = (listaPid *)malloc(sizeof(listaPid))){
-		nuovo->pid = pid;
-		nuovo->next = head;
-		head = nuovo;
-	}
-	else
-		fprintf(stderr, "Errore allocazione memoria lista\n");
-
-	return head;
-}
-
-//copia il vecchio nastro su quello nuovo
-int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
+nstr *createNastro(nstr *n, char *stringa, int max){
 	int i;
+	n = (nstr *)malloc(sizeof(nstr));
 
-	if(!(nuovoNastro = (nstr *)malloc(sizeof(nstr))))
-		return 0;
+	n->left = (char *)malloc(max * sizeof(char));
+	n->dimLeft = max;
+	n->right = (char *)malloc(max * sizeof(char));
+	n->dimRight = max;
 
-	if(!((*nuovoNastro).left = (char *)malloc(sizeof(char) * vecchioNastro.dimLeft)))
-		return 0;
-	if(!((*nuovoNastro).right = (char *)malloc(sizeof(char) * vecchioNastro.dimRight)))
-		return 0;
+	for(i = 0; i < n->dimLeft; i++)
+		(n->left)[i] = '_';
+	for(i = 0; stringa[i] != '\0' && i < n->dimRight; i++)
+		(n->right)[i] = stringa[i];
+	for(; i < n->dimRight; i++)
+		(n->right)[i] = '_';
 
-	for(i = 0; i < vecchioNastro.dimLeft; i++)
-		(*nuovoNastro).left[i] = vecchioNastro.left[i];
+	n->whoShares = pushListaInt(n->whoShares, 0);
 
-	for(i = 0; i < vecchioNastro.dimRight; i++)
-		(*nuovoNastro).right[i] = vecchioNastro.right[i];
-
-	(*nuovoNastro).dimLeft = vecchioNastro.dimLeft;
-	(*nuovoNastro).dimRight = vecchioNastro.dimRight;
-
-	return 1;
+	return n;
 }
 
+listaInt *pushListaInt(listaInt *head, int value){
+	listaInt *nuovo;
+	nuovo = (listaInt *)malloc(sizeof(listaInt));
+
+	if(!nuovo){
+		fprintf(stderr, "Errore allocazione memoria pushListaInt\n");
+		return head;
+	}
+	nuovo->pid = value;
+	nuovo->next = head;
+
+	head = nuovo;
+	return head;
+}
+
+listaProcessi *pushListaProcessi(listaProcessi *head, processo *p){
+	listaProcessi *nuovo;
+	nuovo = (listaProcessi *)malloc(sizeof(listaProcessi));
+
+	if(!nuovo){
+		fprintf(stderr, "Errore allocazione memoria pushListaProcessi\n");
+		return head;
+	}
+
+	nuovo->p = p;
+	nuovo->next = head;
+
+	head = nuovo;
+
+	return head;
+}
+
+listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
+	listaProcessi *temp;
+
+	if(!processiAttiviHead)
+		return processiAttiviHead;
+
+	if(processiAttiviHead->p == p){
+		temp = processiAttiviHead;
+		processiAttiviHead = processiAttiviHead->next;
+
+		free(temp->p->nastro->left);
+		free(temp->p->nastro->right);
+		deleteListaInt(temp->p->nastro->whoShares);
+		free(temp->p);
+		free(temp);
+	}
+	else{
+		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
+	}
+	return processiAttiviHead;
+}
+
+void deleteListaInt(listaInt *head){
+	listaInt *temp;
+	if(!head)
+		return;
+
+	temp = head;
+	head = head->next;
+	free(temp);
+	deleteListaInt(head);
+	return;
+}
 
 //*****************TESTING*****************************************
 
