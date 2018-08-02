@@ -81,7 +81,7 @@ int main(int argc, char *argv[]){
 	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
 
 	for(i = 0; i < 256; i++)
-		if(caratteriPresenti[i])
+		if(righeCaratteri[i])
 			printf("%c\n", (char)i);
 
 	return 0;
