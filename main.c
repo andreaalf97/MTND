@@ -36,7 +36,7 @@ typedef struct processo_s {
 
 typedef struct listaProcessi_s {
 	struct listaProcessi_s *next;
-	processo p;
+	processo *p;
 } listaProcessi;
 
 
@@ -113,14 +113,14 @@ int main(int argc, char *argv[]){
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	
-	for(i = 0; i < statoMassimo+1; i++)
+	/*for(i = 0; i < statoMassimo+1; i++)
 		for(j = 0; j < nCaratteriPresenti; j++){
 			if(matrice[pos(i, j, nCaratteriPresenti)]){
 				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
 				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
 				printf("*************************************\n");
 			}
-		}
+		}*/
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -129,16 +129,15 @@ int main(int argc, char *argv[]){
 		return 0;
 	}	//controlla che la riga letta sia run
 
-	llinea = getline(&temp, &llinea, stdin);	//dovrebbe corrispondere alla prima stringa in ingresso
+		//dovrebbe corrispondere alla prima stringa in ingresso
 
 	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
 	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
 	//											che devo possono essere eseguite
 	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
 	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
-	//temp = stringa da porre sul nastro
 
-
+	llinea = getline(&temp, &llinea, stdin);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
@@ -150,7 +149,11 @@ int main(int argc, char *argv[]){
 	//FASE DI OUTPUT
 	return 0;
 }
+
+
 //*****************************************************************
+
+
 transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp;
 	size_t llinea = 0;
@@ -255,122 +258,9 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 	return matrice;
 }
 
-char rigaToCarattere(int j, int* righeCaratteri){
-	int i;
-	for(i = 0; i < 256; i++){
-		if(righeCaratteri[i] == j)
-			return (char)i;
-	}
-	return '^';
-}
-void stampaLista(listaTr *head){
-	if(!head)
-		return;
-	printf("Scritto: %c, Mossa: %c, Fine: %d\n", head->scritto, head->mossa, head->fine);
-	stampaLista(head->next);
-	return;
-}
-void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int *righeCaratteri){
-	int i, j;
-	printf("  ");
-	for(i = 0; i < nCaratteriPresenti; i++)
-		printf("%c ", rigaToCarattere(i, righeCaratteri));
-	printf("\n");
 
-	for(i = 0; i < statoMassimo+1; i++){
-		printf("%d ", i);
-		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(j, i, nCaratteriPresenti)])
-				printf("O ");
-			else
-				printf("X ");
-		}
-		printf("\n");
-	}
-
-	return;
-}
 
 //*****************************************************************
-/*
-int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
-	int i, j;
-
-	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
-	size_t llinea = 0;	//dimensione della singola linea, da aggiornare ogni volta
-
-	transizione *vett = (transizione *)malloc(2 * sizeof(transizione));	//Alloco subito 2 transizioni
-	size_t dimVett = 2;								//DIMENSIONE DELL'ARRAY
-	int nTransizioni = 0;								//PRIMA CELLA LIBERA
-
-	int statoMassimo = 0; //tiene conto dello stato piu' grande trovato
-	//se esiste lo stato x, allora esistono tutti gli stati 0, 1, ..., x-1
-
-	int nCaratteriPresenti = 0;
-
-	int dim, posizione;
-
-
-	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
-	//dimVett contiene la quantita' di memoria occupata da vett
-	//nTransizioni contiene il numero di transizioni effettive contenute in vett
-	//statoMassimo contiene quale stato e' il piu' grande numericamente, quindi se il piu' grande e' k,
-	//esistono sicuramente tutti gli stati 0, 1, ... , k-1,
-
-	//Per quanto riguarda i caratteri:
-	//caratteriPresenti: vettore 'booleano' in cui la cella 'i' e' a 1 sse il carattere (char)i e' presente tra quelli da leggere
-	//nCaratteriPresenti: intero che rappresenta quanti caratteri sono presenti in lettura
-
-
-	//Ora devo creare una matrice di liste in cui per ogni coppia STATO - INPUT
-	//ho una sequenza di possibili transizioni
-
-	//Per una matrice MATRIX di dimensione AxB alloco un vettore di dimensione A*B e trovo
-	//l'elemento [i][j] come MATRIX[ i*B + j]
-
-	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
-	dim = (statoMassimo + 1) * nCaratteriPresenti;
-	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
-	for(i = 0; i < dim; i++)
-		matrice[i] = NULL;
-
-	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
-	//cui e' presente quel carattere nella tabella
-	for(i = 0, j = 0; i < 256; i++){
-		if(caratteriPresenti[i]){
-			caratteriPresenti[i] = j;
-			j++;
-		}
-		else
-			caratteriPresenti[i] = -1;
-	}
-
-	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
-	//tale transizione.
-	for(i = 0; i < nTransizioni; i++){
-		posizione = pos(vett[i].inizio, caratteriPresenti[(int)vett[i].letto], nCaratteriPresenti);
-		matrice[posizione] = pushTransizione(matrice[posizione], vett[i]);
-		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
-	}
-
-	free(vett);
-
-	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
-	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
-	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
-
-
-	llinea = getline(&temp, &llinea, stdin);	//ora temp dovrebbe contenere la parola 'run'
-	if(strcmp(temp, "run\n") != 0){
-		fprintf(stderr, "Non ho letto la parola 'run'\n");
-		return 0;
-	}
-
-
-	return statoMassimo;
-}
-*/
-
 //funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
 	int i,	//per i loop
@@ -646,3 +536,120 @@ int copiaNastro(nstr vecchioNastro, nstr *nuovoNastro){
 
 	return 1;
 }
+
+
+//*****************TESTING*****************************************
+
+char rigaToCarattere(int j, int* righeCaratteri){
+	int i;
+	for(i = 0; i < 256; i++){
+		if(righeCaratteri[i] == j)
+			return (char)i;
+	}
+	return '^';
+}
+void stampaLista(listaTr *head){
+	if(!head)
+		return;
+	printf("Scritto: %c, Mossa: %c, Fine: %d\n", head->scritto, head->mossa, head->fine);
+	stampaLista(head->next);
+	return;
+}
+void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int *righeCaratteri){
+	int i, j;
+	printf("  ");
+	for(i = 0; i < nCaratteriPresenti; i++)
+		printf("%c ", rigaToCarattere(i, righeCaratteri));
+	printf("\n");
+
+	for(i = 0; i < statoMassimo+1; i++){
+		printf("%d ", i);
+		for(j = 0; j < nCaratteriPresenti; j++){
+			if(matrice[pos(j, i, nCaratteriPresenti)])
+				printf("O ");
+			else
+				printf("X ");
+		}
+		printf("\n");
+	}
+
+	return;
+}
+/*
+int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
+	int i, j;
+
+	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
+	size_t llinea = 0;	//dimensione della singola linea, da aggiornare ogni volta
+
+	transizione *vett = (transizione *)malloc(2 * sizeof(transizione));	//Alloco subito 2 transizioni
+	size_t dimVett = 2;								//DIMENSIONE DELL'ARRAY
+	int nTransizioni = 0;								//PRIMA CELLA LIBERA
+
+	int statoMassimo = 0; //tiene conto dello stato piu' grande trovato
+	//se esiste lo stato x, allora esistono tutti gli stati 0, 1, ..., x-1
+
+	int nCaratteriPresenti = 0;
+
+	int dim, posizione;
+
+
+	//ORA DENTRO A VETT HO TUTTE LE POSSIBILI TRANSIZIONI
+	//dimVett contiene la quantita' di memoria occupata da vett
+	//nTransizioni contiene il numero di transizioni effettive contenute in vett
+	//statoMassimo contiene quale stato e' il piu' grande numericamente, quindi se il piu' grande e' k,
+	//esistono sicuramente tutti gli stati 0, 1, ... , k-1,
+
+	//Per quanto riguarda i caratteri:
+	//caratteriPresenti: vettore 'booleano' in cui la cella 'i' e' a 1 sse il carattere (char)i e' presente tra quelli da leggere
+	//nCaratteriPresenti: intero che rappresenta quanti caratteri sono presenti in lettura
+
+
+	//Ora devo creare una matrice di liste in cui per ogni coppia STATO - INPUT
+	//ho una sequenza di possibili transizioni
+
+	//Per una matrice MATRIX di dimensione AxB alloco un vettore di dimensione A*B e trovo
+	//l'elemento [i][j] come MATRIX[ i*B + j]
+
+	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
+	dim = (statoMassimo + 1) * nCaratteriPresenti;
+	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
+	for(i = 0; i < dim; i++)
+		matrice[i] = NULL;
+
+	//Ora trasformo il vettore caratteriPresenti in un vettore che nella posizione i-esima rappresenta la riga in
+	//cui e' presente quel carattere nella tabella
+	for(i = 0, j = 0; i < 256; i++){
+		if(caratteriPresenti[i]){
+			caratteriPresenti[i] = j;
+			j++;
+		}
+		else
+			caratteriPresenti[i] = -1;
+	}
+
+	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
+	//tale transizione.
+	for(i = 0; i < nTransizioni; i++){
+		posizione = pos(vett[i].inizio, caratteriPresenti[(int)vett[i].letto], nCaratteriPresenti);
+		matrice[posizione] = pushTransizione(matrice[posizione], vett[i]);
+		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
+	}
+
+	free(vett);
+
+	//Ora ho la matrice pronta e un vettore chiamato statiAccettazione che contiene
+	//0 o 1 a seconda che la posizione i sia uno stato di accettazione o meno
+	//C'e' anche corrispondenza tra la posizione i e la posizione della colonna della matrice
+
+
+	llinea = getline(&temp, &llinea, stdin);	//ora temp dovrebbe contenere la parola 'run'
+	if(strcmp(temp, "run\n") != 0){
+		fprintf(stderr, "Non ho letto la parola 'run'\n");
+		return 0;
+	}
+
+
+	return statoMassimo;
+}
+*/
