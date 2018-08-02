@@ -78,7 +78,11 @@ int main(int argc, char *argv[]){
 	leggiMax(&max);
 
 
-	printf("Max: %d\n", max);
+	printf("Stati accettazione:\n");
+	for(i = 0; i < statoMassimo+1; i++){
+		if(statiAccettazione[i])
+			printf("%d\n", i);
+	}
 	return 0;
 	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
