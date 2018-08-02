@@ -80,7 +80,7 @@ int main(int argc, char *argv[]){
 
 	printf("Max: %d\n", max);
 	return 0;
-	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
@@ -159,6 +159,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo
 	return vettoreTransizioni;
 }
 void leggiStatiAccettazione(bool *statiAccettazione){
+	int i;
 	char *temp;
 	size_t llinea = 0;
 
