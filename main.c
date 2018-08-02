@@ -53,6 +53,10 @@ transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
 void creaRigheCaratteri(int *);
+listaTr **creaMatrice(listaTr **, transizione *, int, int *, int);
+
+char rigaToCarattere(int, int *);
+void stampaLista(listaTr *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -97,14 +101,16 @@ int main(int argc, char *argv[]){
 	for(i = 0; i < statoMassimo+1; i++)
 		if(statiAccettazione[i])
 			printf("%d\n", i);
+	printf("****************************\n");
 
 	creaRigheCaratteri(righeCaratteri);
 
 	for(i = 0; i < 256; i++)
 		if(righeCaratteri[i] >= 0)
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
+	printf("****************************\n");
 
-	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -219,6 +225,52 @@ void creaRigheCaratteri(int *righeCaratteri){
 
 	return 1;
 }
+
+listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int statoMassimo, int *righeCaratteri, int nCaratteriPresenti){
+	int i, j;
+	int dim;
+
+	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
+	dim = (statoMassimo + 1) * nCaratteriPresenti;
+	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
+	for(i = 0; i < dim; i++)
+		matrice[i] = NULL;
+
+	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
+	//tale transizione.
+	for(i = 0; i < nTransizioni; i++){
+		posizione = pos(vettoreTransizioni[i].inizio, righeCaratteri[(int)vettoreTransizioni[i].letto], nCaratteriPresenti);
+		matrice[posizione] = pushTransizione(matrice[posizione], vettoreTransizioni[i]);
+		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
+	}
+
+	for(i = 0; i < statoMassimo+1; i++)
+		for(j = 0; j < nCaratteriPresenti; j++){
+			printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
+			stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
+			printf("****************************\n");
+		}
+	
+
+	return matrice;
+}
+
+char rigaToCarattere(int j, int* righeCaratteri){
+	int i;
+	for(i = 0; i < 256; i++){
+		if(righeCaratteri[i] == j)
+			return (char)i;
+	}
+	return '^';
+}
+void stampaLista(listaTr *head){
+	if(!head)
+		return;
+	printf("Scritto: %c, Mossa: %c, Fine: %d\n", head->scritto, head->mossa, head->fine);
+	stampaLista(head->next);
+	return;
+}
+
 //*****************************************************************
 /*
 int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
