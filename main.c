@@ -84,7 +84,7 @@ int main(int argc, char *argv[]){
 	leggiStatiAccettazione(statiAccettazione);
 	leggiMax(&max);
 
-	printf("Ci sono %d transizioni\n", nTransizioni);
+	/*printf("Ci sono %d transizioni\n", nTransizioni);
 	for(i = 0; i < nTransizioni; i++)
 		printf("Dallo stato %d allo stato %d ---> leggo %c scrivo %c mossa %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
 	printf("****************************\n");
@@ -102,16 +102,23 @@ int main(int argc, char *argv[]){
 	for(i = 0; i < statoMassimo+1; i++)
 		if(statiAccettazione[i])
 			printf("%d\n", i);
-	printf("****************************\n");
+	printf("****************************\n");*/
 
 	creaRigheCaratteri(righeCaratteri);
 
-	for(i = 0; i < 256; i++)
+	/*for(i = 0; i < 256; i++)
 		if(righeCaratteri[i] >= 0)
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
-	printf("****************************\n");
+	printf("****************************\n");*/
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	
+	for(i = 0; i < statoMassimo+1; i++)
+		for(j = 0; j < nCaratteriPresenti; j++){
+			printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
+			stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
+			printf("*************************************\n");
+		}
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -244,8 +251,6 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 		matrice[posizione] = pushTransizione(matrice[posizione], vettoreTransizioni[i]);
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
-
-	showMatrix(matrice, statoMassimo, nCaratteriPresenti, righeCaratteri);
 
 	return matrice;
 }
