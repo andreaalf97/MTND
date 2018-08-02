@@ -244,15 +244,7 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
-	for(i = 0; i < statoMassimo+1; i++)
-		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(i, j, nCaratteriPresenti)]){
-				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
-				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
-				printf("****************************\n");
-			}
-		}
-	
+	showMatrix(matrice, statoMassimo, nCaratteriPresenti);
 
 	return matrice;
 }
@@ -270,6 +262,25 @@ void stampaLista(listaTr *head){
 		return;
 	printf("Scritto: %c, Mossa: %c, Fine: %d\n", head->scritto, head->mossa, head->fine);
 	stampaLista(head->next);
+	return;
+}
+showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
+	int i, j;
+	printf(" ");
+	for(i = 0; i < statoMassimo+1; i++)
+		printf("%d ", i);
+
+	for(i = 0; i < statoMassimo+1; i++){
+		printf("%d ", i);
+		for(j = 0; j < nCaratteriPresenti; j++){
+			if(matrice[pos(i, j, nCaratteriPresenti)])
+				printf("O ");
+			else
+				printf("X ");
+		}
+		printf("\n");
+	}
+
 	return;
 }
 
