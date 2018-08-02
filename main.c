@@ -115,9 +115,11 @@ int main(int argc, char *argv[]){
 	
 	for(i = 0; i < statoMassimo+1; i++)
 		for(j = 0; j < nCaratteriPresenti; j++){
-			printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
-			stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
-			printf("*************************************\n");
+			if(matrice[pos(i, j, nCaratteriPresenti)]){
+				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
+				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
+				printf("*************************************\n");
+			}
 		}
 	//********************************************************
 
@@ -218,7 +220,6 @@ void leggiMax(int *max){
 	free(temp);
 	return;
 }
-
 void creaRigheCaratteri(int *righeCaratteri){
 	int i;
 	int count = 0;
@@ -233,7 +234,6 @@ void creaRigheCaratteri(int *righeCaratteri){
 
 	return;
 }
-
 listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nTransizioni, int statoMassimo, int *righeCaratteri, int nCaratteriPresenti){
 	int i, j;
 	int dim, posizione;
