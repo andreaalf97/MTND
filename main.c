@@ -153,7 +153,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni
 
 		if(!caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].letto]){
 			caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].letto] = 1;
-			*nCaratteriPresenti++;
+			(*nCaratteriPresenti)++;
 		}
 
 		(*nTransizioni)++;
