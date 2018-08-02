@@ -104,7 +104,7 @@ int main(int argc, char *argv[]){
 		if(righeCaratteri[i] >= 0)
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
 
-	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
