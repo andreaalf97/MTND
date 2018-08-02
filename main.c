@@ -57,7 +57,7 @@ listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
-void showMatrix(listaTr **, int, int);
+void showMatrix(listaTr **, int, int, int *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -245,7 +245,7 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
-	showMatrix(matrice, statoMassimo, nCaratteriPresenti);
+	showMatrix(matrice, statoMassimo, nCaratteriPresenti, righeCaratteri);
 
 	return matrice;
 }
@@ -265,11 +265,11 @@ void stampaLista(listaTr *head){
 	stampaLista(head->next);
 	return;
 }
-void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
+void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int *righeCaratteri){
 	int i, j;
 	printf("  ");
 	for(i = 0; i < nCaratteriPresenti; i++)
-		printf("%c ", rigaToCarattere(i));
+		printf("%c ", rigaToCarattere(i, righeCaratteri));
 	printf("\n");
 
 	for(i = 0; i < statoMassimo+1; i++){
