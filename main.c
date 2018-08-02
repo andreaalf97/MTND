@@ -57,6 +57,7 @@ listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
+void showMatrix(listaTr **, int, int);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -264,7 +265,7 @@ void stampaLista(listaTr *head){
 	stampaLista(head->next);
 	return;
 }
-showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
+void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
 	int i, j;
 	printf(" ");
 	for(i = 0; i < statoMassimo+1; i++)
