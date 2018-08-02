@@ -78,6 +78,9 @@ int main(int argc, char *argv[]){
 	leggiStatiAccettazione(statiAccettazione);
 	leggiMax(&max);
 
+	for(i = 0; i < nTransizioni; i++)
+		printf("Da %d a %d, leggo %c - scrivo %c, vado a %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
+
 
 	return 0;
 	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
