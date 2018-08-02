@@ -78,11 +78,6 @@ int main(int argc, char *argv[]){
 	leggiMax(&max);
 
 
-	printf("Stati accettazione:\n");
-	for(i = 0; i < statoMassimo+1; i++){
-		if(statiAccettazione[i])
-			printf("%d\n", i);
-	}
 	return 0;
 	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
@@ -158,6 +153,8 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, int *statoMassimo
 		nTransizioni++;
 		llinea = getline(&temp, &llinea, stdin);
 	}
+
+	printf("Ci sono %d transizioni\n", nTransizioni);
 
 	free(temp);
 	return vettoreTransizioni;
