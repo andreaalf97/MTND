@@ -267,7 +267,7 @@ void stampaLista(listaTr *head){
 }
 void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti){
 	int i, j;
-	printf(" ");
+	printf("  ");
 	for(i = 0; i < nCaratteriPresenti; i++)
 		printf("%d ", i);
 	printf("\n");
