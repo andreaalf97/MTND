@@ -52,6 +52,7 @@ listaPid *rimuoviPidDaWhoshares(listaPid *, int);
 transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
+void creaRigheCaratteri(int *);
 
 int main(int argc, char *argv[]){
 	//**********VARIABILI PER LETTURA INPUT**********
@@ -97,7 +98,13 @@ int main(int argc, char *argv[]){
 		if(statiAccettazione[i])
 			printf("%d\n", i);
 
-	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	creaRigheCaratteri(righeCaratteri);
+
+	for(i = 0; i < 256; i++)
+		if(righeCaratteri[i] >= 0)
+			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
+
+	matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -196,6 +203,21 @@ void leggiMax(int *max){
 
 	free(temp);
 	return;
+}
+
+void creaRigheCaratteri(int *righeCaratteri){
+	int i;
+	int count = 0;
+	for(i = 0; i < 256; i++){
+		if(righeCaratteri[i]){
+			righeCaratteri[i] = count;
+			count++;
+		}
+		else
+			righeCaratteri[i] = -1;
+	}
+
+	return 1;
 }
 //*****************************************************************
 /*
