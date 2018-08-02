@@ -97,15 +97,16 @@ int main(int argc, char *argv[]){
 		if(statiAccettazione[i])
 			printf("%d\n", i);
 
-	return 0;
 	//matrice = creaMatrice(matrice, vettoreTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//********************************************************
 
-	llinea = getline(&temp, &llinea, stdin);	//leggo una linea di input, che dovrebbe
-	//corrispondere proprio alla prima stringa in ingresso
-	for(i = 0; temp[i] != '\n'; i++);	//ciclo fino allo \n
-	temp[i] = '\0';										//sostituisco lo \n con il terminatore
+	llinea = getline(&temp, &llinea, stdin);
+	if(strcmp("run\n", temp) != 0){
+		fprintf(stderr, "Non ho letto run\n");
+		return 0;
+	}	//controlla che la riga letta sia run
 
+	llinea = getline(&temp, &llinea, stdin);	//dovrebbe corrispondere alla prima stringa in ingresso
 
 	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
 	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
@@ -116,11 +117,11 @@ int main(int argc, char *argv[]){
 
 
 	while(!feof(stdin)){
+		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
+		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		printf("Stringa %s\n", temp);
-		printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		//printf("%c\n", executeMachine(matrice, statoMassimo+1, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
-		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);
-		temp[i] = '\0';
 	}
 
 
@@ -202,7 +203,8 @@ void leggiMax(int *max){
 	return;
 }
 //*****************************************************************
-/*int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
+/*
+int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
 	int i, j;
 
 	char *temp;	//Qui salvo le singole linee di input per lavorarci sopra
@@ -277,7 +279,8 @@ void leggiMax(int *max){
 
 
 	return statoMassimo;
-}*/
+}
+*/
 
 //funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int width, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
