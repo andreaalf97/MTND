@@ -1,11 +1,21 @@
 tr
-11 _ x R 12
-11 a _ R 9
+0 A x R 1
+1 A x R 3
+1 L x R 2
+2 A A S 2
+3 A x R 4
+3 A x R 5
+4 B x R 6
+5 C x R 7
+6 A x R 4
+6 _ _ R 8
+7 A x R 5
+7 _ _ R 8
 acc
-4
 8
-12
 max
-30
+20
 run
-abcabcabc
+AAABABABAB
+AAACACACACAC
+ALA
