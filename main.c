@@ -515,7 +515,7 @@ listaProcessi *pushListaProcessi(listaProcessi *head, processo *p){
 listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 	listaProcessi *temp;
 
-	if(!processiAttiviHead)
+	if(processiAttiviHead == NULL)
 		return processiAttiviHead;
 
 	if(processiAttiviHead->p == p){
@@ -537,6 +537,7 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 	else{
 		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
 	}
+
 	printf("Ora processiAttiviHead vale %p\n", processiAttiviHead);
 	return processiAttiviHead;
 }
@@ -554,11 +555,8 @@ void deleteListaInt(listaInt *head){
 }
 
 void freeListaProcessi(listaProcessi *head){
-	if(!head)
-		return;
-
-	popListaProcessi(head, head->p);
-	freeListaProcessi(head);
+	while(head)
+		head = popListaProcessi(head, head->p);
 	return;
 }
 
