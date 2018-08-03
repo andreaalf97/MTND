@@ -31,6 +31,7 @@ typedef struct processo_s {
 	int testina;
 	int stato;
 	int pid;
+	int nMosseFatte;
 } processo;
 
 typedef struct listaProcessi_s {
@@ -292,7 +293,6 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 //funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
 	char exitStatus = '0';
-	int nMosseFatte = 0;
 
 	//****************************
 	processo *init = NULL;
@@ -347,7 +347,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 
 
-			if(nMosseFatte > max){
+			if(indiceProcesso->nMosseFatte > max){
 				printf("Ho eseguito piu' mosse di max\n");
 				exitStatus = 'U';
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
@@ -383,13 +383,15 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 				}
 				else{
 					printf("Non ci sono transizioni da eseguire\n");
+					indice = indice->next;
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+					break;
 				}
 			}
 
 
 
-			nMosseFatte++;
+			(indiceProcesso->nMosseFatte)++;
 			indice = indice->next;
 		}
 	}
@@ -433,6 +435,7 @@ processo *createProcess(processo *p, int testina, int stato, int pid, nstr *nast
 	p->testina = testina;
 	p->stato = stato;
 	p->nastro = nastro;
+	p->nMosseFatte = 0;
 
 	return p;
 }
@@ -632,6 +635,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 
 	nuovo = (processo *)malloc(sizeof(processo));
 	nuovo->pid = newPid;
+	nuovo->nMosseFatte = toCopy->nMosseFatte;
 
 	toCopy->nastro->whoShares = pushListaInt(toCopy->nastro->whoShares, newPid);
 	nuovo->stato = toCopy->stato;
