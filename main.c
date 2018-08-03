@@ -358,7 +358,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 				printf("**************************\n");
 				stampaListaProcessiAttivi(processiAttiviHead);
 				printf("**************************\n");
-				sleep(2);
+				sleep(1);
 				break;
 			}
 			else{
@@ -399,7 +399,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					printf("**************************\n");
 					stampaListaProcessiAttivi(processiAttiviHead);
 					printf("**************************\n");
-					sleep(2);
+					sleep(1);
 					break;
 				}
 			}
@@ -411,7 +411,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			printf("**************************\n");
 			stampaListaProcessiAttivi(processiAttiviHead);
 			printf("**************************\n");
-			sleep(2);
+			sleep(1);
 		}
 	}
 
