@@ -353,6 +353,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 				exitStatus = 'U';
 				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				stampaListaProcessiAttivi(processiAttiviHead);
+				sleep(2);
 				break;
 			}
 			else{
@@ -390,6 +392,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					printf("Non ci sono transizioni da eseguire\n");
 					indice = indice->next;
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+					stampaListaProcessiAttivi(processiAttiviHead);
+					sleep(2);
 					break;
 				}
 			}
@@ -398,6 +402,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			(indiceProcesso->nMosseFatte)++;
 			indice = indice->next;
+			stampaListaProcessiAttivi(processiAttiviHead);
 			sleep(2);
 		}
 	}
@@ -664,7 +669,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 
 	nuovo->stato = transizione->fine;
 	muoviTestina(nuovo, transizione->mossa);
-	
+
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
 }
@@ -704,6 +709,14 @@ void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int
 	}
 
 	return;
+}
+
+stampaListaProcessiAttivi(listaProcessi *head){
+	if(!head)
+		return;
+
+	printf("Il processo %d si trova nello stato %d e sta leggendo %c\n", head->p->pid, head->p->stato, carattereLetto(head->p));
+	return stampaListaProcessiAttivi(head->next);
 }
 /*
 int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
