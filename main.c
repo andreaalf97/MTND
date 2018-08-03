@@ -377,9 +377,9 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					}
 
 					scriviSuNastro(indiceProcesso, headTransizione->scritto);
-					printf("Ho scritto sul mio nastro\n");
+					printf("Ho scritto %c sul mio nastro\n", headTransizione->scritto);
 					muoviTestina(indiceProcesso, headTransizione->mossa);
-					printf("Ho mosso la testina\n");
+					printf("Ho mosso la testina: %c\n", headTransizione->mossa);
 				}
 				else{
 					printf("Non ci sono transizioni da eseguire\n");
@@ -497,7 +497,7 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		return processiAttiviHead;
 
 	if(processiAttiviHead->p == p){
-		printf("Sto eliminando il processo dalla lista processi attivi%d\n", p->pid);
+		printf("Sto eliminando il processo %d dalla lista processi attivi\n", p->pid);
 		temp = processiAttiviHead;
 		processiAttiviHead = processiAttiviHead->next;
 
