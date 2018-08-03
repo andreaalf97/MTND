@@ -171,7 +171,7 @@ int main(int argc, char *argv[]){
 	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
 
 	llinea = getline(&temp, &llinea, stdin);
-	while(!feof(stdin) && strcmp("\n", temp) != 0){
+	while(!feof(stdin)){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		printf("Eseguo stringa %s\n", temp);
