@@ -384,6 +384,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					printf("Ho scritto %c sul mio nastro\n", headTransizione->scritto);
 					muoviTestina(indiceProcesso, headTransizione->mossa);
 					printf("Ho mosso la testina: %c\n", headTransizione->mossa);
+
+					indiceProcesso->stato = headTransizione->fine;
 				}
 				else{
 					printf("Non ci sono transizioni da eseguire\n");
