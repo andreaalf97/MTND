@@ -537,6 +537,7 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 	else{
 		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
 	}
+	printf("Ora processiAttiviHead vale %p\n", processiAttiviHead);
 	return processiAttiviHead;
 }
 
