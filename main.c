@@ -334,6 +334,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
 				printf("Mi trovo in uno stato di accettazione\n");
+				sleep(5);
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
@@ -349,8 +350,11 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			if(indiceProcesso->nMosseFatte > max){
 				printf("Ho eseguito piu' mosse di max\n");
+				sleep(5);
 				exitStatus = 'U';
+				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				break;
 			}
 			else{
 				if(headTransizione){
