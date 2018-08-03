@@ -554,6 +554,10 @@ void deleteListaInt(listaInt *head){
 
 void freeListaProcessi(listaProcessi *head){
 	listaProcessi *temp = head;
+
+	if(!head)
+		return;
+	
 	popListaProcessi(temp, temp->p);
 	freeListaProcessi(head);
 }
