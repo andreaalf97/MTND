@@ -179,6 +179,9 @@ int main(int argc, char *argv[]){
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
+	printf("Eseguo stringa %s\n", temp);
+	printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+
 	//FASE DI OUTPUT
 	return 0;
 }
