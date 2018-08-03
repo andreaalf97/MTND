@@ -351,14 +351,12 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			if(indiceProcesso->nMosseFatte > max){
 				printf("Ho eseguito piu' mosse di max\n");
-				sleep(5);
 				exitStatus = 'U';
 				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 				printf("**************************\n");
 				stampaListaProcessiAttivi(processiAttiviHead);
 				printf("**************************\n");
-				sleep(1);
 				break;
 			}
 			else{
@@ -399,7 +397,6 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					printf("**************************\n");
 					stampaListaProcessiAttivi(processiAttiviHead);
 					printf("**************************\n");
-					sleep(1);
 					break;
 				}
 			}
@@ -411,7 +408,6 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			printf("**************************\n");
 			stampaListaProcessiAttivi(processiAttiviHead);
 			printf("**************************\n");
-			sleep(1);
 		}
 	}
 
