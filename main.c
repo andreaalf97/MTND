@@ -548,8 +548,8 @@ void deleteListaInt(listaInt *head){
 	if(!head)
 		return;
 	temp = head;
-	free(temp);
 	head = head->next;
+	free(temp);
 	deleteListaInt(head);
 	return;
 }
