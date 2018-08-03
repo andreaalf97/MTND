@@ -86,7 +86,7 @@ listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copi
 int main(int argc, char *argv[]){
 	int i, j;
 	size_t llinea;
-	char *temp;
+	char *temp = NULL;
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni;
 	int nTransizioni = 0;
@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 
 
 
-	llinea = getline(&temp, &llinea, stdin);
+	llinea = getline(temp, &llinea, stdin);
 	if(strcmp("run\n", temp) != 0){
 		fprintf(stderr, "Non ho letto run\n");
 		return 0;
