@@ -105,7 +105,7 @@ int main(int argc, char *argv[]){
 
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 	
-	printf("Ci sono %d transizioni\n", nTransizioni);
+	/*printf("Ci sono %d transizioni\n", nTransizioni);
 	for(i = 0; i < nTransizioni; i++)
 		printf("Dallo stato %d allo stato %d ---> leggo %c scrivo %c mossa %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
 	printf("****************************\n");
@@ -115,33 +115,33 @@ int main(int argc, char *argv[]){
 			printf("%c\n", (char)i);
 	printf("****************************\n");
 	printf("Stato massimo: %d\n", statoMassimo);
-	printf("****************************\n");
+	printf("****************************\n");*/
 
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
 	leggiStatiAccettazione(statiAccettazione);
 
-	printf("Stati accettazione:\n");
+	/*printf("Stati accettazione:\n");
 	for(i = 0; i < statoMassimo+1; i++)
 		if(statiAccettazione[i])
 			printf("%d\n", i);
-	printf("****************************\n");
+	printf("****************************\n");*/
 
 	leggiMax(&max);
 
-	printf("Max: %d\n****************************\n", max);
+	//printf("Max: %d\n****************************\n", max);
 
 	creaRigheCaratteri(righeCaratteri);
 
-	for(i = 0; i < 256; i++)
+	/*for(i = 0; i < 256; i++)
 		if(righeCaratteri[i] >= 0)
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
 	printf("****************************\n");
-
+	*/
 	
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 
-	printf("Matrice creata\n");
+	/*printf("Matrice creata\n");
 	for(i = 0; i < statoMassimo+1; i++)
 		for(j = 0; j < nCaratteriPresenti; j++){
 			if(matrice[pos(i, j, nCaratteriPresenti)]){
@@ -149,7 +149,7 @@ int main(int argc, char *argv[]){
 				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
 				printf("*************************************\n");
 			}
-		}
+		}*/
 	
 	//********************************************************
 
@@ -171,15 +171,15 @@ int main(int argc, char *argv[]){
 	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
 
 	llinea = getline(&temp, &llinea, stdin);
-	while(!feof(stdin)){
+	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
-		printf("Eseguo stringa %s\n", temp);
+		//printf("Eseguo stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
-	printf("Eseguo stringa %s\n", temp);
+	//printf("Eseguo stringa %s\n", temp);
 	printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
 	//FASE DI OUTPUT
