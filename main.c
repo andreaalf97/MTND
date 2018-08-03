@@ -355,7 +355,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 				//printf("**************************\n");
-				stampaListaProcessiAttivi(processiAttiviHead);
+				//stampaListaProcessiAttivi(processiAttiviHead);
 				//printf("**************************\n");
 				break;
 			}
@@ -395,7 +395,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					indice = indice->next;
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 					//printf("**************************\n");
-					stampaListaProcessiAttivi(processiAttiviHead);
+					//stampaListaProcessiAttivi(processiAttiviHead);
 					//printf("**************************\n");
 					break;
 				}
@@ -406,7 +406,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			(indiceProcesso->nMosseFatte)++;
 			indice = indice->next;
 			//printf("**************************\n");
-			stampaListaProcessiAttivi(processiAttiviHead);
+			//stampaListaProcessiAttivi(processiAttiviHead);
 			//printf("**************************\n");
 		}
 	}
