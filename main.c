@@ -397,6 +397,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			(indiceProcesso->nMosseFatte)++;
 			indice = indice->next;
+			sleep(2);
 		}
 	}
 
