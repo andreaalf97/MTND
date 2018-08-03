@@ -154,7 +154,7 @@ int main(int argc, char *argv[]){
 
 
 
-	llinea = getline(temp, &llinea, stdin);
+	llinea = getline(&temp, &llinea, stdin);
 	if(strcmp("run\n", temp) != 0){
 		fprintf(stderr, "Non ho letto run\n");
 		return 0;
