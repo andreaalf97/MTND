@@ -343,7 +343,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 			printf("Ho letto il carattere %c\n", carattere);
 			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
 			printf("La posizione nella matrice e' %d\n", posizione);
-			indiceTransizione = matrice[posizione]; //testa della lista di transizioni
+			headTransizione = matrice[posizione]; //testa della lista di transizioni
 
 
 
