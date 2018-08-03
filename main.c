@@ -311,7 +311,6 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
 	printf("Inizio esecuzione macchina\n");
-	sleep(3);
 
 	//creazione processo iniziale:
 	nastroInit = createNastroInit(nastroInit, input, max);
