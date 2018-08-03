@@ -497,14 +497,20 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		return processiAttiviHead;
 
 	if(processiAttiviHead->p == p){
+		printf("Sto eliminando il processo dalla lista processi attivi%d\n", p->pid);
 		temp = processiAttiviHead;
 		processiAttiviHead = processiAttiviHead->next;
 
 		free(temp->p->nastro->left);
+		printf("Liberato il nastro sinistro\n");
 		free(temp->p->nastro->right);
+		printf("Liberato il nastro destro\n");
 		deleteListaInt(temp->p->nastro->whoShares);
+		printf("Liberato la lista condivisori\n");
 		free(temp->p);
+		printf("Liberato il processo\n");
 		free(temp);
+		printf("Liberato l'elemento della lista\n");
 	}
 	else{
 		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
