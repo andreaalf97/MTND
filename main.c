@@ -55,6 +55,7 @@ listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
 void showMatrix(listaTr **, int, int, int *);
+void stampaListaProcessiAttivi(listaProcessi *);
 
 
 processo *createProcess(processo *, int, int, int, nstr *);	//crea un nuovo processo (usata solo per init)
@@ -716,7 +717,8 @@ stampaListaProcessiAttivi(listaProcessi *head){
 		return;
 
 	printf("Il processo %d si trova nello stato %d e sta leggendo %c\n", head->p->pid, head->p->stato, carattereLetto(head->p));
-	return stampaListaProcessiAttivi(head->next);
+	stampaListaProcessiAttivi(head->next);
+	return;
 }
 /*
 int leggiInput(listaTr **matrice, bool *statiAccettazione, int *max, int *caratteriPresenti){
