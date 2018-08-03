@@ -475,6 +475,7 @@ nstr *createNastroInit(nstr *n, char *stringa, int max){
 	for(; i < n->dimRight; i++)
 		(n->right)[i] = '_';
 
+	n->whoShares = NULL;
 	n->whoShares = pushListaInt(n->whoShares, 0);
 
 	return n;
@@ -546,10 +547,9 @@ void deleteListaInt(listaInt *head){
 	listaInt *temp;
 	if(!head)
 		return;
-
 	temp = head;
-	head = head->next;
 	free(temp);
+	head = head->next;
 	deleteListaInt(head);
 	return;
 }
