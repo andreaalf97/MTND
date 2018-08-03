@@ -723,10 +723,19 @@ void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int
 }
 
 void stampaListaProcessiAttivi(listaProcessi *head){
+	listaInt *temp;
+
 	if(!head)
 		return;
 
+	temp = head->p->nastro->whoShares;
 	printf("Il processo %d si trova nello stato %d e sta leggendo %c\n", head->p->pid, head->p->stato, carattereLetto(head->p));
+	printf("Il nastro e' condiviso con: ");
+	while(temp){
+		printf("%d ", temp->pid);
+		temp = temp->next;
+	}
+	printf("\n");
 	stampaListaProcessiAttivi(head->next);
 	return;
 }
