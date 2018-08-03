@@ -355,7 +355,9 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 				exitStatus = 'U';
 				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				printf("**************************\n");
 				stampaListaProcessiAttivi(processiAttiviHead);
+				printf("**************************\n");
 				sleep(2);
 				break;
 			}
@@ -394,7 +396,9 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					printf("Non ci sono transizioni da eseguire\n");
 					indice = indice->next;
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+					printf("**************************\n");
 					stampaListaProcessiAttivi(processiAttiviHead);
+					printf("**************************\n");
 					sleep(2);
 					break;
 				}
@@ -404,7 +408,9 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			(indiceProcesso->nMosseFatte)++;
 			indice = indice->next;
+			printf("**************************\n");
 			stampaListaProcessiAttivi(processiAttiviHead);
+			printf("**************************\n");
 			sleep(2);
 		}
 	}
