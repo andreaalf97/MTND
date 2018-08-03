@@ -553,13 +553,12 @@ void deleteListaInt(listaInt *head){
 }
 
 void freeListaProcessi(listaProcessi *head){
-	listaProcessi *temp = head;
-
 	if(!head)
 		return;
-	
-	popListaProcessi(temp, temp->p);
+
+	popListaProcessi(head, head->p);
 	freeListaProcessi(head);
+	return;
 }
 
 char carattereLetto(processo *p){
