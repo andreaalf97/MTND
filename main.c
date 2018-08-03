@@ -27,7 +27,7 @@ typedef struct nastro_s {
 } nstr;
 
 typedef struct processo_s {
-	nstr nastro;
+	nstr *nastro;
 	int testina;
 	int stato;
 	int pid;
@@ -39,36 +39,39 @@ typedef struct listaProcessi_s {
 } listaProcessi;
 
 
-int pos(int, int, int);
-listaTr *pushTransizione(listaTr *, transizione);
-char executeMachine(listaTr **, int, int, bool *, int, char *, int *);
+int pos(int, int, int);	//ritorna la posizione <i, j> nella matrice
+listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
+char executeMachine(listaTr **, int, int, bool *, int, char *, int *);	//esegue la macchina
 
+//FUNZIONI DI LETTURA INPUT:
 transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
 void creaRigheCaratteri(int *);
 listaTr **creaMatrice(listaTr **, transizione *, int, int, int *, int);
 
+//FUNZIONI PER DEBUGGING
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
 void showMatrix(listaTr **, int, int, int *);
 
-processo *createProcess(processo *, int, int, int, nstr);
-nstr *createNastro(nstr *, char *, int);
-listaInt *pushListaInt(listaInt *, int);
-listaProcessi *pushListaProcessi(listaProcessi *, processo *);
-listaProcessi *popListaProcessi(listaProcessi *, processo *);
-void deleteListaInt(listaInt *);
 
-void freeListaProcessi(listaProcessi *);
-char carattereLetto(processo *);
-bool nastroIsShared(processo *);
-void scriviSuNastro(processo *, char);
-void muoviTestina(processo *, char);
-void popWhoShares(processo *, listaProcessi *);
-listaInt *popListaInt(listaInt *, int);
-void copyOwnNastro(processo *);
-listaProcessi *copyProcesso(listaProcessi *, processo *, int);
+processo *createProcess(processo *, int, int, int, nstr *);	//crea un nuovo processo (usata solo per init)
+nstr *createNastroInit(nstr *, char *, int);	//data la stringa input e MAX, costruisce il nastro
+listaInt *pushListaInt(listaInt *, int);	//push nella lista whoShares
+listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
+listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
+void deleteListaInt(listaInt *);	//elimina la lista whoShares
+
+void freeListaProcessi(listaProcessi *);	//elimina la lista dei processi attivi
+char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina sul nastro
+bool nastroIsShared(processo *);	//1: il nastro è condiviso, altrimenti 0
+void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
+void muoviTestina(processo *, char);	//sposta la testina
+void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
+listaInt *popListaInt(listaInt *, int);	//pop dalla lista dei condivisori
+void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
+listaProcessi *copyProcesso(listaProcessi *, processo *, int);	//copia un processo
 
 
 
@@ -301,8 +304,8 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
 	//creazione processo iniziale:
-	nastroInit = createNastro(nastroInit, input, max);
-	init = createProcess(init, 0, 0, 0, *nastroInit);
+	nastroInit = createNastroInit(nastroInit, input, max);
+	init = createProcess(init, 0, 0, 0, nastroInit);
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
 	newPidCounter = 1;
@@ -388,9 +391,9 @@ listaTr *pushTransizione(listaTr *head, transizione t){
 
 //Execute Machine Functions
 
-processo *createProcess(processo *p, int testina, int stato, int pid, nstr nastro){
+processo *createProcess(processo *p, int testina, int stato, int pid, nstr *nastro){
 
-	p = (processo *)malloc(sizeof(processo));
+	p = (processo *)malloc(sizeof(processo));	//alloca il nuovo processo
 	if(!p){
 		fprintf(stderr, "Errore allocazione memoria nuovo nastro\n");
 		return p;
@@ -404,7 +407,7 @@ processo *createProcess(processo *p, int testina, int stato, int pid, nstr nastr
 	return p;
 }
 
-nstr *createNastro(nstr *n, char *stringa, int max){
+nstr *createNastroInit(nstr *n, char *stringa, int max){
 	int i;
 	n = (nstr *)malloc(sizeof(nstr));
 
@@ -467,9 +470,9 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		temp = processiAttiviHead;
 		processiAttiviHead = processiAttiviHead->next;
 
-		free(temp->p->nastro.left);
-		free(temp->p->nastro.right);
-		deleteListaInt(temp->p->nastro.whoShares);
+		free(temp->p->nastro->left);
+		free(temp->p->nastro->right);
+		deleteListaInt(temp->p->nastro->whoShares);
 		free(temp->p);
 		free(temp);
 	}
@@ -499,22 +502,22 @@ void freeListaProcessi(listaProcessi *head){
 
 char carattereLetto(processo *p){
 	if(p->testina >= 0)
-		return (p->nastro.right)[p->testina];
+		return (p->nastro->right)[p->testina];
 	
-	return (p->nastro.left)[-(p->testina) - 1];
+	return (p->nastro->left)[-(p->testina) - 1];
 }
 
 bool nastroIsShared(processo *p){
-	if((p->nastro.whoShares)->next)
+	if((p->nastro->whoShares)->next)
 		return 1;
 	return 0;
 }
 
 void scriviSuNastro(processo *p, char toWrite){
 	if(p->testina >= 0)
-		(p->nastro.right)[p->testina] = toWrite;
+		(p->nastro->right)[p->testina] = toWrite;
 	else
-		(p->nastro.left)[-(p->testina) - 1] = toWrite;
+		(p->nastro->left)[-(p->testina) - 1] = toWrite;
 	return;
 }
 
@@ -540,7 +543,7 @@ void popWhoShares(processo *indiceProcesso, listaProcessi *processiAttiviHead){
 	temp = processiAttiviHead;
 	while(temp){
 		processoTemp = temp->p;
-		processoTemp->nastro.whoShares = popListaInt(processoTemp->nastro.whoShares, pid);
+		processoTemp->nastro->whoShares = popListaInt(processoTemp->nastro->whoShares, pid);
 		temp = temp->next;
 	}
 
@@ -570,21 +573,21 @@ void copyOwnNastro(processo *p){
 	nstr *nuovo;
 	nuovo = (nstr *)malloc(sizeof(nstr));
 
-	nuovo->dimLeft = p->nastro.dimLeft;
-	nuovo->dimRight = p->nastro.dimRight;
+	nuovo->dimLeft = p->nastro->dimLeft;
+	nuovo->dimRight = p->nastro->dimRight;
 
 	nuovo->left = (char *)malloc(nuovo->dimLeft * sizeof(char));
 	nuovo->right = (char *)malloc(nuovo->dimRight * sizeof(char));
 
 	for(i = 0; i < nuovo->dimLeft; i++)
-		(nuovo->left)[i] = (p->nastro.left)[i];
+		(nuovo->left)[i] = (p->nastro->left)[i];
 	for(i = 0; i < nuovo->dimRight; i++)
-		(nuovo->right)[i] = (p->nastro.right)[i];
+		(nuovo->right)[i] = (p->nastro->right)[i];
 
 	nuovo->whoShares = NULL;
 	nuovo->whoShares = pushListaInt(nuovo->whoShares, p->pid);
 
-	&(p->nastro) = nuovo;
+	p->nastro = nuovo;
 	return;
 }
 
@@ -594,11 +597,11 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 	nuovo = (processo *)malloc(sizeof(processo));
 	nuovo->pid = newPid;
 
-	toCopy->nastro.whoShares = pushListaInt(toCopy->nastro.whoShares, newPid);
+	toCopy->nastro->whoShares = pushListaInt(toCopy->nastro->whoShares, newPid);
 	nuovo->stato = toCopy->stato;
 	nuovo->testina = toCopy->testina;
 
-	&(nuovo->nastro) = &(toCopy->nastro);
+	nuovo->nastro = toCopy->nastro;
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
