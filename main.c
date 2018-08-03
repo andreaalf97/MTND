@@ -335,7 +335,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
 				printf("Mi trovo in uno stato di accettazione\n");
-				sleep(5);
+				sleep(2);
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
@@ -519,7 +519,7 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		return processiAttiviHead;
 
 	if(processiAttiviHead->p == p){
-		printf("Sto eliminando il processo %d dalla lista processi attivi\n", p->pid);
+		printf("Sto eliminando il processo %d dalla lista processi attivi -- processiAttiviHead: %p\n", p->pid, processiAttiviHead);
 		temp = processiAttiviHead;
 		processiAttiviHead = processiAttiviHead->next;
 
