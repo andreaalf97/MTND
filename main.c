@@ -72,7 +72,7 @@ void muoviTestina(processo *, char);	//sposta la testina
 void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
 listaInt *popListaInt(listaInt *, int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, int);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copia un processo
 
 
 
@@ -362,7 +362,7 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 					while(indiceTransizione){
 						printf("C'e' una mossa non deterministica\n");
 						//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter);
+						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione);
 						printf("Ho copiato il processo\n");
 						newPidCounter++;
 						//...
@@ -636,19 +636,35 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione){
 	processo *nuovo;
+	char carattere;
 
 	nuovo = (processo *)malloc(sizeof(processo));
 	nuovo->pid = newPid;
-	nuovo->nMosseFatte = toCopy->nMosseFatte;
+	nuovo->nMosseFatte = toCopy->nMosseFatte + 1;
 
 	toCopy->nastro->whoShares = pushListaInt(toCopy->nastro->whoShares, newPid);
 	nuovo->stato = toCopy->stato;
+	nuovo->nastro = toCopy->nastro;
 	nuovo->testina = toCopy->testina;
 
-	nuovo->nastro = toCopy->nastro;
 
+	carattere = carattereLetto(nuovo);
+	if(transizione->scritto != carattere && nastroIsShared(nuovo)){
+		printf("Il nastro e' condiviso\n");
+		popWhoShares(nuovo, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
+		printf("Eseguito popWhoShares\n");
+		copyOwnNastro(nuovo);
+		printf("Copiato il mio nastro\n");
+
+		scriviSuNastro(nuovo, transizione->scritto);
+		printf("Ho scritto %c sul mio nastro\n", transizione->scritto);
+	}
+
+	nuovo->stato = transizione->fine;
+	muoviTestina(nuovo, transizione->mossa);
+	
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
 }
