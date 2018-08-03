@@ -99,13 +99,17 @@ int main(int argc, char *argv[]){
 	size_t llinea;
 	char *temp;
 
-	//**********LETTURA INPUT*******************
+
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
 	leggiStatiAccettazione(statiAccettazione);
 	leggiMax(&max);
 
-	/*printf("Ci sono %d transizioni\n", nTransizioni);
+	creaRigheCaratteri(righeCaratteri);
+	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+
+	//**********TESTING INPUT*******************
+	printf("Ci sono %d transizioni\n", nTransizioni);
 	for(i = 0; i < nTransizioni; i++)
 		printf("Dallo stato %d allo stato %d ---> leggo %c scrivo %c mossa %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
 	printf("****************************\n");
@@ -123,26 +127,28 @@ int main(int argc, char *argv[]){
 	for(i = 0; i < statoMassimo+1; i++)
 		if(statiAccettazione[i])
 			printf("%d\n", i);
-	printf("****************************\n");*/
+	printf("****************************\n");
 
-	creaRigheCaratteri(righeCaratteri);
+	
 
-	/*for(i = 0; i < 256; i++)
+	for(i = 0; i < 256; i++)
 		if(righeCaratteri[i] >= 0)
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
-	printf("****************************\n");*/
+	printf("****************************\n");
 
-	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	
-	/*for(i = 0; i < statoMassimo+1; i++)
+	for(i = 0; i < statoMassimo+1; i++)
 		for(j = 0; j < nCaratteriPresenti; j++){
 			if(matrice[pos(i, j, nCaratteriPresenti)]){
 				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
 				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
 				printf("*************************************\n");
 			}
-		}*/
+		}
 	//********************************************************
+
+
+
 
 	llinea = getline(&temp, &llinea, stdin);
 	if(strcmp("run\n", temp) != 0){
@@ -162,7 +168,7 @@ int main(int argc, char *argv[]){
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
-		printf("Stringa %s\n", temp);
+		printf("Eseguo stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
 	}
@@ -303,58 +309,81 @@ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti,
 	//****************************
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
+	printf("Inizio esecuzione macchina\n");
+	sleep(3);
+
 	//creazione processo iniziale:
 	nastroInit = createNastroInit(nastroInit, input, max);
+	printf("Ho creato il nastro per init\n");
 	init = createProcess(init, 0, 0, 0, nastroInit);
+	printf("Ho creato il processo INIT\n");
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
+	printf("Ho inserito INIT nella lista processi attivi\n");
 	newPidCounter = 1;
 
 
 
 	while(processiAttiviHead){
+		printf("La lista processi attivi non e' vuota\n");
 		indice = processiAttiviHead;
 		while(indice){
 			indiceProcesso = indice->p;
 			printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
+				printf("Mi trovo in uno stato di accettazione\n");
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
 
 
 			carattere = carattereLetto(indiceProcesso);
+			printf("Ho letto il carattere %c\n", carattere);
 			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
+			printf("La posizione nella matrice e' %d\n", posizione);
 			indiceTransizione = matrice[posizione]; //testa della lista di transizioni
 
 
+
 			if(nMosseFatte > max){
+				printf("Ho eseguito piu' mosse di max\n");
 				exitStatus = 'U';
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 			}
 			else{
 				if(headTransizione){
+					printf("Ho trovato una transizione da eseguire\n");
 					indiceTransizione = headTransizione->next;
 					while(indiceTransizione){
+						printf("C'e' una mossa non deterministica\n");
 						//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
 						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter);
+						printf("Ho copiato il processo\n");
 						newPidCounter++;
 						//...
 						indiceTransizione = indiceTransizione->next;
 					}
 
 					//eseguo la transizione:
+					printf("Eseguo la transizione:\n");
 					if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){
+						printf("Il nastro e' condiviso\n");
 						popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
+						printf("Eseguito popWhoShares\n");
 						copyOwnNastro(indiceProcesso);
+						printf("Copiato il mio nastro\n");
 					}
 
 					scriviSuNastro(indiceProcesso, headTransizione->scritto);
+					printf("Ho scritto sul mio nastro\n");
 					muoviTestina(indiceProcesso, headTransizione->mossa);
+					printf("Ho mosso la testina\n");
 				}
-				else
+				else{
+					printf("Non ci sono transizioni da eseguire\n");
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				}
 			}
 
 
