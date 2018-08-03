@@ -2,6 +2,7 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
+#include <unistd.h>
 
 
 typedef struct transizioni_s {
@@ -712,7 +713,7 @@ void showMatrix(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, int
 	return;
 }
 
-stampaListaProcessiAttivi(listaProcessi *head){
+void stampaListaProcessiAttivi(listaProcessi *head){
 	if(!head)
 		return;
 
