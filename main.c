@@ -106,6 +106,13 @@ int main(int argc, char *argv[]){
 	leggiMax(&max);
 
 	creaRigheCaratteri(righeCaratteri);
+
+	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
+	for(i = 0; i < 256; i++)
+		if(righeCaratteri[i])
+			printf("%c\n", (char)i);
+	printf("****************************\n");
+	
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 
 	//**********TESTING INPUT*******************
@@ -117,11 +124,7 @@ int main(int argc, char *argv[]){
 	printf("Stato massimo: %d\n", statoMassimo);
 	printf("****************************\n");
 
-	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
-	for(i = 0; i < 256; i++)
-		if(righeCaratteri[i])
-			printf("%c\n", (char)i);
-	printf("****************************\n");
+	
 
 	printf("Stati accettazione:\n");
 	for(i = 0; i < statoMassimo+1; i++)
