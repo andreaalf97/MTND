@@ -91,7 +91,7 @@ int main(int argc, char *argv[]){
 	char *temp = NULL;
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni = NULL;
-	int nTransizioni = 0;
+	size_t nTransizioni = 0;
 	int statoMassimo = 0;
 	int *righeCaratteri = (int *)calloc(256, sizeof(int));
 	int nCaratteriPresenti = 0;
@@ -190,7 +190,7 @@ int main(int argc, char *argv[]){
 //*****************************************************************
 
 
-transizione *leggiTransizioni(transizione *vettoreTransizioni, int *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
+transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp;
 	size_t llinea = 0;
 
