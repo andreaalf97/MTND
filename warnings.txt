@@ -1,0 +1,36 @@
+main.c: In function ‘main’:
+main.c:89:9: warning: unused variable ‘j’ [-Wunused-variable]
+  int i, j;
+         ^
+main.c:88:14: warning: unused parameter ‘argc’ [-Wunused-parameter]
+ int main(int argc, char *argv[]){
+              ^
+main.c:88:26: warning: unused parameter ‘argv’ [-Wunused-parameter]
+ int main(int argc, char *argv[]){
+                          ^
+main.c: In function ‘leggiTransizioni’:
+main.c:210:20: warning: comparison between signed and unsigned integer expressions [-Wsign-compare]
+   if(*nTransizioni >= dimVett){
+                    ^
+main.c: In function ‘creaMatrice’:
+main.c:277:9: warning: unused variable ‘j’ [-Wunused-variable]
+  int i, j;
+         ^
+main.c: In function ‘executeMachine’:
+main.c:307:8: warning: unused variable ‘nastroTemp’ [-Wunused-variable]
+  nstr *nastroTemp = NULL;
+        ^
+main.c:301:44: warning: unused parameter ‘statoMassimo’ [-Wunused-parameter]
+ char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
+                                            ^
+main.c: In function ‘pushTransizione’:
+main.c:431:2: warning: suggest parentheses around assignment used as truth value [-Wparentheses]
+  if(nuovo = (listaTr *)malloc(sizeof(listaTr))){
+  ^
+main.c: In function ‘main’:
+main.c:106:21: warning: ‘vettoreTransizioni’ is used uninitialized in this function [-Wuninitialized]
+  vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
+                     ^
+main.c:142:10: warning: ‘matrice’ is used uninitialized in this function [-Wuninitialized]
+  matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+          ^
