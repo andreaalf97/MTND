@@ -45,7 +45,7 @@ typedef struct listaProcessi_s {
 
 int pos(int, int, int);	//ritorna la posizione <i, j> nella matrice
 listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
-char executeMachine(listaTr **, int, int, bool *, int, char *, int *);	//esegue la macchina
+char executeMachine(listaTr **, int, bool *, int, char *, int *);	//esegue la macchina
 
 //FUNZIONI DI LETTURA INPUT:
 transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
@@ -86,11 +86,11 @@ listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copi
 
 
 int main(int argc, char *argv[]){
-	int i, j;
+	int i;
 	size_t llinea;
 	char *temp = NULL;
 	//**********VARIABILI PER LETTURA INPUT**********
-	transizione *vettoreTransizioni;
+	transizione *vettoreTransizioni = NULL;
 	int nTransizioni = 0;
 	int statoMassimo = 0;
 	int *righeCaratteri = (int *)calloc(256, sizeof(int));
@@ -100,11 +100,11 @@ int main(int argc, char *argv[]){
 
 	int max;
 
-	listaTr **matrice;
+	listaTr **matrice = NULL;
 	//***********************************************
 
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
-	
+
 	/*printf("Ci sono %d transizioni\n", nTransizioni);
 	for(i = 0; i < nTransizioni; i++)
 		printf("Dallo stato %d allo stato %d ---> leggo %c scrivo %c mossa %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]){
 			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
 	printf("****************************\n");
 	*/
-	
+
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 
@@ -150,7 +150,7 @@ int main(int argc, char *argv[]){
 				printf("*************************************\n");
 			}
 		}*/
-	
+
 	//********************************************************
 
 
@@ -175,12 +175,12 @@ int main(int argc, char *argv[]){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
-		printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
-	printf("%c\n", executeMachine(matrice, statoMassimo, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+	printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
 	//FASE DI OUTPUT
 	return 0;
@@ -274,7 +274,7 @@ void creaRigheCaratteri(int *righeCaratteri){
 	return;
 }
 listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nTransizioni, int statoMassimo, int *righeCaratteri, int nCaratteriPresenti){
-	int i, j;
+	int i;
 	int dim, posizione;
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
@@ -298,13 +298,12 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 
 //*****************************************************************
 //funzione che esegue la macchina sull'input dato
-char executeMachine(listaTr **matrice, int statoMassimo, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
+char executeMachine(listaTr **matrice, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
 	char exitStatus = '0';
 
 	//****************************
 	processo *init = NULL;
 	nstr *nastroInit = NULL;
-	nstr *nastroTemp = NULL;
 	listaProcessi *processiAttiviHead = NULL;
 	listaProcessi *indice = NULL;
 	processo *indiceProcesso = NULL;
@@ -428,7 +427,7 @@ int pos(int i, int j, int B) {
 //funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 listaTr *pushTransizione(listaTr *head, transizione t){
 	listaTr *nuovo;
-	if(nuovo = (listaTr *)malloc(sizeof(listaTr))){
+	if((nuovo = (listaTr *)malloc(sizeof(listaTr)))){
 		nuovo->scritto =	t.scritto;
 		nuovo->mossa = t.mossa;
 		nuovo->fine = t.fine;
@@ -564,7 +563,7 @@ void freeListaProcessi(listaProcessi *head){
 char carattereLetto(processo *p){
 	if(p->testina >= 0)
 		return (p->nastro->right)[p->testina];
-	
+
 	return (p->nastro->left)[-(p->testina) - 1];
 }
 
