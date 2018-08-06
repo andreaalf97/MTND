@@ -48,7 +48,7 @@ listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
 char executeMachine(listaTr **, int, bool *, int, char *, int *);	//esegue la macchina
 
 //FUNZIONI DI LETTURA INPUT:
-transizione *leggiTransizioni(transizione *, int *, int *, int *, int *);
+transizione *leggiTransizioni(transizione *, size_t *, int *, int *, int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(int *);
 void creaRigheCaratteri(int *);
