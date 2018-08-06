@@ -87,7 +87,7 @@ listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copi
 
 int main(int argc, char *argv[]){
 	int i;
-	size_t llinea;
+	size_t llinea = 0;
 	char *temp = NULL;
 	//**********VARIABILI PER LETTURA INPUT**********
 	transizione *vettoreTransizioni = NULL;
@@ -96,7 +96,7 @@ int main(int argc, char *argv[]){
 	int *righeCaratteri = (int *)calloc(256, sizeof(int));
 	int nCaratteriPresenti = 0;
 
-	bool *statiAccettazione;
+	bool *statiAccettazione = NULL;
 
 	int max;
 
@@ -191,7 +191,7 @@ int main(int argc, char *argv[]){
 
 
 transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
-	char *temp;
+	char *temp = NULL;
 	size_t llinea = 0;
 
 	size_t dimVett = 2;
@@ -236,7 +236,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizi
 }
 void leggiStatiAccettazione(bool *statiAccettazione){
 	int i;
-	char *temp;
+	char *temp = NULL;
 	size_t llinea = 0;
 
 	llinea = getline(&temp, &llinea, stdin);
@@ -250,7 +250,7 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	return;
 }
 void leggiMax(int *max){
-	char *temp;
+	char *temp = NULL;
 	size_t llinea = 0;
 
 	llinea = getline(&temp, &llinea, stdin);
