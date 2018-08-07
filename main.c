@@ -111,6 +111,7 @@ int main(int argc, char *argv[]){
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//crea la matrice delle transizioni
 	free(vettoreTransizioni);
+	vettoreTransizioni = NULL;
 
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));	//alloco un vettore lungo quanto il numero di stati
 	leggiStatiAccettazione(statiAccettazione);	//legge gli stati di accettazione e li setta a 1 nel vettore corrispondente
@@ -146,10 +147,14 @@ int main(int argc, char *argv[]){
 	}
 
 	free(matrice);
+	matrice = NULL;
 
 	free(temp);
+	temp = NULL;
 	free(righeCaratteri);
+	righeCaratteri = NULL;
 	free(statiAccettazione);
+	statiAccettazione = NULL;
 	//FASE DI OUTPUT
 	return 0;
 }
@@ -201,6 +206,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizi
 	}
 
 	free(temp);
+	temp = NULL;
 	return vettoreTransizioni;
 }
 void leggiStatiAccettazione(bool *statiAccettazione){
@@ -217,6 +223,7 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	}
 
 	free(temp);
+	temp = NULL;
 	return;
 }
 void leggiMax(int *max){
@@ -228,6 +235,7 @@ void leggiMax(int *max){
 	sscanf(temp, "%d", max);
 
 	free(temp);
+	temp = NULL;
 	return;
 }
 void creaRigheCaratteri(int *righeCaratteri){
@@ -474,16 +482,22 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		processiAttiviHead = processiAttiviHead->next;
 
 		free(temp->p->nastro->left);
+		temp->p->nastro->left = NULL;
 		//printf("Liberato il nastro sinistro\n");
 		free(temp->p->nastro->right);
+		temp->p->nastro->right = NULL;
 		//printf("Liberato il nastro destro\n");
 		deleteListaInt(temp->p->nastro->whoShares);
+		temp->p->nastro->whoShares = NULL;
 		//printf("Liberato la lista condivisori\n");
 		free(temp->p->nastro);
+		temp->p->nastro = NULL;
 		//libero la struttura nastro
 		free(temp->p);
+		temp->p = NULL;
 		//printf("Liberato il processo\n");
 		free(temp);
+		temp = NULL;
 		//printf("Liberato l'elemento della lista\n");
 	}
 	else{
@@ -500,6 +514,7 @@ void deleteListaInt(listaInt *head){
 	   tmp = head;
 	   head = head->next;
 	   free(tmp);
+		 tmp = NULL;
 	 }
 
 	 return;
@@ -571,6 +586,7 @@ listaInt *popListaInt(listaInt *head, int pid){
 		head = head->next;
 
 		free(temp);
+		temp = NULL;
 		return head;
 	}
 	else{
@@ -642,6 +658,7 @@ void freeListaTr(listaTr *head){
 	   tmp = head;
 	   head = head->next;
 	   free(tmp);
+		 tmp = NULL;
     }
 
 		return;
