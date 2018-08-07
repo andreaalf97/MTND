@@ -132,15 +132,16 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	llinea = getline(&temp, &llinea, stdin);
-	for(i = 0; temp[i] != '\0'; i++)
-		printf("-- %d --\n", (int)temp[i]);
+	for(i = 0; temp[i] != '\n'; i++);
+	temp[i] = '\0';
+
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
+		printf("-- %s --\n", temp);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
-		printf("-- %s --\n", temp);
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
