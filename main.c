@@ -88,6 +88,7 @@ int main(int argc, char *argv[]){
 	int i;
 
 	size_t llinea = 0;
+	ssize_t nread;
 	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline'
 	transizione *vettoreTransizioni = NULL;	//vettore che contiene tutte le transizioni possibili
 	size_t nTransizioni = 0;	//contatore per il numero di transizioni
@@ -123,19 +124,18 @@ int main(int argc, char *argv[]){
 
 
 
-	llinea = getline(&temp, &llinea, stdin);
+	nread = getline(&temp, &llinea, stdin);
 	if(strcmp("run\n", temp) != 0){
 		fprintf(stderr, "Non ho letto run\n");
 		return 0;
 	}	//controlla che la riga letta sia run
 
-	llinea = getline(&temp, &llinea, stdin);
+	nread = getline(&temp, &llinea, stdin);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
-		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
-		temp[i] = '\0';	//sostituisco lo \n con il terminatore
+		temp[nread - 1] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
-		llinea = getline(&temp, &llinea, stdin);
+		nread = getline(&temp, &llinea, stdin);
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
@@ -161,18 +161,19 @@ int main(int argc, char *argv[]){
 transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp = NULL;
 	size_t llinea = 0;
+	ssize_t nread;
 
 	size_t dimVett = 2;
 	*nTransizioni = 0;
 	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione));
 
-	llinea = getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
+	nread = getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
 		return 0;
 	}	//controlla che il file input inizi per TR
 
-	llinea = getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
+	nread = getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
 		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
 		if(*nTransizioni >= dimVett){
@@ -196,7 +197,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizi
 		}
 
 		(*nTransizioni)++;
-		llinea = getline(&temp, &llinea, stdin);
+		nread = getline(&temp, &llinea, stdin);
 	}
 
 	free(temp);
@@ -206,12 +207,13 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	int i;
 	char *temp = NULL;
 	size_t llinea = 0;
+	ssize_t nread;
 
-	llinea = getline(&temp, &llinea, stdin);
+	nread = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
 		sscanf(temp, "%d", &i);			//leggo un intero dalla linea appena letta e salvata in 'temp'
 		statiAccettazione[i] = 1;		//"pongo" lo stato di accettazione a 1
-		llinea = getline(&temp, &llinea, stdin);
+		nread = getline(&temp, &llinea, stdin);
 	}
 
 	free(temp);
@@ -220,8 +222,9 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 void leggiMax(int *max){
 	char *temp = NULL;
 	size_t llinea = 0;
+	ssize_t nread;
 
-	llinea = getline(&temp, &llinea, stdin);
+	nread = getline(&temp, &llinea, stdin);
 	sscanf(temp, "%d", max);
 
 	free(temp);
