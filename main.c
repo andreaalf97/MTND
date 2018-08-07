@@ -4,7 +4,6 @@
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
-#include <unistd.h>
 
 
 typedef struct transizioni_s {
@@ -89,34 +88,37 @@ void freeListaTr(listaTr *);
 
 int main(int argc, char *argv[]){
 	int i;
+
 	size_t llinea = 0;
-	char *temp = NULL;
-	//**********VARIABILI PER LETTURA INPUT**********
-	transizione *vettoreTransizioni = NULL;
-	size_t nTransizioni = 0;
-	int statoMassimo = 0;
-	int *righeCaratteri = (int *)calloc(256, sizeof(int));
-	int nCaratteriPresenti = 0;
+	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline'
+	transizione *vettoreTransizioni = NULL;	//vettore che contiene tutte le transizioni possibili
+	size_t nTransizioni = 0;	//contatore per il numero di transizioni
+	int statoMassimo = 0;	//indica quale stato e' il piu' grande
+	int *righeCaratteri = (int *)calloc(256, sizeof(int));	//indica ogni carattere in quale riga della matrice puo' essere trovato
+	//prima pero' usa lo stesso vettore per indicare se un carattere e' presente tra quelli possibili o no
+	int nCaratteriPresenti = 0;	//indica quanti caratteri diversi sono presenti
 
-	bool *statiAccettazione = NULL;
+	bool *statiAccettazione = NULL;	//indica ogni stato se e' di accettazione (1) o meno (0)
 
-	int max;
+	int max;	//indica il numero massimo di mosse effettuabili dalla macchina
 
 	listaTr **matrice = NULL;
 
 	//***********************************************
 
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
+	//legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
 
-	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
-	leggiStatiAccettazione(statiAccettazione);
+	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));	//alloco un vettore lungo quanto il numero di stati
+	leggiStatiAccettazione(statiAccettazione);	//legge gli stati di accettazione e li setta a 1 nel vettore corrispondente
 
-	leggiMax(&max);
+	leggiMax(&max);	//legge max e lo salva
 
-	creaRigheCaratteri(righeCaratteri);
+	creaRigheCaratteri(righeCaratteri);	//trasforma il vettore dei caratteri presenti in quello che indica ogni carattere a che riga corrisponde
 
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
+	//crea la matrice delle transizioni
 
 	//********************************************************
 	free(vettoreTransizioni);
@@ -130,12 +132,14 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	llinea = getline(&temp, &llinea, stdin);
+	printf("-- %s --\n", temp);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 		llinea = getline(&temp, &llinea, stdin);
+		printf("-- %s --\n", temp);
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
@@ -307,7 +311,6 @@ char executeMachine(listaTr **matrice, int nCaratteriPresenti, bool *statiAccett
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
 				//printf("Mi trovo in uno stato di accettazione\n");
-				sleep(2);
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
