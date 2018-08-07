@@ -493,14 +493,15 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 }
 
 void deleteListaInt(listaInt *head){
-	listaInt *temp;
-	if(!head)
-		return;
-	temp = head;
-	head = head->next;
-	free(temp);
-	deleteListaInt(head);
-	return;
+   listaInt *tmp;
+
+   while (head != NULL){
+	   tmp = head;
+	   head = head->next;
+	   free(tmp);
+	 }
+
+	 return;
 }
 
 void freeListaProcessi(listaProcessi *head){
