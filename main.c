@@ -145,6 +145,8 @@ int main(int argc, char *argv[]){
 		freeListaTr(matrice[i]);
 	}
 
+	free(matrice);
+
 	free(temp);
 	free(righeCaratteri);
 	free(statiAccettazione);
