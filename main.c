@@ -145,6 +145,7 @@ int main(int argc, char *argv[]){
 		freeListaTr(matrice[i]);
 	}
 
+	free(temp);
 	free(righeCaratteri);
 	free(statiAccettazione);
 	//FASE DI OUTPUT
