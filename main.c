@@ -132,7 +132,8 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	llinea = getline(&temp, &llinea, stdin);
-	printf("-- %s --\n", temp);
+	for(i = 0; temp[i] != '\0'; i++)
+		printf("-- %d --\n", (int)temp[i]);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
