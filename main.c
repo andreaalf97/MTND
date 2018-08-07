@@ -1,5 +1,3 @@
-#define _GNU_SOURCE
-
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -132,9 +130,7 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	llinea = getline(&temp, &llinea, stdin);
-	printf("-- %s --\n", temp);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
-		printf("-- %s --\n", temp);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
 		temp[i] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
