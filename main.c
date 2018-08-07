@@ -132,13 +132,7 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	llinea = getline(&temp, &llinea, stdin);
-<<<<<<< HEAD
-	for(i = 0; temp[i] != '\n'; i++);
-	temp[i] = '\0';
-
-=======
 	printf("-- %s --\n", temp);
->>>>>>> parent of cac2724... testing
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
 		printf("-- %s --\n", temp);
 		for(i = 0; temp[i] != '\n' && temp[i] != '\0'; i++);	//ciclo fino allo \n
