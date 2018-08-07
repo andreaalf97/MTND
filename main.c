@@ -78,6 +78,8 @@ listaInt *popListaInt(listaInt *, int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
 listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copia un processo
 
+void freeListaTr(listaTr *);
+
 
 
 
@@ -101,58 +103,23 @@ int main(int argc, char *argv[]){
 	int max;
 
 	listaTr **matrice = NULL;
+
 	//***********************************************
 
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 
-	/*printf("Ci sono %d transizioni\n", nTransizioni);
-	for(i = 0; i < nTransizioni; i++)
-		printf("Dallo stato %d allo stato %d ---> leggo %c scrivo %c mossa %c\n", vettoreTransizioni[i].inizio, vettoreTransizioni[i].fine, vettoreTransizioni[i].letto, vettoreTransizioni[i].scritto, vettoreTransizioni[i].mossa);
-	printf("****************************\n");
-	printf("Ci sono %d caratteri\n", nCaratteriPresenti);
-	for(i = 0; i < 256; i++)
-		if(righeCaratteri[i])
-			printf("%c\n", (char)i);
-	printf("****************************\n");
-	printf("Stato massimo: %d\n", statoMassimo);
-	printf("****************************\n");*/
-
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));
 	leggiStatiAccettazione(statiAccettazione);
 
-	/*printf("Stati accettazione:\n");
-	for(i = 0; i < statoMassimo+1; i++)
-		if(statiAccettazione[i])
-			printf("%d\n", i);
-	printf("****************************\n");*/
-
 	leggiMax(&max);
 
-	//printf("Max: %d\n****************************\n", max);
-
 	creaRigheCaratteri(righeCaratteri);
-
-	/*for(i = 0; i < 256; i++)
-		if(righeCaratteri[i] >= 0)
-			printf("Il carattere %c si trova alla riga %d\n", (char)i, righeCaratteri[i]);
-	printf("****************************\n");
-	*/
 
 
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 
-	/*printf("Matrice creata\n");
-	for(i = 0; i < statoMassimo+1; i++)
-		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(i, j, nCaratteriPresenti)]){
-				printf("Dallo stato %d, leggendo %c:\n", i, rigaToCarattere(j, righeCaratteri));
-				stampaLista(matrice[pos(i, j, nCaratteriPresenti)]);
-				printf("*************************************\n");
-			}
-		}*/
-
 	//********************************************************
-
+	free(vettoreTransizioni);
 
 
 
@@ -161,14 +128,6 @@ int main(int argc, char *argv[]){
 		fprintf(stderr, "Non ho letto run\n");
 		return 0;
 	}	//controlla che la riga letta sia run
-
-		//dovrebbe corrispondere alla prima stringa in ingresso
-
-	//ORA E' TUTTO PRONTO PER L'ESECUZIONE
-	//matrice = 						matrice che contiene per ogni i(stato) e j (carattere letto) la lista delle transizioni
-	//											che devo possono essere eseguite
-	//statiAccettazione = 	vettore di 0 e 1 che e' a 1 solo se i (indice) e' uno stato di accettazione
-	//max = 								variabile che contiene il numero massimo di mosse effettuabili dalla macchina di Touring.
 
 	llinea = getline(&temp, &llinea, stdin);
 	while(!feof(stdin) && strcmp("\n", temp) != 0){
@@ -182,6 +141,12 @@ int main(int argc, char *argv[]){
 	//printf("Eseguo stringa %s\n", temp);
 	printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
+	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
+		freeListaTr(matrice[i]);
+	}
+
+	free(righeCaratteri);
+	free(statiAccettazione);
 	//FASE DI OUTPUT
 	return 0;
 }
@@ -682,6 +647,18 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
+}
+
+void freeListaTr(listaTr *head){
+   listaTr *tmp;
+
+   while (head != NULL){
+	   tmp = head;
+	   head = head->next;
+	   free(tmp);
+    }
+
+		return;
 }
 //*****************TESTING*****************************************
 
