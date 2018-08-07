@@ -479,6 +479,8 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		//printf("Liberato il nastro destro\n");
 		deleteListaInt(temp->p->nastro->whoShares);
 		//printf("Liberato la lista condivisori\n");
+		free(temp->p->nastro);
+		//libero la struttura nastro
 		free(temp->p);
 		//printf("Liberato il processo\n");
 		free(temp);
@@ -488,7 +490,6 @@ listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
 		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
 	}
 
-	//printf("Ora processiAttiviHead vale %p\n", processiAttiviHead);
 	return processiAttiviHead;
 }
 
