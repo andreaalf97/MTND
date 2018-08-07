@@ -110,7 +110,6 @@ int main(int argc, char *argv[]){
 	creaRigheCaratteri(righeCaratteri);	//trasforma il vettore dei caratteri presenti in quello che indica ogni carattere a che riga corrisponde
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//crea la matrice delle transizioni
-
 	free(vettoreTransizioni);
 
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));	//alloco un vettore lungo quanto il numero di stati
@@ -251,9 +250,9 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, int nT
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
 	dim = (statoMassimo + 1) * nCaratteriPresenti;
-	matrice = (listaTr **)malloc(dim * sizeof(listaTr *));
-	for(i = 0; i < dim; i++)
-		matrice[i] = NULL;
+	matrice = (listaTr **)calloc(dim, sizeof(listaTr *));
+	// for(i = 0; i < dim; i++)
+	// 	matrice[i] = NULL;
 
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
 	//tale transizione.
