@@ -88,7 +88,7 @@ int main(int argc, char *argv[]){
 	int i;
 
 	size_t llinea = 0;
-	ssize_t nread;
+	size_t nread;
 	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline'
 	transizione *vettoreTransizioni = NULL;	//vettore che contiene tutte le transizioni possibili
 	size_t nTransizioni = 0;	//contatore per il numero di transizioni
@@ -161,7 +161,7 @@ int main(int argc, char *argv[]){
 transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp = NULL;
 	size_t llinea = 0;
-	ssize_t nread;
+	size_t nread;
 
 	size_t dimVett = 2;
 	*nTransizioni = 0;
@@ -207,7 +207,7 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	int i;
 	char *temp = NULL;
 	size_t llinea = 0;
-	ssize_t nread;
+	size_t nread;
 
 	nread = getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
@@ -222,7 +222,7 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 void leggiMax(int *max){
 	char *temp = NULL;
 	size_t llinea = 0;
-	ssize_t nread;
+	size_t nread;
 
 	nread = getline(&temp, &llinea, stdin);
 	sscanf(temp, "%d", max);
