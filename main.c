@@ -301,17 +301,23 @@ char executeMachine(listaTr **matrice, int nCaratteriPresenti, bool *statiAccett
 
 
 
-	while(processiAttiviHead){
-		//printf("La lista processi attivi non e' vuota\n");
-		indice = processiAttiviHead;
-		while(indice){
-			indiceProcesso = indice->p;
-			//printf("Sto eseguendo il processo %d\n", indiceProcesso->pid);
+	while(processiAttiviHead){ //finche' ci sono processi attivi
+		indice = processiAttiviHead; //punta all'elemento di tipo listaProcessi che sto considerando
+		while(indice){	//scorri tutta la lista dei processi attivi
+			indiceProcesso = indice->p;	//punta alla struttura 'processo' che sto considerando
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
 				//printf("Mi trovo in uno stato di accettazione\n");
 				freeListaProcessi(processiAttiviHead);
 				return '1';
+			}
+
+			if(indiceProcesso->nMosseFatte > max){
+				//printf("Ho eseguito piu' mosse di max\n");
+				exitStatus = 'U';
+				//indice = indice->next;
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				break;
 			}
 
 
@@ -322,66 +328,39 @@ char executeMachine(listaTr **matrice, int nCaratteriPresenti, bool *statiAccett
 			headTransizione = matrice[posizione]; //testa della lista di transizioni
 
 
+			if(headTransizione){	//se esiste almeno una transizione possibile
+				indiceTransizione = headTransizione->next;
+				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
+					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
+					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione);
+					newPidCounter++;
 
-			if(indiceProcesso->nMosseFatte > max){
-				//printf("Ho eseguito piu' mosse di max\n");
-				exitStatus = 'U';
-				indice = indice->next;
+					indiceTransizione = indiceTransizione->next;
+				}
+
+				//eseguo la transizione:
+				if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){	//se devo scrivere ma il nastro e' in condivisione lo copio
+					//COW
+					popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
+
+					copyOwnNastro(indiceProcesso);
+				}
+
+				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
+				muoviTestina(indiceProcesso, headTransizione->mossa); //sposto la testina
+
+				indiceProcesso->stato = headTransizione->fine; //cambio lo stato del processo
+			}
+			else{	//se non ci sono transizioni possibili
+				//indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-				//printf("**************************\n");
-				//stampaListaProcessiAttivi(processiAttiviHead);
-				//printf("**************************\n");
 				break;
 			}
-			else{
-				if(headTransizione){
-					//printf("Ho trovato una transizione da eseguire\n");
-					indiceTransizione = headTransizione->next;
-					while(indiceTransizione){
-						//printf("C'e' una mossa non deterministica\n");
-						//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione);
-						//printf("Ho copiato il processo\n");
-						newPidCounter++;
-						//...
-						indiceTransizione = indiceTransizione->next;
-					}
-
-					//eseguo la transizione:
-					//printf("Eseguo la transizione:\n");
-					if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){
-						//printf("Il nastro e' condiviso\n");
-						popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
-						//printf("Eseguito popWhoShares\n");
-						copyOwnNastro(indiceProcesso);
-						//printf("Copiato il mio nastro\n");
-					}
-
-					scriviSuNastro(indiceProcesso, headTransizione->scritto);
-					//printf("Ho scritto %c sul mio nastro\n", headTransizione->scritto);
-					muoviTestina(indiceProcesso, headTransizione->mossa);
-					//printf("Ho mosso la testina: %c\n", headTransizione->mossa);
-
-					indiceProcesso->stato = headTransizione->fine;
-				}
-				else{
-					//printf("Non ci sono transizioni da eseguire\n");
-					indice = indice->next;
-					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-					//printf("**************************\n");
-					//stampaListaProcessiAttivi(processiAttiviHead);
-					//printf("**************************\n");
-					break;
-				}
-			}
 
 
 
-			(indiceProcesso->nMosseFatte)++;
+			(indiceProcesso->nMosseFatte)++; //se ho eseguito una mossa aggiorno il contatore del processo
 			indice = indice->next;
-			//printf("**************************\n");
-			//stampaListaProcessiAttivi(processiAttiviHead);
-			//printf("**************************\n");
 		}
 	}
 
