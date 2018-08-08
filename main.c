@@ -509,12 +509,14 @@ void freeElementoListaProcessi(listaProcessi *el){
 		el->p->nastro->left = NULL;
 		free(el->p->nastro->right);
 		el->p->nastro->right = NULL;
+		deleteListaInt(el->p->nastro->whoShares);
+		el->p->nastro->whoShares = NULL;
+		free(el->p->nastro);
+		el->p->nastro = NULL;
 	}
+	else
+		el->p->nastro->whoShares = popListaInt(el->p->nastro->whoShares, el->p->pid);
 
-	deleteListaInt(el->p->nastro->whoShares);
-	el->p->nastro->whoShares = NULL;
-	free(el->p->nastro);
-	el->p->nastro = NULL;
 	free(el->p);
 	el->p = NULL;
 	free(el);
