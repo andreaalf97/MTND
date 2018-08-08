@@ -493,7 +493,7 @@ listaProcessi *popListaProcessi(listaProcessi *head, processo *p)
     }
 
     // If key was not present in linked list
-    if (temp == NULL) return;
+    if (temp == NULL) return head;
 
     // Unlink the node from linked list
     prev->next = temp->next;
@@ -516,7 +516,7 @@ void freeElementoListaProcessi(listaProcessi *el){
 	free(el->p->nastro);
 	el->p->nastro = NULL;
 	free(el->p);
-	p = NULL;
+	el->p = NULL;
 	free(el);
 	el = NULL;
 
