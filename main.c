@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
-	if(strcmp("\n", temp) != 0)
+	if(strcmp("\n\n", temp) != 0)
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
 	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
