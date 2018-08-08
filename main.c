@@ -470,41 +470,56 @@ listaProcessi *pushListaProcessi(listaProcessi *head, processo *p){
 	return head;
 }
 
-listaProcessi *popListaProcessi(listaProcessi *processiAttiviHead, processo *p){
-	listaProcessi *temp;
+listaProcessi *popListaProcessi(listaProcessi *head, processo *p)
+{
+    // Store head node
+    listaProcessi *temp = head;
+		listaProcessi *prev;
 
-	if(processiAttiviHead == NULL)
-		return processiAttiviHead;
+    // If head node itself holds the key to be deleted
+    if (temp != NULL && temp->p == p)
+    {
+        head = head->next;	// Changed head
+        freeElementoListaProcessi(temp);	// free old head
+        return head;
+    }
 
-	if(processiAttiviHead->p == p){
-		//printf("Sto eliminando il processo %d dalla lista processi attivi -- processiAttiviHead: %p\n", p->pid, processiAttiviHead);
-		temp = processiAttiviHead;
-		processiAttiviHead = processiAttiviHead->next;
+    // Search for the key to be deleted, keep track of the
+    // previous node as we need to change 'prev->next'
+    while (temp != NULL && temp->p != p){
+        prev = temp;
+        temp = temp->next;
+    }
 
-		free(temp->p->nastro->left);
-		temp->p->nastro->left = NULL;
-		//printf("Liberato il nastro sinistro\n");
-		free(temp->p->nastro->right);
-		temp->p->nastro->right = NULL;
-		//printf("Liberato il nastro destro\n");
-		deleteListaInt(temp->p->nastro->whoShares);
-		temp->p->nastro->whoShares = NULL;
-		//printf("Liberato la lista condivisori\n");
-		free(temp->p->nastro);
-		temp->p->nastro = NULL;
-		//libero la struttura nastro
-		free(temp->p);
-		temp->p = NULL;
-		//printf("Liberato il processo\n");
-		free(temp);
-		temp = NULL;
-		//printf("Liberato l'elemento della lista\n");
+    // If key was not present in linked list
+    if (temp == NULL) return;
+
+    // Unlink the node from linked list
+    prev->next = temp->next;
+
+    freeElementoListaProcessi(temp);  // Free memory
+		return head;
+}
+
+void freeElementoListaProcessi(listaProcessi *el){
+
+	if(el->p->nastro->whoShares->pid == el->p->pid && el->p->nastro->whoShares->next == NULL){ //se e' l'unico condivisore
+		free(el->p->nastro->left);
+		el->p->nastro->left = NULL;
+		free(el->p->nastro->right);
+		el->p->nastro->right = NULL;
 	}
-	else{
-		processiAttiviHead->next = popListaProcessi(processiAttiviHead->next, p);
-	}
 
-	return processiAttiviHead;
+	deleteListaInt(el->p->nastro->whoShares);
+	el->p->nastro->whoShares = NULL;
+	free(el->p->nastro);
+	el->p->nastro = NULL;
+	free(el->p);
+	p = NULL;
+	free(el);
+	el = NULL;
+
+	return;
 }
 
 void deleteListaInt(listaInt *head){
@@ -534,7 +549,7 @@ char carattereLetto(processo *p){
 }
 
 bool nastroIsShared(processo *p){
-	if((p->nastro->whoShares)->next)
+	if(p->nastro->whoShares->next)
 		return 1;
 	return 0;
 }
