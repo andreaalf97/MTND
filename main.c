@@ -63,6 +63,7 @@ nstr *createNastroInit(nstr *, char *, int);	//data la stringa input e MAX, cost
 listaInt *pushListaInt(listaInt *, int);	//push nella lista whoShares
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
+void freeElementoListaProcessi(listaProcessi *);
 void deleteListaInt(listaInt *);	//elimina la lista whoShares
 
 void freeListaProcessi(listaProcessi *);	//elimina la lista dei processi attivi
