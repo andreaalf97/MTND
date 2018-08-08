@@ -49,8 +49,8 @@ int main(int argc, char *argv[]){
     matrice[stato][(int)carattere] = matrice[stato][(int)carattere] + 1;
     if(matrice[stato][(int)carattere] > maxDepth){
       maxDepth = matrice[stato][(int)carattere];
-      statoMax = i;
-      carattereMax = (char)j;
+      statoMax = stato;
+      carattereMax = carattere;
     }
     nread = getline(&temp, &len, fp);
   }
