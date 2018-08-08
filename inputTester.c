@@ -2,7 +2,7 @@
 #include<stdlib.h>
 
 int main(int argc, char *argv[]){
-  int str = argv[1];
+  char str = argv[1];
   printf("%s\n", str);
 
   return 0;
