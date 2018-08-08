@@ -41,6 +41,10 @@ int main(int argc, char *argv[]){
     nread = getline(&temp, &len, fp);
   }
 
+  for(i = 0; i < NSTATI; i++)
+    for(j = 0; j < 256; j++)
+      if(matrice[i][j] > 0)
+        printf("Dallo stato %d, leggendo %c, ci sono %d transizioni\n", i, (char)j, matrice[i][j]);
 
   fclose(fp);
   return 0;
