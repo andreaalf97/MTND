@@ -44,7 +44,7 @@ typedef struct listaProcessi_s {
 
 unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
 listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
-char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *);	//esegue la macchina
+char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
 
 //FUNZIONI DI LETTURA INPUT:
 transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *);
@@ -72,11 +72,11 @@ void freeListaProcessi(listaProcessi *);	//elimina la lista dei processi attivi
 char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina sul nastro
 bool nastroIsShared(processo *);	//1: il nastro è condiviso, altrimenti 0
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
-void muoviTestina(processo *, char);	//sposta la testina
+void muoviTestina(processo *, char, size_t);	//sposta la testina
 void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
 listaInt *popListaInt(listaInt *, unsigned int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t);	//copia un processo
 
 void freeListaTr(listaTr *);
 
@@ -135,8 +135,14 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	while((nread = getline(&temp, &llinea, stdin)) != -1 && temp[0] != '\n'){
-		temp[nread - 1] = '\0';	//sostituisco lo \n con il terminatore
-		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		if(temp[nread - 1] == '\n'){
+			nread--;
+			temp[nread] = '\0';	//sostituisco lo \n con il terminatore
+		}
+		else
+			temp[nread] = '\0';
+		printf("%s\n", temp);
+		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
 
 	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
@@ -271,7 +277,7 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, unsign
 
 //*****************************************************************
 //funzione che esegue la macchina sull'input dato
-char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri){
+char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri, size_t dimensioneStringa){
 	char exitStatus = '0';
 
 	//****************************
@@ -334,7 +340,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione);
+					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa);
 					newPidCounter++;
 
 					indiceTransizione = indiceTransizione->next;
@@ -349,7 +355,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				}
 
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
-				muoviTestina(indiceProcesso, headTransizione->mossa); //sposto la testina
+				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa); //sposto la testina
 
 				indiceProcesso->stato = headTransizione->fine; //cambio lo stato del processo
 			}
@@ -558,12 +564,17 @@ void scriviSuNastro(processo *p, char toWrite){
 	return;
 }
 
-void muoviTestina(processo *p, char mossa){
+void muoviTestina(processo *p, char mossa, size_t dimensioneStringa){
+	int i;
 	if(mossa == 'R'){
 		(p->testina)++;
 		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){
+			i = p->nastro->dimRight;
 			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
 			p->nastro->dimRight = (p->nastro->dimRight) * 2;
+
+			for(; i < dimensioneStringa && ; i++)
+				(p->nastro->right)[i] =
 		}
 		return;
 	}
@@ -637,7 +648,7 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, dimensioneStringa){
 	processo *nuovo;
 	char carattere;
 
@@ -664,7 +675,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 	}
 
 	nuovo->stato = transizione->fine;
-	muoviTestina(nuovo, transizione->mossa);
+	muoviTestina(nuovo, transizione->mossa, dimensioneStringa);
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
