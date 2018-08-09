@@ -134,9 +134,7 @@ int main(int argc, char *argv[]){
 
 	while((nread = getline(&temp, &llinea, stdin)) != -1 && temp[0] != '\n'){
 		temp[nread - 1] = '\0';	//sostituisco lo \n con il terminatore
-		//printf("Eseguo stringa %s\n", temp);
-		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
-		printf("--%s--\n", temp);
+		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 	}
 
 	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
