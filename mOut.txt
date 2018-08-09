@@ -1,0 +1,1479 @@
+--------------------------------------------------------------------------------
+Command:            ./a.out
+Massif arguments:   (none)
+ms_print arguments: massif.out.8349
+--------------------------------------------------------------------------------
+
+
+    KB
+73.28^       ################################################################ 
+     |       #                                                                
+     |       #                                                                
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |       #                                                               :
+     |:      #                                                               @
+     |:      #                                                               @
+     |:      #                                                               @
+     |:::::::#                                                               @
+     |:      #                                                               @
+     |:      #                                                               @
+   0 +----------------------------------------------------------------------->Gi
+     0                                                                   2.309
+
+Number of snapshots: 90
+ Detailed snapshots: [4, 13, 40, 48, 50, 52, 53, 54, 55, 56, 57, 58, 59, 60, 61, 62, 63, 64, 65, 66, 67, 68 (peak), 78, 88]
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  0              0                0                0             0            0
+  1        443,866           16,400           15,498           902            0
+  2        896,913           22,832           21,770         1,062            0
+  3      1,198,562           14,616           13,986           630            0
+  4    249,916,035           12,408           11,850           558            0
+95.50% (11,850B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->33.01% (4,096B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->33.01% (4,096B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->33.01% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|     ->33.01% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|       ->33.01% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|         ->33.01% (4,096B) 0x108A65: main (main.c:111)
+|           
+->24.76% (3,072B) 0x109F79: copyOwnNastro (main.c:649)
+| ->16.51% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+| | ->16.51% (2,048B) 0x1094D3: executeMachine (main.c:343)
+| |   ->16.51% (2,048B) 0x108BA9: main (main.c:145)
+| |     
+| ->08.25% (1,024B) 0x109529: executeMachine (main.c:354)
+|   ->08.25% (1,024B) 0x108BA9: main (main.c:145)
+|     
+->16.51% (2,048B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->16.51% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+| | ->16.51% (2,048B) 0x1094D3: executeMachine (main.c:343)
+| |   ->16.51% (2,048B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->08.25% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->05.29% (656B) 0x109604: pushTransizione (main.c:387)
+| ->05.29% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->05.29% (656B) 0x108A99: main (main.c:114)
+|     
+->04.51% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->04.51% (560B) 0x108A99: main (main.c:114)
+|   
+->03.18% (394B) in 12 places, all below massif's threshold (1.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+  5    250,312,059           15,816           14,018         1,798            0
+  6    250,565,461           20,072           18,202         1,870            0
+  7    250,876,509           17,480           15,802         1,678            0
+  8    251,290,985           19,824           18,034         1,790            0
+  9    251,632,195           19,984           18,122         1,862            0
+ 10    251,964,971           15,320           13,682         1,638            0
+ 11    252,505,651           17,152           15,602         1,550            0
+ 12    252,897,553           17,400           15,762         1,638            0
+ 13    253,131,531           21,624           19,930         1,694            0
+92.17% (19,930B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->23.68% (5,120B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->14.21% (3,072B) 0x109529: executeMachine (main.c:354)
+| | ->14.21% (3,072B) 0x108BA9: main (main.c:145)
+| |   
+| ->09.47% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+|   ->09.47% (2,048B) 0x1094D3: executeMachine (main.c:343)
+|     ->09.47% (2,048B) 0x108BA9: main (main.c:145)
+|       
+->23.68% (5,120B) 0x109F79: copyOwnNastro (main.c:649)
+| ->14.21% (3,072B) 0x109529: executeMachine (main.c:354)
+| | ->14.21% (3,072B) 0x108BA9: main (main.c:145)
+| |   
+| ->09.47% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+|   ->09.47% (2,048B) 0x1094D3: executeMachine (main.c:343)
+|     ->09.47% (2,048B) 0x108BA9: main (main.c:145)
+|       
+->23.68% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->23.68% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->18.94% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->18.94% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->18.94% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->18.94% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->04.74% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->04.74% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->04.74% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->04.74% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->04.74% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->04.11% (888B) 0x10A066: copyProcesso (main.c:667)
+| ->04.11% (888B) 0x1094D3: executeMachine (main.c:343)
+|   ->04.11% (888B) 0x108BA9: main (main.c:145)
+|     
+->03.03% (656B) 0x109604: pushTransizione (main.c:387)
+| ->03.03% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->03.03% (656B) 0x108A99: main (main.c:114)
+|     
+->02.66% (576B) 0x109837: pushListaInt (main.c:443)
+| ->02.37% (512B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->02.37% (512B) 0x1094D3: executeMachine (main.c:343)
+| |   ->02.37% (512B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.30% (64B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->02.66% (576B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->02.66% (576B) 0x10A176: copyProcesso (main.c:692)
+| | ->02.66% (576B) 0x1094D3: executeMachine (main.c:343)
+| |   ->02.66% (576B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->02.59% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->02.59% (560B) 0x108A99: main (main.c:114)
+|   
+->01.34% (290B) in 9 places, all below massif's threshold (1.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 14    253,601,610           12,064           10,882         1,182            0
+ 15    253,892,993           12,064           10,882         1,182            0
+ 16    254,376,371           18,904           17,458         1,446            0
+ 17    254,782,096           16,704           15,314         1,390            0
+ 18    255,335,942           18,728           17,346         1,382            0
+ 19    255,617,048           14,320           13,066         1,254            0
+ 20    255,955,434           15,040           14,258           782            0
+ 21    256,371,193           13,704           12,658         1,046            0
+ 22    256,635,403           16,032           14,866         1,166            0
+ 23    257,149,205           17,856           16,778         1,078            0
+ 24    257,462,130           10,656            9,986           670            0
+ 25    257,766,604           14,824           14,122           702            0
+ 26    258,164,473           12,368           11,818           550            0
+ 27    258,441,847           15,008           13,498         1,510            0
+ 28    258,800,518           15,024           13,514         1,510            0
+ 29    259,276,718           10,480            9,874           606            0
+ 30    259,645,066           12,544           11,178         1,366            0
+ 31    259,907,421           12,152           10,938         1,214            0
+ 32    260,297,279           19,032           17,530         1,502            0
+ 33    260,578,990           16,624           15,266         1,358            0
+ 34    260,860,512           14,104           12,922         1,182            0
+ 35    261,317,708           11,184           10,322           862            0
+ 36    261,734,563           11,792           10,706         1,086            0
+ 37    262,148,454           15,896           14,794         1,102            0
+ 38    262,412,485           13,528           12,546           982            0
+ 39    262,874,681           10,656            9,986           670            0
+ 40    263,192,204           12,864           12,122           742            0
+94.23% (12,122B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->39.80% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->39.80% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->31.84% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->31.84% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->31.84% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->31.84% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->07.96% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->07.96% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->07.96% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->07.96% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->15.92% (2,048B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->07.96% (1,024B) 0x109529: executeMachine (main.c:354)
+| | ->07.96% (1,024B) 0x108BA9: main (main.c:145)
+| |   
+| ->07.96% (1,024B) 0x10A11D: copyProcesso (main.c:682)
+|   ->07.96% (1,024B) 0x1094D3: executeMachine (main.c:343)
+|     ->07.96% (1,024B) 0x108BA9: main (main.c:145)
+|       
+->15.92% (2,048B) 0x109F79: copyOwnNastro (main.c:649)
+| ->07.96% (1,024B) 0x109529: executeMachine (main.c:354)
+| | ->07.96% (1,024B) 0x108BA9: main (main.c:145)
+| |   
+| ->07.96% (1,024B) 0x10A11D: copyProcesso (main.c:682)
+|   ->07.96% (1,024B) 0x1094D3: executeMachine (main.c:343)
+|     ->07.96% (1,024B) 0x108BA9: main (main.c:145)
+|       
+->07.96% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->05.10% (656B) 0x109604: pushTransizione (main.c:387)
+| ->05.10% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->05.10% (656B) 0x108A99: main (main.c:114)
+|     
+->04.35% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->04.35% (560B) 0x108A99: main (main.c:114)
+|   
+->01.68% (216B) 0x10A066: copyProcesso (main.c:667)
+| ->01.68% (216B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.68% (216B) 0x108BA9: main (main.c:145)
+|     
+->01.51% (194B) in 9 places, all below massif's threshold (1.00%)
+| 
+->01.99% (256B) in 2+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 41    263,652,344           19,208           18,394           814            0
+ 42    264,152,617           14,848           13,402         1,446            0
+ 43    264,573,173           19,104           17,586         1,518            0
+ 44    264,790,653           21,112           19,594         1,518            0
+ 45    265,167,559           20,216           19,034         1,182            0
+ 46    265,357,685           25,344           23,770         1,574            0
+ 47    265,802,355           29,592           27,946         1,646            0
+ 48    266,241,530           36,184           34,354         1,830            0
+94.94% (34,354B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->33.96% (12,288B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->25.47% (9,216B) 0x109529: executeMachine (main.c:354)
+| | ->25.47% (9,216B) 0x108BA9: main (main.c:145)
+| |   
+| ->08.49% (3,072B) 0x10A11D: copyProcesso (main.c:682)
+|   ->08.49% (3,072B) 0x1094D3: executeMachine (main.c:343)
+|     ->08.49% (3,072B) 0x108BA9: main (main.c:145)
+|       
+->33.96% (12,288B) 0x109F79: copyOwnNastro (main.c:649)
+| ->25.47% (9,216B) 0x109529: executeMachine (main.c:354)
+| | ->25.47% (9,216B) 0x108BA9: main (main.c:145)
+| |   
+| ->08.49% (3,072B) 0x10A11D: copyProcesso (main.c:682)
+|   ->08.49% (3,072B) 0x1094D3: executeMachine (main.c:343)
+|     ->08.49% (3,072B) 0x108BA9: main (main.c:145)
+|       
+->14.15% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->14.15% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->11.32% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->11.32% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->11.32% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->11.32% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.83% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.83% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.83% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.83% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.83% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->02.26% (816B) 0x10A066: copyProcesso (main.c:667)
+| ->02.26% (816B) 0x1094D3: executeMachine (main.c:343)
+|   ->02.26% (816B) 0x108BA9: main (main.c:145)
+|     
+->01.81% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.81% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.81% (656B) 0x108A99: main (main.c:114)
+|     
+->01.55% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.55% (560B) 0x108A99: main (main.c:114)
+|   
+->01.50% (544B) 0x109837: pushListaInt (main.c:443)
+| ->01.33% (480B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.33% (480B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.33% (480B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.18% (64B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.50% (544B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.50% (544B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.50% (544B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.50% (544B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.06% (384B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.06% (384B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.36% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 49    266,352,831           34,128           32,290         1,838            0
+ 50    266,430,035           38,408           36,490         1,918            0
+95.01% (36,490B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->34.66% (13,312B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->26.66% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->26.66% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->08.00% (3,072B) 0x10A11D: copyProcesso (main.c:682)
+|   ->08.00% (3,072B) 0x1094D3: executeMachine (main.c:343)
+|     ->08.00% (3,072B) 0x108BA9: main (main.c:145)
+|       
+->34.66% (13,312B) 0x109F79: copyOwnNastro (main.c:649)
+| ->26.66% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->26.66% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->08.00% (3,072B) 0x10A11D: copyProcesso (main.c:682)
+|   ->08.00% (3,072B) 0x1094D3: executeMachine (main.c:343)
+|     ->08.00% (3,072B) 0x108BA9: main (main.c:145)
+|       
+->13.33% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->13.33% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->10.66% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->10.66% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->10.66% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->10.66% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.67% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.67% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.67% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.67% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.67% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->02.19% (840B) 0x10A066: copyProcesso (main.c:667)
+| ->02.19% (840B) 0x1094D3: executeMachine (main.c:343)
+|   ->02.19% (840B) 0x108BA9: main (main.c:145)
+|     
+->01.71% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.71% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.71% (656B) 0x108A99: main (main.c:114)
+|     
+->01.46% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.46% (560B) 0x108A99: main (main.c:114)
+|   
+->01.46% (560B) 0x109837: pushListaInt (main.c:443)
+| ->01.29% (496B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.29% (496B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.29% (496B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.17% (64B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.46% (560B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.46% (560B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.46% (560B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.46% (560B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.08% (416B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.08% (416B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.34% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 51    266,647,230           38,072           36,306         1,766            0
+ 52    266,774,986           40,112           38,346         1,766            0
+95.60% (38,346B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->35.74% (14,336B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->25.53% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->25.53% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->10.21% (4,096B) 0x10A11D: copyProcesso (main.c:682)
+|   ->10.21% (4,096B) 0x1094D3: executeMachine (main.c:343)
+|     ->10.21% (4,096B) 0x108BA9: main (main.c:145)
+|       
+->35.74% (14,336B) 0x109F79: copyOwnNastro (main.c:649)
+| ->25.53% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->25.53% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->10.21% (4,096B) 0x10A11D: copyProcesso (main.c:682)
+|   ->10.21% (4,096B) 0x1094D3: executeMachine (main.c:343)
+|     ->10.21% (4,096B) 0x108BA9: main (main.c:145)
+|       
+->12.76% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->12.76% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->10.21% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->10.21% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->10.21% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->10.21% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.55% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.55% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.55% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.55% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.55% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.85% (744B) 0x10A066: copyProcesso (main.c:667)
+| ->01.85% (744B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.85% (744B) 0x108BA9: main (main.c:145)
+|     
+->01.64% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.64% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.64% (656B) 0x108A99: main (main.c:114)
+|     
+->01.40% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.40% (560B) 0x108A99: main (main.c:114)
+|   
+->01.24% (496B) 0x109837: pushListaInt (main.c:443)
+| ->01.12% (448B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.12% (448B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.12% (448B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.12% (48B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.24% (496B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.24% (496B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.24% (496B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.24% (496B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.12% (448B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.12% (448B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.32% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 53    266,816,636           42,408           40,538         1,870            0
+95.59% (40,538B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->36.22% (15,360B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->24.15% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->24.15% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->12.07% (5,120B) 0x10A11D: copyProcesso (main.c:682)
+|   ->12.07% (5,120B) 0x1094D3: executeMachine (main.c:343)
+|     ->12.07% (5,120B) 0x108BA9: main (main.c:145)
+|       
+->36.22% (15,360B) 0x109F79: copyOwnNastro (main.c:649)
+| ->24.15% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->24.15% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->12.07% (5,120B) 0x10A11D: copyProcesso (main.c:682)
+|   ->12.07% (5,120B) 0x1094D3: executeMachine (main.c:343)
+|     ->12.07% (5,120B) 0x108BA9: main (main.c:145)
+|       
+->12.07% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->12.07% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->09.66% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->09.66% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->09.66% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->09.66% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.41% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.41% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.41% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.41% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.41% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.87% (792B) 0x10A066: copyProcesso (main.c:667)
+| ->01.87% (792B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.87% (792B) 0x108BA9: main (main.c:145)
+|     
+->01.55% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.55% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.55% (656B) 0x108A99: main (main.c:114)
+|     
+->01.32% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.32% (560B) 0x108A99: main (main.c:114)
+|   
+->01.25% (528B) 0x109837: pushListaInt (main.c:443)
+| ->01.09% (464B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.09% (464B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.09% (464B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.15% (64B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.25% (528B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.25% (528B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.25% (528B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.25% (528B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.13% (480B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.13% (480B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.31% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 54    266,975,530           44,616           42,674         1,942            0
+95.65% (42,674B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->36.72% (16,384B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->22.95% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->22.95% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->13.77% (6,144B) 0x10A11D: copyProcesso (main.c:682)
+|   ->13.77% (6,144B) 0x1094D3: executeMachine (main.c:343)
+|     ->13.77% (6,144B) 0x108BA9: main (main.c:145)
+|       
+->36.72% (16,384B) 0x109F79: copyOwnNastro (main.c:649)
+| ->22.95% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->22.95% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->13.77% (6,144B) 0x10A11D: copyProcesso (main.c:682)
+|   ->13.77% (6,144B) 0x1094D3: executeMachine (main.c:343)
+|     ->13.77% (6,144B) 0x108BA9: main (main.c:145)
+|       
+->11.48% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->11.48% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->09.18% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->09.18% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->09.18% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->09.18% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.30% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.30% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.30% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.30% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.30% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.83% (816B) 0x10A066: copyProcesso (main.c:667)
+| ->01.83% (816B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.83% (816B) 0x108BA9: main (main.c:145)
+|     
+->01.47% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.47% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.47% (656B) 0x108A99: main (main.c:114)
+|     
+->01.26% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.26% (560B) 0x108A99: main (main.c:114)
+|   
+->01.22% (544B) 0x109837: pushListaInt (main.c:443)
+| ->01.08% (480B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.08% (480B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.08% (480B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.14% (64B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.22% (544B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.22% (544B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.22% (544B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.22% (544B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.15% (512B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.15% (512B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.29% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 55    267,127,614           46,864           44,866         1,998            0
+95.74% (44,866B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->37.15% (17,408B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->21.85% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->21.85% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->15.30% (7,168B) 0x10A11D: copyProcesso (main.c:682)
+|   ->15.30% (7,168B) 0x1094D3: executeMachine (main.c:343)
+|     ->15.30% (7,168B) 0x108BA9: main (main.c:145)
+|       
+->37.15% (17,408B) 0x109F79: copyOwnNastro (main.c:649)
+| ->21.85% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->21.85% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->15.30% (7,168B) 0x10A11D: copyProcesso (main.c:682)
+|   ->15.30% (7,168B) 0x1094D3: executeMachine (main.c:343)
+|     ->15.30% (7,168B) 0x108BA9: main (main.c:145)
+|       
+->10.93% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->10.93% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->08.74% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->08.74% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->08.74% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->08.74% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.19% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.19% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.19% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.19% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.19% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.84% (864B) 0x10A066: copyProcesso (main.c:667)
+| ->01.84% (864B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.84% (864B) 0x108BA9: main (main.c:145)
+|     
+->01.40% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.40% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.40% (656B) 0x108A99: main (main.c:114)
+|     
+->01.23% (576B) 0x109837: pushListaInt (main.c:443)
+| ->01.02% (480B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.02% (480B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.02% (480B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.20% (96B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.23% (576B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.23% (576B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.23% (576B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.23% (576B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.19% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.19% (560B) 0x108A99: main (main.c:114)
+|   
+->01.16% (544B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.16% (544B) in 2 places, all below massif's threshold (1.00%)
+|   
+->00.28% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 56    267,270,213           49,104           47,002         2,102            0
+95.72% (47,002B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->37.54% (18,432B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->20.85% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->20.85% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->16.68% (8,192B) 0x10A11D: copyProcesso (main.c:682)
+|   ->16.68% (8,192B) 0x1094D3: executeMachine (main.c:343)
+|     ->16.68% (8,192B) 0x108BA9: main (main.c:145)
+|       
+->37.54% (18,432B) 0x109F79: copyOwnNastro (main.c:649)
+| ->20.85% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->20.85% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->16.68% (8,192B) 0x10A11D: copyProcesso (main.c:682)
+|   ->16.68% (8,192B) 0x1094D3: executeMachine (main.c:343)
+|     ->16.68% (8,192B) 0x108BA9: main (main.c:145)
+|       
+->10.43% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->10.43% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->08.34% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->08.34% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->08.34% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->08.34% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.09% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.09% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.09% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.09% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.09% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.81% (888B) 0x10A066: copyProcesso (main.c:667)
+| ->01.81% (888B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.81% (888B) 0x108BA9: main (main.c:145)
+|     
+->01.34% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.34% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.34% (656B) 0x108A99: main (main.c:114)
+|     
+->01.21% (592B) 0x109837: pushListaInt (main.c:443)
+| ->01.21% (592B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.21% (592B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.21% (592B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.21% (592B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.21% (592B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.17% (576B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.17% (576B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.14% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.14% (560B) 0x108A99: main (main.c:114)
+|   
+->00.26% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 57    267,405,250           51,296           49,138         2,158            0
+95.79% (49,138B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->37.93% (19,456B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->19.96% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->19.96% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->17.97% (9,216B) 0x10A11D: copyProcesso (main.c:682)
+|   ->17.97% (9,216B) 0x1094D3: executeMachine (main.c:343)
+|     ->17.97% (9,216B) 0x108BA9: main (main.c:145)
+|       
+->37.93% (19,456B) 0x109F79: copyOwnNastro (main.c:649)
+| ->19.96% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->19.96% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->17.97% (9,216B) 0x10A11D: copyProcesso (main.c:682)
+|   ->17.97% (9,216B) 0x1094D3: executeMachine (main.c:343)
+|     ->17.97% (9,216B) 0x108BA9: main (main.c:145)
+|       
+->09.98% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->09.98% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->07.99% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->07.99% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->07.99% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->07.99% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->02.00% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->02.00% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->02.00% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->02.00% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.00% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.78% (912B) 0x10A066: copyProcesso (main.c:667)
+| ->01.78% (912B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.78% (912B) 0x108BA9: main (main.c:145)
+|     
+->01.28% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.28% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.28% (656B) 0x108A99: main (main.c:114)
+|     
+->01.19% (608B) 0x109837: pushListaInt (main.c:443)
+| ->01.19% (608B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.19% (608B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.19% (608B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.19% (608B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.19% (608B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.19% (608B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.19% (608B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.09% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.09% (560B) 0x108A99: main (main.c:114)
+|   
+->00.25% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 58    267,533,145           53,472           51,274         2,198            0
+95.89% (51,274B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->38.30% (20,480B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->19.15% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->19.15% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->19.15% (10,240B) 0x10A11D: copyProcesso (main.c:682)
+|   ->19.15% (10,240B) 0x1094D3: executeMachine (main.c:343)
+|     ->19.15% (10,240B) 0x108BA9: main (main.c:145)
+|       
+->38.30% (20,480B) 0x109F79: copyOwnNastro (main.c:649)
+| ->19.15% (10,240B) 0x109529: executeMachine (main.c:354)
+| | ->19.15% (10,240B) 0x108BA9: main (main.c:145)
+| |   
+| ->19.15% (10,240B) 0x10A11D: copyProcesso (main.c:682)
+|   ->19.15% (10,240B) 0x1094D3: executeMachine (main.c:343)
+|     ->19.15% (10,240B) 0x108BA9: main (main.c:145)
+|       
+->09.58% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->09.58% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->07.66% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->07.66% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->07.66% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->07.66% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.92% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.92% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.92% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.92% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.92% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.75% (936B) 0x10A066: copyProcesso (main.c:667)
+| ->01.75% (936B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.75% (936B) 0x108BA9: main (main.c:145)
+|     
+->01.23% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.23% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.23% (656B) 0x108A99: main (main.c:114)
+|     
+->01.20% (640B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.20% (640B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.17% (624B) 0x109837: pushListaInt (main.c:443)
+| ->01.17% (624B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.17% (624B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.17% (624B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.17% (624B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.17% (624B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.05% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.05% (560B) 0x108A99: main (main.c:114)
+|   
+->00.24% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 59    267,654,360           55,664           53,410         2,254            0
+95.95% (53,410B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->38.63% (21,504B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->20.24% (11,264B) 0x10A11D: copyProcesso (main.c:682)
+| | ->20.24% (11,264B) 0x1094D3: executeMachine (main.c:343)
+| |   ->20.24% (11,264B) 0x108BA9: main (main.c:145)
+| |     
+| ->18.40% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->18.40% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->38.63% (21,504B) 0x109F79: copyOwnNastro (main.c:649)
+| ->20.24% (11,264B) 0x10A11D: copyProcesso (main.c:682)
+| | ->20.24% (11,264B) 0x1094D3: executeMachine (main.c:343)
+| |   ->20.24% (11,264B) 0x108BA9: main (main.c:145)
+| |     
+| ->18.40% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->18.40% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->09.20% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->09.20% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->07.36% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->07.36% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->07.36% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->07.36% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.84% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.84% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.84% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.84% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.84% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.72% (960B) 0x10A066: copyProcesso (main.c:667)
+| ->01.72% (960B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.72% (960B) 0x108BA9: main (main.c:145)
+|     
+->01.21% (672B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.21% (672B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.18% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.18% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.18% (656B) 0x108A99: main (main.c:114)
+|     
+->01.15% (640B) 0x109837: pushListaInt (main.c:443)
+| ->01.15% (640B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.15% (640B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.15% (640B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.15% (640B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.15% (640B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.01% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->01.01% (560B) 0x108A99: main (main.c:114)
+|   
+->00.23% (130B) in 1+ places, all below ms_print's threshold (01.00%)
+
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 60    267,769,315           57,840           55,546         2,294            0
+96.03% (55,546B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->38.95% (22,528B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->21.24% (12,288B) 0x10A11D: copyProcesso (main.c:682)
+| | ->21.24% (12,288B) 0x1094D3: executeMachine (main.c:343)
+| |   ->21.24% (12,288B) 0x108BA9: main (main.c:145)
+| |     
+| ->17.70% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->17.70% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->38.95% (22,528B) 0x109F79: copyOwnNastro (main.c:649)
+| ->21.24% (12,288B) 0x10A11D: copyProcesso (main.c:682)
+| | ->21.24% (12,288B) 0x1094D3: executeMachine (main.c:343)
+| |   ->21.24% (12,288B) 0x108BA9: main (main.c:145)
+| |     
+| ->17.70% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->17.70% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->08.85% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->08.85% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->07.08% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->07.08% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->07.08% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->07.08% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.77% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.77% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.77% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.77% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.77% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.70% (984B) 0x10A066: copyProcesso (main.c:667)
+| ->01.70% (984B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.70% (984B) 0x108BA9: main (main.c:145)
+|     
+->01.22% (704B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.22% (704B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.19% (690B) in 9 places, all below massif's threshold (1.00%)
+| 
+->01.13% (656B) 0x109604: pushTransizione (main.c:387)
+| ->01.13% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->01.13% (656B) 0x108A99: main (main.c:114)
+|     
+->01.13% (656B) 0x109837: pushListaInt (main.c:443)
+| ->01.13% (656B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.13% (656B) 0x1098A5: pushListaProcessi (main.c:458)
+  ->01.13% (656B) 0x10A176: copyProcesso (main.c:692)
+  | ->01.13% (656B) 0x1094D3: executeMachine (main.c:343)
+  |   ->01.13% (656B) 0x108BA9: main (main.c:145)
+  |     
+  ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 61    267,878,472           60,048           57,682         2,366            0
+96.06% (57,682B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->39.22% (23,552B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->22.17% (13,312B) 0x10A11D: copyProcesso (main.c:682)
+| | ->22.17% (13,312B) 0x1094D3: executeMachine (main.c:343)
+| |   ->22.17% (13,312B) 0x108BA9: main (main.c:145)
+| |     
+| ->17.05% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->17.05% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->39.22% (23,552B) 0x109F79: copyOwnNastro (main.c:649)
+| ->22.17% (13,312B) 0x10A11D: copyProcesso (main.c:682)
+| | ->22.17% (13,312B) 0x1094D3: executeMachine (main.c:343)
+| |   ->22.17% (13,312B) 0x108BA9: main (main.c:145)
+| |     
+| ->17.05% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->17.05% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->08.53% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->08.53% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->06.82% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->06.82% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->06.82% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->06.82% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.71% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.71% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.71% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.71% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.71% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.68% (1,008B) 0x10A066: copyProcesso (main.c:667)
+| ->01.68% (1,008B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.68% (1,008B) 0x108BA9: main (main.c:145)
+|     
+->01.23% (736B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.23% (736B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.15% (690B) in 9 places, all below massif's threshold (1.00%)
+| 
+->01.12% (672B) 0x109837: pushListaInt (main.c:443)
+| ->01.12% (672B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.12% (672B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.12% (672B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.12% (672B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.12% (672B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.09% (656B) 0x109604: pushTransizione (main.c:387)
+  ->01.09% (656B) 0x1092F1: creaMatrice (main.c:269)
+    ->01.09% (656B) 0x108A99: main (main.c:114)
+      
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 62    267,982,251           62,256           59,818         2,438            0
+96.08% (59,818B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->39.48% (24,576B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->23.03% (14,336B) 0x10A11D: copyProcesso (main.c:682)
+| | ->23.03% (14,336B) 0x1094D3: executeMachine (main.c:343)
+| |   ->23.03% (14,336B) 0x108BA9: main (main.c:145)
+| |     
+| ->16.45% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->16.45% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->39.48% (24,576B) 0x109F79: copyOwnNastro (main.c:649)
+| ->23.03% (14,336B) 0x10A11D: copyProcesso (main.c:682)
+| | ->23.03% (14,336B) 0x1094D3: executeMachine (main.c:343)
+| |   ->23.03% (14,336B) 0x108BA9: main (main.c:145)
+| |     
+| ->16.45% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->16.45% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->08.22% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->08.22% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->06.58% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->06.58% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->06.58% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->06.58% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.64% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.64% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.64% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.64% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.66% (1,032B) 0x10A066: copyProcesso (main.c:667)
+| ->01.66% (1,032B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.66% (1,032B) 0x108BA9: main (main.c:145)
+|     
+->01.64% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.23% (768B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.23% (768B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.11% (690B) in 9 places, all below massif's threshold (1.00%)
+| 
+->01.11% (688B) 0x109837: pushListaInt (main.c:443)
+| ->01.11% (688B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.11% (688B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.11% (688B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.11% (688B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.11% (688B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.05% (656B) 0x109604: pushTransizione (main.c:387)
+  ->01.05% (656B) 0x1092F1: creaMatrice (main.c:269)
+    ->01.05% (656B) 0x108A99: main (main.c:114)
+      
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 63    268,081,114           64,416           61,954         2,462            0
+96.18% (61,954B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->39.74% (25,600B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->23.85% (15,360B) 0x10A11D: copyProcesso (main.c:682)
+| | ->23.85% (15,360B) 0x1094D3: executeMachine (main.c:343)
+| |   ->23.85% (15,360B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.90% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->15.90% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->39.74% (25,600B) 0x109F79: copyOwnNastro (main.c:649)
+| ->23.85% (15,360B) 0x10A11D: copyProcesso (main.c:682)
+| | ->23.85% (15,360B) 0x1094D3: executeMachine (main.c:343)
+| |   ->23.85% (15,360B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.90% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->15.90% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->07.95% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->07.95% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->06.36% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->06.36% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->06.36% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->06.36% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.59% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.59% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.59% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.59% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.64% (1,056B) 0x10A066: copyProcesso (main.c:667)
+| ->01.64% (1,056B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.64% (1,056B) 0x108BA9: main (main.c:145)
+|     
+->01.59% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.24% (800B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.24% (800B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.09% (704B) 0x109837: pushListaInt (main.c:443)
+| ->01.09% (704B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.09% (704B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.09% (704B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.09% (704B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.09% (704B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.07% (690B) in 9 places, all below massif's threshold (1.00%)
+| 
+->01.02% (656B) 0x109604: pushTransizione (main.c:387)
+  ->01.02% (656B) 0x1092F1: creaMatrice (main.c:269)
+    ->01.02% (656B) 0x108A99: main (main.c:114)
+      
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 64    268,175,659           66,608           64,090         2,518            0
+96.22% (64,090B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->39.97% (26,624B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->24.60% (16,384B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.60% (16,384B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.60% (16,384B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.37% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->15.37% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->39.97% (26,624B) 0x109F79: copyOwnNastro (main.c:649)
+| ->24.60% (16,384B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.60% (16,384B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.60% (16,384B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.37% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->15.37% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->07.69% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->07.69% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->06.15% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->06.15% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->06.15% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->06.15% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.54% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.54% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.54% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.54% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->02.02% (1,346B) in 10 places, all below massif's threshold (1.00%)
+| 
+->01.62% (1,080B) 0x10A066: copyProcesso (main.c:667)
+| ->01.62% (1,080B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.62% (1,080B) 0x108BA9: main (main.c:145)
+|     
+->01.54% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.25% (832B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.25% (832B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.08% (720B) 0x109837: pushListaInt (main.c:443)
+| ->01.08% (720B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.08% (720B) 0x1098A5: pushListaProcessi (main.c:458)
+  ->01.08% (720B) 0x10A176: copyProcesso (main.c:692)
+  | ->01.08% (720B) 0x1094D3: executeMachine (main.c:343)
+  |   ->01.08% (720B) 0x108BA9: main (main.c:145)
+  |     
+  ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 65    268,266,163           68,816           66,226         2,590            0
+96.24% (66,226B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->40.18% (27,648B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->25.30% (17,408B) 0x10A11D: copyProcesso (main.c:682)
+| | ->25.30% (17,408B) 0x1094D3: executeMachine (main.c:343)
+| |   ->25.30% (17,408B) 0x108BA9: main (main.c:145)
+| |     
+| ->14.88% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->14.88% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->40.18% (27,648B) 0x109F79: copyOwnNastro (main.c:649)
+| ->25.30% (17,408B) 0x10A11D: copyProcesso (main.c:682)
+| | ->25.30% (17,408B) 0x1094D3: executeMachine (main.c:343)
+| |   ->25.30% (17,408B) 0x108BA9: main (main.c:145)
+| |     
+| ->14.88% (10,240B) 0x109529: executeMachine (main.c:354)
+|   ->14.88% (10,240B) 0x108BA9: main (main.c:145)
+|     
+->07.44% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->07.44% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->05.95% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->05.95% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->05.95% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->05.95% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.49% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.49% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.49% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.49% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.96% (1,346B) in 10 places, all below massif's threshold (1.00%)
+| 
+->01.60% (1,104B) 0x10A066: copyProcesso (main.c:667)
+| ->01.60% (1,104B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.60% (1,104B) 0x108BA9: main (main.c:145)
+|     
+->01.49% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.26% (864B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.26% (864B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.07% (736B) 0x109837: pushListaInt (main.c:443)
+| ->01.07% (736B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.07% (736B) 0x1098A5: pushListaProcessi (main.c:458)
+  ->01.07% (736B) 0x10A176: copyProcesso (main.c:692)
+  | ->01.07% (736B) 0x1094D3: executeMachine (main.c:343)
+  |   ->01.07% (736B) 0x108BA9: main (main.c:145)
+  |     
+  ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 66    268,353,168           71,008           68,362         2,646            0
+96.27% (68,362B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->40.38% (28,672B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->24.52% (17,408B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.52% (17,408B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.52% (17,408B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.86% (11,264B) 0x109529: executeMachine (main.c:354)
+|   ->15.86% (11,264B) 0x108BA9: main (main.c:145)
+|     
+->40.38% (28,672B) 0x109F79: copyOwnNastro (main.c:649)
+| ->24.52% (17,408B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.52% (17,408B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.52% (17,408B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.86% (11,264B) 0x109529: executeMachine (main.c:354)
+|   ->15.86% (11,264B) 0x108BA9: main (main.c:145)
+|     
+->07.21% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->07.21% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->05.77% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->05.77% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->05.77% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->05.77% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.44% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.44% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.44% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.44% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->01.90% (1,346B) in 10 places, all below massif's threshold (1.00%)
+| 
+->01.59% (1,128B) 0x10A066: copyProcesso (main.c:667)
+| ->01.59% (1,128B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.59% (1,128B) 0x108BA9: main (main.c:145)
+|     
+->01.44% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.26% (896B) 0x109F27: copyOwnNastro (main.c:643)
+| ->01.26% (896B) in 2 places, all below massif's threshold (1.00%)
+|   
+->01.06% (752B) 0x109837: pushListaInt (main.c:443)
+| ->01.06% (752B) in 3 places, all below massif's threshold (1.00%)
+|   
+->01.06% (752B) 0x1098A5: pushListaProcessi (main.c:458)
+  ->01.06% (752B) 0x10A176: copyProcesso (main.c:692)
+  | ->01.06% (752B) 0x1094D3: executeMachine (main.c:343)
+  |   ->01.06% (752B) 0x108BA9: main (main.c:145)
+  |     
+  ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 67    268,500,883           72,848           70,274         2,574            0
+96.47% (70,274B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->40.76% (29,696B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->25.30% (18,432B) 0x10A11D: copyProcesso (main.c:682)
+| | ->25.30% (18,432B) 0x1094D3: executeMachine (main.c:343)
+| |   ->25.30% (18,432B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.46% (11,264B) 0x109529: executeMachine (main.c:354)
+|   ->15.46% (11,264B) 0x108BA9: main (main.c:145)
+|     
+->40.76% (29,696B) 0x109F79: copyOwnNastro (main.c:649)
+| ->25.30% (18,432B) 0x10A11D: copyProcesso (main.c:682)
+| | ->25.30% (18,432B) 0x1094D3: executeMachine (main.c:343)
+| |   ->25.30% (18,432B) 0x108BA9: main (main.c:145)
+| |     
+| ->15.46% (11,264B) 0x109529: executeMachine (main.c:354)
+|   ->15.46% (11,264B) 0x108BA9: main (main.c:145)
+|     
+->07.03% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->07.03% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->05.62% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->05.62% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->05.62% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->05.62% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.41% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.41% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.41% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.41% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->03.78% (2,754B) in 12 places, all below massif's threshold (1.00%)
+| 
+->01.45% (1,056B) 0x10A066: copyProcesso (main.c:667)
+| ->01.45% (1,056B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.45% (1,056B) 0x108BA9: main (main.c:145)
+|     
+->01.41% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.27% (928B) 0x109F27: copyOwnNastro (main.c:643)
+  ->01.27% (928B) in 2 places, all below massif's threshold (1.00%)
+    
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 68    268,538,030           75,040           72,410         2,630            0
+96.50% (72,410B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->40.94% (30,720B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->24.56% (18,432B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.56% (18,432B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.56% (18,432B) 0x108BA9: main (main.c:145)
+| |     
+| ->16.38% (12,288B) 0x109529: executeMachine (main.c:354)
+|   ->16.38% (12,288B) 0x108BA9: main (main.c:145)
+|     
+->40.94% (30,720B) 0x109F79: copyOwnNastro (main.c:649)
+| ->24.56% (18,432B) 0x10A11D: copyProcesso (main.c:682)
+| | ->24.56% (18,432B) 0x1094D3: executeMachine (main.c:343)
+| |   ->24.56% (18,432B) 0x108BA9: main (main.c:145)
+| |     
+| ->16.38% (12,288B) 0x109529: executeMachine (main.c:354)
+|   ->16.38% (12,288B) 0x108BA9: main (main.c:145)
+|     
+->06.82% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->06.82% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->05.46% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->05.46% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->05.46% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->05.46% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->01.36% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->01.36% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->01.36% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->01.36% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->03.71% (2,786B) in 12 places, all below massif's threshold (1.00%)
+| 
+->01.44% (1,080B) 0x10A066: copyProcesso (main.c:667)
+| ->01.44% (1,080B) 0x1094D3: executeMachine (main.c:343)
+|   ->01.44% (1,080B) 0x108BA9: main (main.c:145)
+|     
+->01.36% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->01.28% (960B) 0x109F27: copyOwnNastro (main.c:643)
+  ->01.28% (960B) in 2 places, all below massif's threshold (1.00%)
+    
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 69  2,475,422,000           66,080           64,138         1,942            0
+ 70  2,475,630,261           55,120           53,458         1,662            0
+ 71  2,475,827,151           48,528           47,050         1,478            0
+ 72  2,476,044,768           41,952           40,642         1,310            0
+ 73  2,476,263,311           35,376           34,234         1,142            0
+ 74  2,476,493,588           26,592           25,690           902            0
+ 75  2,476,689,935           12,344           11,802           542            0
+ 76  2,476,892,655           18,664           17,306         1,358            0
+ 77  2,477,094,662           20,768           19,386         1,382            0
+ 78  2,477,286,080           22,872           21,466         1,406            0
+93.85% (21,466B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->26.86% (6,144B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->17.91% (4,096B) 0x10A11D: copyProcesso (main.c:682)
+| | ->17.91% (4,096B) 0x1094D3: executeMachine (main.c:343)
+| |   ->17.91% (4,096B) 0x108BA9: main (main.c:145)
+| |     
+| ->08.95% (2,048B) 0x109529: executeMachine (main.c:354)
+|   ->08.95% (2,048B) 0x108BA9: main (main.c:145)
+|     
+->26.86% (6,144B) 0x109F79: copyOwnNastro (main.c:649)
+| ->17.91% (4,096B) 0x10A11D: copyProcesso (main.c:682)
+| | ->17.91% (4,096B) 0x1094D3: executeMachine (main.c:343)
+| |   ->17.91% (4,096B) 0x108BA9: main (main.c:145)
+| |     
+| ->08.95% (2,048B) 0x109529: executeMachine (main.c:354)
+|   ->08.95% (2,048B) 0x108BA9: main (main.c:145)
+|     
+->22.39% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->22.39% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->17.91% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->17.91% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->17.91% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->17.91% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->04.48% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->04.48% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->04.48% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->04.48% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->04.48% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->02.87% (656B) 0x109604: pushTransizione (main.c:387)
+| ->02.87% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->02.87% (656B) 0x108A99: main (main.c:114)
+|     
+->02.83% (648B) 0x10A066: copyProcesso (main.c:667)
+| ->02.83% (648B) 0x1094D3: executeMachine (main.c:343)
+|   ->02.83% (648B) 0x108BA9: main (main.c:145)
+|     
+->02.45% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->02.45% (560B) 0x108A99: main (main.c:114)
+|   
+->01.89% (432B) 0x109837: pushListaInt (main.c:443)
+| ->01.47% (336B) 0x10A0A4: copyProcesso (main.c:671)
+| | ->01.47% (336B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.47% (336B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.42% (96B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.82% (416B) 0x1098A5: pushListaProcessi (main.c:458)
+| ->01.82% (416B) 0x10A176: copyProcesso (main.c:692)
+| | ->01.82% (416B) 0x1094D3: executeMachine (main.c:343)
+| |   ->01.82% (416B) 0x108BA9: main (main.c:145)
+| |     
+| ->00.00% (0B) in 1+ places, all below ms_print's threshold (01.00%)
+| 
+->01.41% (322B) in 9 places, all below massif's threshold (1.00%)
+  
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 79  2,477,476,225           24,968           23,522         1,446            0
+ 80  2,477,667,027           22,424           21,170         1,254            0
+ 81  2,477,857,612           22,568           21,242         1,326            0
+ 82  2,478,078,622           13,528           12,546           982            0
+ 83  2,478,269,032           15,600           14,594         1,006            0
+ 84  2,478,469,070           13,248           12,378           870            0
+ 85  2,478,661,812           10,984           10,202           782            0
+ 86  2,478,851,983           12,784           12,082           702            0
+ 87  2,479,042,225           10,528            9,906           622            0
+ 88  2,479,241,329           17,120           16,314           806            0
+95.29% (16,314B) (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+->29.91% (5,120B) 0x4EA8E0A: _IO_file_doallocate (filedoalloc.c:101)
+| ->29.91% (5,120B) 0x4EB8BC4: _IO_doallocbuf (genops.c:398)
+|   ->23.93% (4,096B) 0x4EB7A52: _IO_file_underflow@@GLIBC_2.2.5 (fileops.c:548)
+|   | ->23.93% (4,096B) 0x4EAA866: getdelim (iogetdelim.c:73)
+|   |   ->23.93% (4,096B) 0x108D11: leggiTransizioni (main.c:177)
+|   |     ->23.93% (4,096B) 0x108A65: main (main.c:111)
+|   |       
+|   ->05.98% (1,024B) 0x4EB7D36: _IO_file_overflow@@GLIBC_2.2.5 (fileops.c:812)
+|     ->05.98% (1,024B) 0x4E8921A: vfprintf (vfprintf.c:1643)
+|       ->05.98% (1,024B) 0x4E8FE34: printf (printf.c:33)
+|         ->05.98% (1,024B) 0x108BC3: main (main.c:145)
+|           
+->23.93% (4,096B) 0x109F5E: copyOwnNastro (main.c:648)
+| ->11.96% (2,048B) 0x109529: executeMachine (main.c:354)
+| | ->11.96% (2,048B) 0x108BA9: main (main.c:145)
+| |   
+| ->11.96% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+|   ->11.96% (2,048B) 0x1094D3: executeMachine (main.c:343)
+|     ->11.96% (2,048B) 0x108BA9: main (main.c:145)
+|       
+->23.93% (4,096B) 0x109F79: copyOwnNastro (main.c:649)
+| ->11.96% (2,048B) 0x109529: executeMachine (main.c:354)
+| | ->11.96% (2,048B) 0x108BA9: main (main.c:145)
+| |   
+| ->11.96% (2,048B) 0x10A11D: copyProcesso (main.c:682)
+|   ->11.96% (2,048B) 0x1094D3: executeMachine (main.c:343)
+|     ->11.96% (2,048B) 0x108BA9: main (main.c:145)
+|       
+->05.98% (1,024B) 0x108A2B: main (main.c:99)
+| 
+->03.83% (656B) 0x109604: pushTransizione (main.c:387)
+| ->03.83% (656B) 0x1092F1: creaMatrice (main.c:269)
+|   ->03.83% (656B) 0x108A99: main (main.c:114)
+|     
+->03.27% (560B) 0x10922C: creaMatrice (main.c:261)
+| ->03.27% (560B) 0x108A99: main (main.c:114)
+|   
+->03.19% (546B) in 11 places, all below massif's threshold (1.00%)
+| 
+->01.26% (216B) 0x10A066: copyProcesso (main.c:667)
+  ->01.26% (216B) 0x1094D3: executeMachine (main.c:343)
+    ->01.26% (216B) 0x108BA9: main (main.c:145)
+      
+--------------------------------------------------------------------------------
+  n        time(i)         total(B)   useful-heap(B) extra-heap(B)    stacks(B)
+--------------------------------------------------------------------------------
+ 89  2,479,431,463           16,920           16,186           734            0

@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
 		}
 		else
 			temp[nread] = '\0';
-			
+
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
 
