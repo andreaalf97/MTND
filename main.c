@@ -72,7 +72,7 @@ bool nastroIsShared(processo *);	//1: il nastro è condiviso, altrimenti 0
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
 void muoviTestina(processo *, char);	//sposta la testina
 void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
-listaInt *popListaInt(listaInt *, int);	//pop dalla lista dei condivisori
+listaInt *popListaInt(listaInt *, unsigned int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
 listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *);	//copia un processo
 
@@ -86,7 +86,7 @@ void freeListaTr(listaTr *);
 
 
 int main(int argc, char *argv[]){
-	int i;
+	unsigned int i;
 
 	size_t llinea = 0;
 	size_t nread;
@@ -137,7 +137,7 @@ int main(int argc, char *argv[]){
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 	}
 
-	for(i = 0; i < ((unsigned int)((statoMassimo + 1) * nCaratteriPresenti)); i++){
+	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
 		freeListaTr(matrice[i]);
 	}
 
@@ -409,7 +409,7 @@ processo *createProcess(processo *p, int testina, unsigned int stato, unsigned i
 }
 
 nstr *createNastroInit(nstr *n, char *stringa, unsigned int max){
-	int i;
+	unsigned int i;
 	n = (nstr *)malloc(sizeof(nstr));
 
 	n->left = (char *)malloc(max * sizeof(char));
@@ -585,7 +585,7 @@ void popWhoShares(processo *indiceProcesso, listaProcessi *processiAttiviHead){
 	return;
 }
 
-listaInt *popListaInt(listaInt *head, int pid){
+listaInt *popListaInt(listaInt *head, unsigned int pid){
 	listaInt *temp;
 	if(!head)
 		return head;
