@@ -141,7 +141,7 @@ int main(int argc, char *argv[]){
 		}
 		else
 			temp[nread] = '\0';
-		printf("%s\n", temp);
+		printf("%lu---%s\n", nread, temp);
 		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
 
@@ -573,8 +573,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa){
 			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
 			p->nastro->dimRight = (p->nastro->dimRight) * 2;
 
-			for(; i < dimensioneStringa && ; i++)
-				(p->nastro->right)[i] =
+			// for(; i < dimensioneStringa && ; i++)
+			// 	(p->nastro->right)[i] =
 		}
 		return;
 	}
@@ -648,7 +648,7 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, dimensioneStringa){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa){
 	processo *nuovo;
 	char carattere;
 
