@@ -1,3 +1,5 @@
+#define DIMNASTRO 1024
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -290,7 +292,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	//printf("Inizio esecuzione macchina\n");
 
 	//creazione processo iniziale:
-	nastroInit = createNastroInit(nastroInit, input, max);
+	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO);
 	//printf("Ho creato il nastro per init\n");
 	init = createProcess(init, 0, 0, 0, nastroInit);
 	//printf("Ho creato il processo INIT\n");
@@ -408,14 +410,14 @@ processo *createProcess(processo *p, int testina, unsigned int stato, unsigned i
 	return p;
 }
 
-nstr *createNastroInit(nstr *n, char *stringa, unsigned int max){
+nstr *createNastroInit(nstr *n, char *stringa, unsigned int dimNastro){
 	unsigned int i;
 	n = (nstr *)malloc(sizeof(nstr));
 
-	n->left = (char *)malloc(max * sizeof(char));
-	n->dimLeft = max;
-	n->right = (char *)malloc(max * sizeof(char));
-	n->dimRight = max;
+	n->left = (char *)malloc(dimNastro * sizeof(char));
+	n->dimLeft = dimNastro;
+	n->right = (char *)malloc(dimNastro * sizeof(char));
+	n->dimRight = dimNastro;
 
 	for(i = 0; i < n->dimLeft; i++)
 		(n->left)[i] = '_';
@@ -559,11 +561,19 @@ void scriviSuNastro(processo *p, char toWrite){
 void muoviTestina(processo *p, char mossa){
 	if(mossa == 'R'){
 		(p->testina)++;
+		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
+			p->nastro->dimRight = (p->nastro->dimRight) * 2;
+		}
 		return;
 	}
 
 	if(mossa == 'L'){
 		(p->testina)--;
+		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
+			p->nastro->dimRight = (p->nastro->dimRight) * 2;
+		}
 		return;
 	}
 
