@@ -207,13 +207,12 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	int i;
 	char *temp = NULL;
 	size_t llinea = 0;
-	size_t nread;
 
-	nread = getline(&temp, &llinea, stdin);
+	getline(&temp, &llinea, stdin);
 	while(strcmp(temp, "max\n")){	//leggo tutte le linee fino a quando non leggo 'max'
 		sscanf(temp, "%d", &i);			//leggo un intero dalla linea appena letta e salvata in 'temp'
 		statiAccettazione[i] = 1;		//"pongo" lo stato di accettazione a 1
-		nread = getline(&temp, &llinea, stdin);
+		getline(&temp, &llinea, stdin);
 	}
 
 	free(temp);
@@ -223,9 +222,8 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 void leggiMax(int *max){
 	char *temp = NULL;
 	size_t llinea = 0;
-	size_t nread;
 
-	nread = getline(&temp, &llinea, stdin);
+	getline(&temp, &llinea, stdin);
 	sscanf(temp, "%d", max);
 
 	free(temp);
