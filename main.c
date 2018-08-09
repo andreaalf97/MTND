@@ -72,11 +72,11 @@ void freeListaProcessi(listaProcessi *);	//elimina la lista dei processi attivi
 char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina sul nastro
 bool nastroIsShared(processo *);	//1: il nastro è condiviso, altrimenti 0
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
-void muoviTestina(processo *, char, size_t);	//sposta la testina
+void muoviTestina(processo *, char, size_t, char *);	//sposta la testina
 void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
 listaInt *popListaInt(listaInt *, unsigned int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t, char *);	//copia un processo
 
 void freeListaTr(listaTr *);
 
@@ -340,7 +340,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa);
+					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
 					newPidCounter++;
 
 					indiceTransizione = indiceTransizione->next;
@@ -355,7 +355,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				}
 
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
-				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa); //sposto la testina
+				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa, input); //sposto la testina
 
 				indiceProcesso->stato = headTransizione->fine; //cambio lo stato del processo
 			}
@@ -564,17 +564,25 @@ void scriviSuNastro(processo *p, char toWrite){
 	return;
 }
 
-void muoviTestina(processo *p, char mossa, size_t dimensioneStringa){
-	int i;
-	if(mossa == 'R'){
-		(p->testina)++;
-		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){
-			i = p->nastro->dimRight;
-			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
-			p->nastro->dimRight = (p->nastro->dimRight) * 2;
+//NASTRO lungo 10
+// a b c a b c a b c a
+// 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
+//STRINGA lunga 13
+// a b c a b c a b c a  b  c  a
+// 0 1 2 3 4 5 6 7 8 9 10 11 12
+void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input){
+	unsigned int i;
+	if(mossa == 'R'){	//se devo spostarmi a destra
+		(p->testina)++;	//muovo la testina
+		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
+			i = p->nastro->dimRight; //punto alla prima cella non allocata del nastro
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2); //raddoppio il nastro
+			p->nastro->dimRight = (p->nastro->dimRight) * 2;	//raddoppio il contatore della dimensione
 
-			// for(; i < dimensioneStringa && ; i++)
-			// 	(p->nastro->right)[i] =
+			for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
+				(p->nastro->right)[i] = input[i];
+			for(; i < p->nastro->dimRight; i++) //aggiungo tanti _ quanti ne servono
+				(p->nastro->right)[i] = '_';
 		}
 		return;
 	}
@@ -582,8 +590,12 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa){
 	if(mossa == 'L'){
 		(p->testina)--;
 		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
+			i = p->nastro->dimLeft;
 			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) * 2);
 			p->nastro->dimLeft = (p->nastro->dimLeft) * 2;
+
+			for(; i < p->nastro->dimLeft; i++)
+				(p->nastro->left)[i] = '_';
 		}
 		return;
 	}
@@ -648,7 +660,7 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa, char *input){
 	processo *nuovo;
 	char carattere;
 
@@ -675,7 +687,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 	}
 
 	nuovo->stato = transizione->fine;
-	muoviTestina(nuovo, transizione->mossa, dimensioneStringa);
+	muoviTestina(nuovo, transizione->mossa, dimensioneStringa, input);
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
 	return processiAttiviHead;
