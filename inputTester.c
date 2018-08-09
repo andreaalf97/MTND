@@ -48,6 +48,8 @@ int main(int argc, char *argv[]){
   nread = getline(&temp, &len, fp); //contiene la prima transizione
   while(strcmp(temp, "acc\n") != 0){
     sscanf(temp, "%d%*c%c", &stato, &carattere);
+    printf("%s\n", temp);
+    getchar();
     matrice[stato][(int)carattere] = matrice[stato][(int)carattere] + 1;
     if(matrice[stato][(int)carattere] > maxDepth){
       maxDepth = matrice[stato][(int)carattere];
