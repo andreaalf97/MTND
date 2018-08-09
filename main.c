@@ -133,7 +133,7 @@ int main(int argc, char *argv[]){
 	}	//controlla che la riga letta sia run
 
 	nread = getline(&temp, &llinea, stdin);
-	while(!feof(stdin) != 0 && strcmp("\n\n", temp) != 0 && strcmp("\n", temp) != 0){
+	while(!feof(stdin) != 0 && strcmp("\n", temp) != 0){
 		temp[nread - 1] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
 		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
@@ -142,7 +142,7 @@ int main(int argc, char *argv[]){
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
-	if(strcmp("\n\n", temp) != 0)
+	if(strcmp("", temp) != 0 && strcmp("\n", temp) != 0)
 		printf("--%s--", temp);
 		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
