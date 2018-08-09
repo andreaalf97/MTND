@@ -1,0 +1,1033 @@
+desc: (none)
+cmd: ./a.out
+time_unit: i
+#-----------
+snapshot=0
+#-----------
+time=0
+mem_heap_B=0
+mem_heap_extra_B=0
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=1
+#-----------
+time=65290032
+mem_heap_B=4007306
+mem_heap_extra_B=902
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=2
+#-----------
+time=173375885
+mem_heap_B=5007370
+mem_heap_extra_B=966
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=3
+#-----------
+time=245408125
+mem_heap_B=7007434
+mem_heap_extra_B=1014
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=4
+#-----------
+time=317428773
+mem_heap_B=9007498
+mem_heap_extra_B=1046
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=5
+#-----------
+time=389445927
+mem_heap_B=3506818
+mem_heap_extra_B=614
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=6
+#-----------
+time=614916469
+mem_heap_B=2506730
+mem_heap_extra_B=558
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=7
+#-----------
+time=716910618
+mem_heap_B=2009810
+mem_heap_extra_B=1750
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=8
+#-----------
+time=789530366
+mem_heap_B=2009586
+mem_heap_extra_B=1606
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=9
+#-----------
+time=862075178
+mem_heap_B=2009586
+mem_heap_extra_B=1606
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=10
+#-----------
+time=934575253
+mem_heap_B=2009362
+mem_heap_extra_B=1478
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=11
+#-----------
+time=1007002469
+mem_heap_B=1009106
+mem_heap_extra_B=1326
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=12
+#-----------
+time=1079381241
+mem_heap_B=3009338
+mem_heap_extra_B=1518
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=13
+#-----------
+time=1151662689
+mem_heap_B=1007882
+mem_heap_extra_B=638
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=14
+#-----------
+time=1187872014
+mem_heap_B=2009082
+mem_heap_extra_B=1318
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=15
+#-----------
+time=1260071619
+mem_heap_B=3008842
+mem_heap_extra_B=1230
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=16
+#-----------
+time=1332377785
+mem_heap_B=2008746
+mem_heap_extra_B=1142
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=17
+#-----------
+time=1404572173
+mem_heap_B=1008546
+mem_heap_extra_B=1038
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=18
+#-----------
+time=1458653219
+mem_heap_B=3008706
+mem_heap_extra_B=1134
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3008706 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 1500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 1000000 0x401403: executeMachine (main.c:346)
+   n0: 1000000 0x400A6F: main (main.c:137)
+  n1: 500000 0x401E44: copyProcesso (main.c:649)
+   n1: 500000 0x4013AD: executeMachine (main.c:335)
+    n0: 500000 0x400A6F: main (main.c:137)
+ n2: 1500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 1000000 0x401403: executeMachine (main.c:346)
+   n0: 1000000 0x400A6F: main (main.c:137)
+  n1: 500000 0x401E44: copyProcesso (main.c:649)
+   n1: 500000 0x4013AD: executeMachine (main.c:335)
+    n0: 500000 0x400A6F: main (main.c:137)
+ n0: 8706 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=19
+#-----------
+time=1530794875
+mem_heap_B=5008770
+mem_heap_extra_B=1214
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=20
+#-----------
+time=1584910649
+mem_heap_B=5008570
+mem_heap_extra_B=1118
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=21
+#-----------
+time=1675004902
+mem_heap_B=6008634
+mem_heap_extra_B=1158
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=22
+#-----------
+time=1765096040
+mem_heap_B=2008194
+mem_heap_extra_B=838
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=23
+#-----------
+time=1837125736
+mem_heap_B=5008322
+mem_heap_extra_B=942
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=24
+#-----------
+time=1927170241
+mem_heap_B=2007778
+mem_heap_extra_B=598
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=25
+#-----------
+time=1999183516
+mem_heap_B=4007954
+mem_heap_extra_B=694
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=26
+#-----------
+time=2046416481
+mem_heap_B=1009386
+mem_heap_extra_B=1486
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=27
+#-----------
+time=2118906323
+mem_heap_B=1009274
+mem_heap_extra_B=1422
+mem_stacks_B=0
+heap_tree=detailed
+n3: 1009274 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n2: 500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 9274 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=28
+#-----------
+time=2191342129
+mem_heap_B=1009162
+mem_heap_extra_B=1358
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=29
+#-----------
+time=2281742584
+mem_heap_B=3009338
+mem_heap_extra_B=1486
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=30
+#-----------
+time=2354083018
+mem_heap_B=2009026
+mem_heap_extra_B=1302
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=31
+#-----------
+time=2408323894
+mem_heap_B=1008330
+mem_heap_extra_B=894
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=32
+#-----------
+time=2462503564
+mem_heap_B=2008858
+mem_heap_extra_B=1190
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=33
+#-----------
+time=2534733903
+mem_heap_B=2008746
+mem_heap_extra_B=1126
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=34
+#-----------
+time=2588920168
+mem_heap_B=1008546
+mem_heap_extra_B=1006
+mem_stacks_B=0
+heap_tree=detailed
+n3: 1008546 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n2: 500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 8546 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=35
+#-----------
+time=2643005460
+mem_heap_B=2008506
+mem_heap_extra_B=998
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=36
+#-----------
+time=2733206518
+mem_heap_B=1008218
+mem_heap_extra_B=830
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=37
+#-----------
+time=2805268521
+mem_heap_B=3008242
+mem_heap_extra_B=854
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=38
+#-----------
+time=2841347207
+mem_heap_B=1008106
+mem_heap_extra_B=766
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=39
+#-----------
+time=2913413621
+mem_heap_B=2008026
+mem_heap_extra_B=726
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=40
+#-----------
+time=2985447345
+mem_heap_B=3008090
+mem_heap_extra_B=766
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=41
+#-----------
+time=3057492395
+mem_heap_B=3008090
+mem_heap_extra_B=782
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=42
+#-----------
+time=3111507808
+mem_heap_B=5008154
+mem_heap_extra_B=846
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=43
+#-----------
+time=3183524105
+mem_heap_B=5007930
+mem_heap_extra_B=718
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=44
+#-----------
+time=3266810631
+mem_heap_B=3009290
+mem_heap_extra_B=1454
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=45
+#-----------
+time=3339262442
+mem_heap_B=4008370
+mem_heap_extra_B=950
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=46
+#-----------
+time=3429694399
+mem_heap_B=7009394
+mem_heap_extra_B=1598
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=47
+#-----------
+time=3520110585
+mem_heap_B=10009682
+mem_heap_extra_B=1782
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=48
+#-----------
+time=3592281709
+mem_heap_B=13009866
+mem_heap_extra_B=1902
+mem_stacks_B=0
+heap_tree=detailed
+n3: 13009866 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 6500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 1500000 0x401E44: copyProcesso (main.c:649)
+   n1: 1500000 0x4013AD: executeMachine (main.c:335)
+    n0: 1500000 0x400A6F: main (main.c:137)
+ n2: 6500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 1500000 0x401E44: copyProcesso (main.c:649)
+   n1: 1500000 0x4013AD: executeMachine (main.c:335)
+    n0: 1500000 0x400A6F: main (main.c:137)
+ n0: 9866 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=49
+#-----------
+time=3628498825
+mem_heap_B=13009738
+mem_heap_extra_B=1862
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=50
+#-----------
+time=3646510939
+mem_heap_B=14009674
+mem_heap_extra_B=1830
+mem_stacks_B=0
+heap_tree=detailed
+n3: 14009674 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 7000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 2000000 0x401E44: copyProcesso (main.c:649)
+   n1: 2000000 0x4013AD: executeMachine (main.c:335)
+    n0: 2000000 0x400A6F: main (main.c:137)
+ n2: 7000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 2000000 0x401E44: copyProcesso (main.c:649)
+   n1: 2000000 0x4013AD: executeMachine (main.c:335)
+    n0: 2000000 0x400A6F: main (main.c:137)
+ n0: 9674 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=51
+#-----------
+time=3664519748
+mem_heap_B=15009818
+mem_heap_extra_B=1918
+mem_stacks_B=0
+heap_tree=detailed
+n3: 15009818 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 7500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 2500000 0x401E44: copyProcesso (main.c:649)
+   n1: 2500000 0x4013AD: executeMachine (main.c:335)
+    n0: 2500000 0x400A6F: main (main.c:137)
+ n2: 7500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 2500000 0x401E44: copyProcesso (main.c:649)
+   n1: 2500000 0x4013AD: executeMachine (main.c:335)
+    n0: 2500000 0x400A6F: main (main.c:137)
+ n0: 9818 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=52
+#-----------
+time=3700606789
+mem_heap_B=16009890
+mem_heap_extra_B=1982
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=53
+#-----------
+time=3700607221
+mem_heap_B=16009906
+mem_heap_extra_B=1990
+mem_stacks_B=0
+heap_tree=detailed
+n3: 16009906 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 8000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 3000000 0x401E44: copyProcesso (main.c:649)
+   n1: 3000000 0x4013AD: executeMachine (main.c:335)
+    n0: 3000000 0x400A6F: main (main.c:137)
+ n2: 8000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 3000000 0x401E44: copyProcesso (main.c:649)
+   n1: 3000000 0x4013AD: executeMachine (main.c:335)
+    n0: 3000000 0x400A6F: main (main.c:137)
+ n0: 9906 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=54
+#-----------
+time=3736687830
+mem_heap_B=17010034
+mem_heap_extra_B=2086
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=55
+#-----------
+time=3736688262
+mem_heap_B=17010050
+mem_heap_extra_B=2094
+mem_stacks_B=0
+heap_tree=detailed
+n3: 17010050 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 8500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 3500000 0x401E44: copyProcesso (main.c:649)
+   n1: 3500000 0x4013AD: executeMachine (main.c:335)
+    n0: 3500000 0x400A6F: main (main.c:137)
+ n2: 8500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 3500000 0x401E44: copyProcesso (main.c:649)
+   n1: 3500000 0x4013AD: executeMachine (main.c:335)
+    n0: 3500000 0x400A6F: main (main.c:137)
+ n0: 10050 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=56
+#-----------
+time=3772760593
+mem_heap_B=18010138
+mem_heap_extra_B=2150
+mem_stacks_B=0
+heap_tree=detailed
+n3: 18010138 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 9000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 4000000 0x401E44: copyProcesso (main.c:649)
+   n1: 4000000 0x4013AD: executeMachine (main.c:335)
+    n0: 4000000 0x400A6F: main (main.c:137)
+ n2: 9000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 4000000 0x401E44: copyProcesso (main.c:649)
+   n1: 4000000 0x4013AD: executeMachine (main.c:335)
+    n0: 4000000 0x400A6F: main (main.c:137)
+ n0: 10138 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=57
+#-----------
+time=3808825874
+mem_heap_B=19010226
+mem_heap_extra_B=2206
+mem_stacks_B=0
+heap_tree=detailed
+n3: 19010226 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 9500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 4500000 0x401E44: copyProcesso (main.c:649)
+   n1: 4500000 0x4013AD: executeMachine (main.c:335)
+    n0: 4500000 0x400A6F: main (main.c:137)
+ n2: 9500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 4500000 0x401E44: copyProcesso (main.c:649)
+   n1: 4500000 0x4013AD: executeMachine (main.c:335)
+    n0: 4500000 0x400A6F: main (main.c:137)
+ n0: 10226 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=58
+#-----------
+time=3844884521
+mem_heap_B=20010314
+mem_heap_extra_B=2246
+mem_stacks_B=0
+heap_tree=detailed
+n3: 20010314 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 10000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5000000 0x401E44: copyProcesso (main.c:649)
+   n1: 5000000 0x4013AD: executeMachine (main.c:335)
+    n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 10000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5000000 0x401E44: copyProcesso (main.c:649)
+   n1: 5000000 0x4013AD: executeMachine (main.c:335)
+    n0: 5000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10314 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=59
+#-----------
+time=3880936938
+mem_heap_B=21010402
+mem_heap_extra_B=2302
+mem_stacks_B=0
+heap_tree=detailed
+n3: 21010402 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 10500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 5500000 0x401E44: copyProcesso (main.c:649)
+   n1: 5500000 0x4013AD: executeMachine (main.c:335)
+    n0: 5500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 10500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 5500000 0x401E44: copyProcesso (main.c:649)
+   n1: 5500000 0x4013AD: executeMachine (main.c:335)
+    n0: 5500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10402 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=60
+#-----------
+time=3916983541
+mem_heap_B=22010490
+mem_heap_extra_B=2358
+mem_stacks_B=0
+heap_tree=detailed
+n3: 22010490 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 11000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 6000000 0x401E44: copyProcesso (main.c:649)
+   n1: 6000000 0x4013AD: executeMachine (main.c:335)
+    n0: 6000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 11000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 6000000 0x401E44: copyProcesso (main.c:649)
+   n1: 6000000 0x4013AD: executeMachine (main.c:335)
+    n0: 6000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10490 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=61
+#-----------
+time=3953024734
+mem_heap_B=23010578
+mem_heap_extra_B=2414
+mem_stacks_B=0
+heap_tree=detailed
+n3: 23010578 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 11500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 6500000 0x401E44: copyProcesso (main.c:649)
+   n1: 6500000 0x4013AD: executeMachine (main.c:335)
+    n0: 6500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 11500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 6500000 0x401E44: copyProcesso (main.c:649)
+   n1: 6500000 0x4013AD: executeMachine (main.c:335)
+    n0: 6500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10578 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=62
+#-----------
+time=3989060933
+mem_heap_B=24010666
+mem_heap_extra_B=2438
+mem_stacks_B=0
+heap_tree=detailed
+n3: 24010666 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 12000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 7000000 0x401E44: copyProcesso (main.c:649)
+   n1: 7000000 0x4013AD: executeMachine (main.c:335)
+    n0: 7000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 12000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 7000000 0x401E44: copyProcesso (main.c:649)
+   n1: 7000000 0x4013AD: executeMachine (main.c:335)
+    n0: 7000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10666 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=63
+#-----------
+time=4025092542
+mem_heap_B=25010754
+mem_heap_extra_B=2462
+mem_stacks_B=0
+heap_tree=detailed
+n3: 25010754 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 12500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 7500000 0x401E44: copyProcesso (main.c:649)
+   n1: 7500000 0x4013AD: executeMachine (main.c:335)
+    n0: 7500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 12500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 7500000 0x401E44: copyProcesso (main.c:649)
+   n1: 7500000 0x4013AD: executeMachine (main.c:335)
+    n0: 7500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10754 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=64
+#-----------
+time=4061120135
+mem_heap_B=26010842
+mem_heap_extra_B=2518
+mem_stacks_B=0
+heap_tree=detailed
+n3: 26010842 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 13000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 8000000 0x401E44: copyProcesso (main.c:649)
+   n1: 8000000 0x4013AD: executeMachine (main.c:335)
+    n0: 8000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 13000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 8000000 0x401E44: copyProcesso (main.c:649)
+   n1: 8000000 0x4013AD: executeMachine (main.c:335)
+    n0: 8000000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10842 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=65
+#-----------
+time=4097143960
+mem_heap_B=27010930
+mem_heap_extra_B=2590
+mem_stacks_B=0
+heap_tree=detailed
+n3: 27010930 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 13500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 8500000 0x401E44: copyProcesso (main.c:649)
+   n1: 8500000 0x4013AD: executeMachine (main.c:335)
+    n0: 8500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n2: 13500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 8500000 0x401E44: copyProcesso (main.c:649)
+   n1: 8500000 0x4013AD: executeMachine (main.c:335)
+    n0: 8500000 0x400A6F: main (main.c:137)
+  n1: 5000000 0x401403: executeMachine (main.c:346)
+   n0: 5000000 0x400A6F: main (main.c:137)
+ n0: 10930 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=66
+#-----------
+time=4133164525
+mem_heap_B=28011018
+mem_heap_extra_B=2646
+mem_stacks_B=0
+heap_tree=detailed
+n3: 28011018 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 14000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 8500000 0x401E44: copyProcesso (main.c:649)
+   n1: 8500000 0x4013AD: executeMachine (main.c:335)
+    n0: 8500000 0x400A6F: main (main.c:137)
+  n1: 5500000 0x401403: executeMachine (main.c:346)
+   n0: 5500000 0x400A6F: main (main.c:137)
+ n2: 14000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 8500000 0x401E44: copyProcesso (main.c:649)
+   n1: 8500000 0x4013AD: executeMachine (main.c:335)
+    n0: 8500000 0x400A6F: main (main.c:137)
+  n1: 5500000 0x401403: executeMachine (main.c:346)
+   n0: 5500000 0x400A6F: main (main.c:137)
+ n0: 11018 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=67
+#-----------
+time=4187210774
+mem_heap_B=29010882
+mem_heap_extra_B=2574
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=68
+#-----------
+time=4187211061
+mem_heap_B=29010882
+mem_heap_extra_B=2574
+mem_stacks_B=0
+heap_tree=detailed
+n3: 29010882 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 14500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 9000000 0x401E44: copyProcesso (main.c:649)
+   n1: 9000000 0x4013AD: executeMachine (main.c:335)
+    n0: 9000000 0x400A6F: main (main.c:137)
+  n1: 5500000 0x401403: executeMachine (main.c:346)
+   n0: 5500000 0x400A6F: main (main.c:137)
+ n2: 14500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 9000000 0x401E44: copyProcesso (main.c:649)
+   n1: 9000000 0x4013AD: executeMachine (main.c:335)
+    n0: 9000000 0x400A6F: main (main.c:137)
+  n1: 5500000 0x401403: executeMachine (main.c:346)
+   n0: 5500000 0x400A6F: main (main.c:137)
+ n0: 10882 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=69
+#-----------
+time=4205215383
+mem_heap_B=30010970
+mem_heap_extra_B=2630
+mem_stacks_B=0
+heap_tree=peak
+n3: 30010970 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 15000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 9000000 0x401E44: copyProcesso (main.c:649)
+   n1: 9000000 0x4013AD: executeMachine (main.c:335)
+    n0: 9000000 0x400A6F: main (main.c:137)
+  n1: 6000000 0x401403: executeMachine (main.c:346)
+   n0: 6000000 0x400A6F: main (main.c:137)
+ n2: 15000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 9000000 0x401E44: copyProcesso (main.c:649)
+   n1: 9000000 0x4013AD: executeMachine (main.c:335)
+    n0: 9000000 0x400A6F: main (main.c:137)
+  n1: 6000000 0x401403: executeMachine (main.c:346)
+   n0: 6000000 0x400A6F: main (main.c:137)
+ n0: 10970 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=70
+#-----------
+time=4241298264
+mem_heap_B=27010018
+mem_heap_extra_B=2054
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=71
+#-----------
+time=6239157670
+mem_heap_B=26509866
+mem_heap_extra_B=1958
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=72
+#-----------
+time=6287373827
+mem_heap_B=3009042
+mem_heap_extra_B=1310
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=73
+#-----------
+time=6323502301
+mem_heap_B=4009074
+mem_heap_extra_B=1334
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=74
+#-----------
+time=6359620867
+mem_heap_B=5009106
+mem_heap_extra_B=1374
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=75
+#-----------
+time=6395729935
+mem_heap_B=6009138
+mem_heap_extra_B=1414
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=76
+#-----------
+time=6431842306
+mem_heap_B=5008882
+mem_heap_extra_B=1278
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=77
+#-----------
+time=6467932861
+mem_heap_B=5008938
+mem_heap_extra_B=1326
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=78
+#-----------
+time=6504021323
+mem_heap_B=2008506
+mem_heap_extra_B=998
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=79
+#-----------
+time=6540102528
+mem_heap_B=2008522
+mem_heap_extra_B=1014
+mem_stacks_B=0
+heap_tree=detailed
+n3: 2008522 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 1000000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 1000000 0x401403: executeMachine (main.c:346)
+   n0: 1000000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n2: 1000000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 1000000 0x401403: executeMachine (main.c:346)
+   n0: 1000000 0x400A6F: main (main.c:137)
+  n0: 0 in 1 place, below massif's threshold (1.00%)
+ n0: 8522 in 16 places, all below massif's threshold (1.00%)
+#-----------
+snapshot=80
+#-----------
+time=6594169503
+mem_heap_B=3008482
+mem_heap_extra_B=990
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=81
+#-----------
+time=6630249565
+mem_heap_B=3008394
+mem_heap_extra_B=942
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=82
+#-----------
+time=6684325108
+mem_heap_B=2008226
+mem_heap_extra_B=854
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=83
+#-----------
+time=6738370035
+mem_heap_B=3008258
+mem_heap_extra_B=862
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=84
+#-----------
+time=6792433051
+mem_heap_B=2008058
+mem_heap_extra_B=758
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=85
+#-----------
+time=6846461466
+mem_heap_B=3008090
+mem_heap_extra_B=766
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=86
+#-----------
+time=6900496807
+mem_heap_B=3008090
+mem_heap_extra_B=766
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=87
+#-----------
+time=6954512684
+mem_heap_B=5008194
+mem_heap_extra_B=854
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=88
+#-----------
+time=7008532503
+mem_heap_B=4007898
+mem_heap_extra_B=710
+mem_stacks_B=0
+heap_tree=empty
+#-----------
+snapshot=89
+#-----------
+time=7062540726
+mem_heap_B=3007794
+mem_heap_extra_B=598
+mem_stacks_B=0
+heap_tree=detailed
+n3: 3007794 (heap allocation functions) malloc/new/new[], --alloc-fns, etc.
+ n2: 1500000 0x401C87: copyOwnNastro (main.c:615)
+  n1: 1000000 0x401E44: copyProcesso (main.c:649)
+   n1: 1000000 0x4013AD: executeMachine (main.c:335)
+    n0: 1000000 0x400A6F: main (main.c:137)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+ n2: 1500000 0x401CA2: copyOwnNastro (main.c:616)
+  n1: 1000000 0x401E44: copyProcesso (main.c:649)
+   n1: 1000000 0x4013AD: executeMachine (main.c:335)
+    n0: 1000000 0x400A6F: main (main.c:137)
+  n1: 500000 0x401403: executeMachine (main.c:346)
+   n0: 500000 0x400A6F: main (main.c:137)
+ n0: 7794 in 16 places, all below massif's threshold (1.00%)
