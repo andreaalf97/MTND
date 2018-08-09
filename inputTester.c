@@ -20,6 +20,8 @@ int main(int argc, char *argv[]){
 
   int matrice[NSTATI][256];
 
+  int intTemp;
+
   if(argc != 2){
     fprintf(stderr, "Errore chiamata programma\n");
     return -1;
@@ -56,6 +58,19 @@ int main(int argc, char *argv[]){
   }
 
   printf("Maxdepth: %d, statoMax: %d, carattereMax: %c\n", maxDepth, statoMax, carattereMax);
+
+  printf("Stati accettazione:\n");
+  nread = getline(&temp, &len, fp);
+  while(strcmp(temp, "max\n") != 0){
+    sscanf(temp, "%d", &intTemp);
+    printf("%d -- ", intTemp);
+    nread = getline(&temp, &len, fp);
+  }
+  printf("\n");
+
+  nread = getline(&temp, &len, fp);
+  sscanf(temp, "%d", &intTemp);
+  printf("Mosse massime: %d\n", intTemp);
 
   fclose(fp);
   return 0;
