@@ -136,13 +136,15 @@ int main(int argc, char *argv[]){
 	while(!feof(stdin) != 0 && strcmp("\n\n", temp) != 0 && strcmp("\n", temp) != 0){
 		temp[nread - 1] = '\0';	//sostituisco lo \n con il terminatore
 		//printf("Eseguo stringa %s\n", temp);
-		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		printf("--%s--\n", temp);
 		nread = getline(&temp, &llinea, stdin);
 	}
 
 	//printf("Eseguo stringa %s\n", temp);
 	if(strcmp("\n\n", temp) != 0)
-		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
+		printf("--%s--", temp);
+		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 
 	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
 		freeListaTr(matrice[i]);
