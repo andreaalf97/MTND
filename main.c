@@ -40,7 +40,7 @@ typedef struct listaProcessi_s {
 } listaProcessi;
 
 
-unsigned int pos(int, int, int);	//ritorna la posizione <i, j> nella matrice
+unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
 listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
 char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *);	//esegue la macchina
 
@@ -54,13 +54,13 @@ listaTr **creaMatrice(listaTr **, transizione *, unsigned int, unsigned int, int
 //FUNZIONI PER DEBUGGING
 char rigaToCarattere(int, int *);
 void stampaLista(listaTr *);
-void showMatrix(listaTr **, int, int, int *);
+void showMatrix(listaTr **, unsigned int, unsigned int, int *);
 void stampaListaProcessiAttivi(listaProcessi *);
 
 
-processo *createProcess(processo *, int, int, int, nstr *);	//crea un nuovo processo (usata solo per init)
-nstr *createNastroInit(nstr *, char *, int);	//data la stringa input e MAX, costruisce il nastro
-listaInt *pushListaInt(listaInt *, int);	//push nella lista whoShares
+processo *createProcess(processo *, int, unsigned int, unsigned int, nstr *);	//crea un nuovo processo (usata solo per init)
+nstr *createNastroInit(nstr *, char *, unsigned int);	//data la stringa input e MAX, costruisce il nastro
+listaInt *pushListaInt(listaInt *, unsigned int);	//push nella lista whoShares
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
 void freeElementoListaProcessi(listaProcessi *);
