@@ -59,7 +59,7 @@ int main(int argc, char *argv[]){
 
   printf("Maxdepth: %d, statoMax: %d, carattereMax: %c\n", maxDepth, statoMax, carattereMax);
 
-  printf("Stati accettazione:\n");
+  printf("Stati accettazione: ");
   nread = getline(&temp, &len, fp);
   while(strcmp(temp, "max\n") != 0){
     sscanf(temp, "%d", &intTemp);
