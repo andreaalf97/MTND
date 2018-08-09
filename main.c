@@ -161,19 +161,18 @@ int main(int argc, char *argv[]){
 transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizioni, int *statoMassimo, int *caratteriPresenti, int *nCaratteriPresenti) {
 	char *temp = NULL;
 	size_t llinea = 0;
-	size_t nread;
 
 	size_t dimVett = 2;
 	*nTransizioni = 0;
 	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione));
 
-	nread = getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
+	getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
 		return 0;
 	}	//controlla che il file input inizi per TR
 
-	nread = getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
+	getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
 		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
 		if(*nTransizioni >= dimVett){
@@ -197,7 +196,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, size_t *nTransizi
 		}
 
 		(*nTransizioni)++;
-		nread = getline(&temp, &llinea, stdin);
+		getline(&temp, &llinea, stdin);
 	}
 
 	free(temp);
