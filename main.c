@@ -571,8 +571,8 @@ void muoviTestina(processo *p, char mossa){
 	if(mossa == 'L'){
 		(p->testina)--;
 		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
-			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2);
-			p->nastro->dimRight = (p->nastro->dimRight) * 2;
+			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) * 2);
+			p->nastro->dimLeft = (p->nastro->dimLeft) * 2;
 		}
 		return;
 	}
