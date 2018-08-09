@@ -141,8 +141,8 @@ int main(int argc, char *argv[]){
 		}
 		else
 			temp[nread] = '\0';
-		printf("%lu---%s\n", nread, temp);
-		//printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
+			
+		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
 
 	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
