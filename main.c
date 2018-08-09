@@ -137,7 +137,7 @@ int main(int argc, char *argv[]){
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri));
 	}
 
-	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
+	for(i = 0; i < ((unsigned int)((statoMassimo + 1) * nCaratteriPresenti)); i++){
 		freeListaTr(matrice[i]);
 	}
 
@@ -269,7 +269,7 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, unsign
 
 //*****************************************************************
 //funzione che esegue la macchina sull'input dato
-char executeMachine(listaTr **matrice, int nCaratteriPresenti, bool *statiAccettazione, int max, char *input, int *righeCaratteri){
+char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri){
 	char exitStatus = '0';
 
 	//****************************
