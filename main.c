@@ -207,6 +207,11 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 		getline(&temp, &llinea, stdin);
 	}
 
+	if(!caratteriPresenti[(int)'_']){
+		caratteriPresenti[(int)'_'] = 1;
+		(*nCaratteriPresenti)++;
+	}
+
 	free(temp);
 	temp = NULL;
 	return vettoreTransizioni;
