@@ -339,7 +339,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 			headTransizione = matrice[posizione]; //testa della lista di transizioni
 
 
-			if(headTransizione){	//se esiste almeno una transizione possibile
+			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
