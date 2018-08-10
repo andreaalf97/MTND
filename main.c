@@ -330,10 +330,10 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 
 			carattere = carattereLetto(indiceProcesso);
-			// if(righeCaratteri[(int)carattere] == -1){
-			// 	processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-			// 	break;
-			// }
+			if(righeCaratteri[(int)carattere] == -1){
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				break;
+			}
 
 			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
 			headTransizione = matrice[posizione]; //testa della lista di transizioni
