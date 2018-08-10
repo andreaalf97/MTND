@@ -168,6 +168,7 @@ int main(int argc, char *argv[]){
 
 transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTransizioni, unsigned int *statoMassimo, int *caratteriPresenti, unsigned int *nCaratteriPresenti) {
 	char *temp = NULL;
+	char blank = '_';
 	size_t llinea = 0;
 
 	unsigned int dimVett = 2;
@@ -207,8 +208,8 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 		getline(&temp, &llinea, stdin);
 	}
 
-	if(!caratteriPresenti[(int)'_']){
-		caratteriPresenti[(int)'_'] = 1;
+	if(!caratteriPresenti[(int)blank]){
+		caratteriPresenti[(int)blank] = 1;
 		(*nCaratteriPresenti)++;
 	}
 
