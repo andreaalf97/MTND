@@ -203,6 +203,11 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 			(*nCaratteriPresenti)++;
 		}
 
+		if(!caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].scritto]){
+			caratteriPresenti[(int)vettoreTransizioni[*nTransizioni].scritto] = 1;
+			(*nCaratteriPresenti)++;
+		}
+
 		(*nTransizioni)++;
 		getline(&temp, &llinea, stdin);
 	}
