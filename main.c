@@ -326,7 +326,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				return '1';
 			}
 
-			if(indiceProcesso->nMosseFatte > max - 1){
+			if(indiceProcesso->nMosseFatte > max){
 				//printf("Ho eseguito piu' mosse di max\n");
 				exitStatus = 'U';
 				//indice = indice->next;
