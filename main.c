@@ -33,7 +33,7 @@ typedef struct processo_s {
 	int testina;
 	unsigned int stato;
 	unsigned int pid;
-	unsigned int nMosseFatte;
+	unsigned long nMosseFatte;
 } processo;
 
 typedef struct listaProcessi_s {
