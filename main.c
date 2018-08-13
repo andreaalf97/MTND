@@ -76,7 +76,7 @@ void muoviTestina(processo *, char, size_t, char *);	//sposta la testina
 void popWhoShares(processo *, listaProcessi *);	//pop dalla lista dei condivisori (controlla TUTTI i processi attivi)
 listaInt *popListaInt(listaInt *, unsigned int);	//pop dalla lista dei condivisori
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t, char *);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t, char *, unsigned int);	//copia un processo
 
 void freeListaTr(listaTr *);
 
@@ -301,8 +301,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	//****************************
 	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
-	//printf("Inizio esecuzione macchina\n");
-
 	//creazione processo iniziale:
 	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO);
 	//printf("Ho creato il nastro per init\n");
@@ -349,10 +347,16 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
+					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input, max);
 					newPidCounter++;
 
 					indiceTransizione = indiceTransizione->next;
+				}
+
+				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S'){
+					exitStatus = 'U';
+					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+					break;
 				}
 
 				//eseguo la transizione:
@@ -669,7 +673,7 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa, char *input){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa, char *input, unsigned int max){
 	processo *nuovo;
 	char carattere;
 
@@ -682,8 +686,11 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 	nuovo->nastro = toCopy->nastro;
 	nuovo->testina = toCopy->testina;
 
-
 	carattere = carattereLetto(nuovo);
+
+	if(transizione->scritto == carattere && transizione->mossa == 'S')
+		nuovo->nMosseFatte = max;
+
 	if(transizione->scritto != carattere && nastroIsShared(nuovo)){
 		//printf("Il nastro e' condiviso\n");
 		popWhoShares(nuovo, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
