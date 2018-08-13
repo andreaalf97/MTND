@@ -353,7 +353,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 					indiceTransizione = indiceTransizione->next;
 				}
 
-				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S'){
+				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S' && indiceProcesso->stato == headTransizione->fine){
 					exitStatus = 'U';
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 					break;
@@ -688,7 +688,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 
 	carattere = carattereLetto(nuovo);
 
-	if(transizione->scritto == carattere && transizione->mossa == 'S')
+	if(transizione->scritto == carattere && transizione->mossa == 'S' && nuovo->stato == transizione->fine)
 		nuovo->nMosseFatte = max;
 
 	if(transizione->scritto != carattere && nastroIsShared(nuovo)){
