@@ -689,7 +689,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 	carattere = carattereLetto(nuovo);
 
 	if(transizione->scritto == carattere && transizione->mossa == 'S' && nuovo->stato == transizione->fine)
-		nuovo->nMosseFatte = max;
+		nuovo->nMosseFatte = max + 1;
 
 	if(transizione->scritto != carattere && nastroIsShared(nuovo)){
 		//printf("Il nastro e' condiviso\n");
