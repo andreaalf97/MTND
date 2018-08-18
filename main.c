@@ -349,9 +349,11 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
-					newPidCounter++;
-
+					if(indiceProcesso->stato != indiceTransizione->fine || indiceTransizione->mossa != 'S' || indiceTransizione->scritto != carattere){
+						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
+						newPidCounter++;
+					}
+					
 					indiceTransizione = indiceTransizione->next;
 				}
 
