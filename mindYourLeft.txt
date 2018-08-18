@@ -1,5 +1,5 @@
 tr
-0 a d L 1
+0   a d L 1
 1 _ a R 2
 2 a a R 2
 2 d d R 3
