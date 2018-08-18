@@ -189,7 +189,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 			dimVett *= 2;
 		}
 
-		sscanf(temp, "%u%*c%c%*c%c%*c%c%u", &(vettoreTransizioni[*nTransizioni].inizio), &(vettoreTransizioni[*nTransizioni].letto), &(vettoreTransizioni[*nTransizioni].scritto), &(vettoreTransizioni[*nTransizioni].mossa), &(vettoreTransizioni[*nTransizioni].fine));
+		sscanf(temp, "%u%s%s%s%u", &(vettoreTransizioni[*nTransizioni].inizio), &(vettoreTransizioni[*nTransizioni].letto), &(vettoreTransizioni[*nTransizioni].scritto), &(vettoreTransizioni[*nTransizioni].mossa), &(vettoreTransizioni[*nTransizioni].fine));
 		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
 
 		//qui sotto calcolo quale sia lo stato piu' grande
@@ -356,6 +356,12 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				}
 
 				//eseguo la transizione:
+				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S' && indiceProcesso->stato == headTransizione->fine){
+					exitStatus = 'U';
+					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+					break;
+				}
+
 				if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){	//se devo scrivere ma il nastro e' in condivisione lo copio
 					//COW
 					popWhoShares(indiceProcesso, processiAttiviHead); //elimino questo processo da tutte le liste di condivisione
