@@ -353,7 +353,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
 						newPidCounter++;
 					}
-					
+
 					indiceTransizione = indiceTransizione->next;
 				}
 
@@ -593,8 +593,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)++;	//muovo la testina
 		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
 			i = p->nastro->dimRight; //punto alla prima cella non allocata del nastro
-			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2); //raddoppio il nastro
-			p->nastro->dimRight = (p->nastro->dimRight) * 2;	//raddoppio il contatore della dimensione
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) + DIMNASTRO); //raddoppio il nastro
+			p->nastro->dimRight = (p->nastro->dimRight) + DIMNASTRO;	//raddoppio il contatore della dimensione
 
 			for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
 				(p->nastro->right)[i] = input[i];
@@ -608,8 +608,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)--;
 		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
 			i = p->nastro->dimLeft;
-			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) * 2);
-			p->nastro->dimLeft = (p->nastro->dimLeft) * 2;
+			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) + DIMNASTRO);
+			p->nastro->dimLeft = (p->nastro->dimLeft) + DIMNASTRO;
 
 			for(; i < p->nastro->dimLeft; i++)
 				(p->nastro->left)[i] = '_';
