@@ -225,6 +225,8 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 }
 
 void primaPassata(unsigned int *statoMassimo, int *righeCaratteri, unsigned int *nCaratteriPresenti){
+	size_t llinea = 0;
+	char *temp = NULL;
 
 	char tempChar1, tempChar2;
 	int tempInt1, tempInt2;
@@ -236,7 +238,7 @@ void primaPassata(unsigned int *statoMassimo, int *righeCaratteri, unsigned int 
 	getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
-		return 0;
+		return;
 	}	//controlla che il file input inizi per TR
 
 	getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
