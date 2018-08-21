@@ -181,13 +181,6 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 		return 0;
 	}	//controlla che il file input inizi per TR
 
-	rewind(stdin);
-	getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
-	if(strcmp("tr\n", temp) != 0){
-		fprintf(stderr, "Il file non inizia per tr\n");
-		return 0;
-	}	//controlla che il file input inizi per TR
-
 	getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
 		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
