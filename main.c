@@ -48,7 +48,6 @@ char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int 
 
 //FUNZIONI DI LETTURA INPUT:
 transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *);
-void primaPassata(unsigned int *, int *, unsigned int *);
 void leggiStatiAccettazione(bool *);
 void leggiMax(unsigned int *);
 void creaRigheCaratteri(int *);
@@ -109,14 +108,9 @@ int main(int argc, char *argv[]){
 
 	//***********************************************
 
-	primaPassata(&statoMassimo, righeCaratteri, &nCaratteriPresenti);
-
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 	//legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
 	creaRigheCaratteri(righeCaratteri);	//trasforma il vettore dei caratteri presenti in quello che indica ogni carattere a che riga corrisponde
-
-
-
 	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
 	//crea la matrice delle transizioni
 	free(vettoreTransizioni);
@@ -223,54 +217,6 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 	temp = NULL;
 	return vettoreTransizioni;
 }
-
-void primaPassata(unsigned int *statoMassimo, int *righeCaratteri, unsigned int *nCaratteriPresenti){
-
-	char tempChar1, tempChar2;
-	int tempInt1, tempInt2;
-
-	*statoMassimo = 0;
-	*nCaratteriPresenti = 1;
-	righeCaratteri[(int)'_'] = 1;
-
-	getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
-	if(strcmp("tr\n", temp) != 0){
-		fprintf(stderr, "Il file non inizia per tr\n");
-		return 0;
-	}	//controlla che il file input inizi per TR
-
-	getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
-	while(strcmp(temp, "acc\n")){		//finche' non trova acc
-
-		sscanf(temp, "%u%s%s%*s%u", &tempInt1, &tempChar1, &tempChar2, &tempInt2);
-
-		if(tempInt1 > *statoMassimo)
-			*statoMassimo = tempInt1;
-
-		if(tempInt2 > *statoMassimo)
-			*statoMassimo = tempInt2;
-
-		if(righeCaratteri[(int)tempChar1] != 1){
-			righeCaratteri[(int)tempChar1] = 1;
-			(*nCaratteriPresenti)++;
-		}
-
-		if(righeCaratteri[(int)tempChar2] != 1){
-			righeCaratteri[(int)tempChar2] = 1;
-			(*nCaratteriPresenti)++;
-		}
-
-		getline(&temp, &llinea, stdin);
-	}
-
-	printf("nCaratteriPresenti: %u\n", *nCaratteriPresenti);
-	printf("Stato massimo: %u\n", *statoMassimo);
-
-	exit(1);
-
-	return;
-}
-
 void leggiStatiAccettazione(bool *statiAccettazione){
 	unsigned int i;
 	char *temp = NULL;
