@@ -349,19 +349,51 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceTransizione = headTransizione->next;
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
-					if(indiceProcesso->stato != indiceTransizione->fine || indiceTransizione->mossa != 'S' || indiceTransizione->scritto != carattere){
-						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
-						newPidCounter++;
+					if(indiceProcesso->stato == indiceTransizione->fine){
+						if(indiceTransizione->mossa == 'S' && indiceTransizione->scritto == carattere){
+							exitStatus = 'U';
+							indiceTransizione = indiceTransizione->next;
+							continue;
+						}
+						if(indiceTransizione->scritto == '_'){
+							if(indiceTransizione->mossa == 'R' && indiceProcesso->testina >=  indiceProcesso->nastro->dimRight){
+								exitStatus = 'U';
+								indiceTransizione = indiceTransizione->next;
+								continue;
+							}
+							if(indiceTransizione->mossa == 'L' && -(indiceProcesso->testina) >=  indiceProcesso->nastro->dimLeft){
+								exitStatus = 'U';
+								indiceTransizione = indiceTransizione->next;
+								continue;
+							}
+						}
 					}
+
+					processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
+					newPidCounter++;
 
 					indiceTransizione = indiceTransizione->next;
 				}
 
 				//eseguo la transizione:
-				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S' && indiceProcesso->stato == headTransizione->fine){
-					exitStatus = 'U';
-					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-					break;
+				if(indiceProcesso->stato == headTransizione->fine){
+					if(headTransizione->mossa == 'S' && headTransizione->scritto == carattere){
+						exitStatus = 'U';
+						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+						break;
+					}
+					if(headTransizione->scritto == '_'){
+						if(headTransizione->mossa == 'R' && indiceProcesso->testina >=  indiceProcesso->nastro->dimRight){
+							exitStatus = 'U';
+							processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+							break;
+						}
+						if(headTransizione->mossa == 'L' && -(indiceProcesso->testina) >=  indiceProcesso->nastro->dimLeft){
+							exitStatus = 'U';
+							processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+							break;
+						}
+					}
 				}
 
 				if(headTransizione->scritto != carattere && nastroIsShared(indiceProcesso)){	//se devo scrivere ma il nastro e' in condivisione lo copio
