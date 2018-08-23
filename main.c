@@ -27,7 +27,6 @@ typedef struct processo_s {
 	nstr *nastro;
 	int testina;
 	unsigned int stato;
-	unsigned long pid;
 	unsigned int nMosseFatte;
 } processo;
 
@@ -50,7 +49,7 @@ listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
 
 char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
 
-processo *createProcess(processo *, int, unsigned int, unsigned long, nstr *);	//crea un nuovo processo
+processo *createProcess(processo *, int, unsigned int, nstr *);	//crea un nuovo processo
 nstr *createNastroInit(nstr *, char *, unsigned int);	//data la stringa input e MAX, costruisce il nastro
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
@@ -60,7 +59,7 @@ char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina su
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
 void muoviTestina(processo *, char, size_t, char *);	//sposta la testina
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, unsigned long, listaTr *, size_t, char *);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, listaTr *, size_t, char *);	//copia un processo
 
 void freeListaTr(listaTr *);
 
@@ -127,6 +126,21 @@ int main(int argc, char *argv[]){
 
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
+
+
+	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
+		freeListaTr(matrice[i]);
+	}
+
+	free(matrice);
+	matrice = NULL;
+
+	free(temp);
+	temp = NULL;
+	free(righeCaratteri);
+	righeCaratteri = NULL;
+	free(statiAccettazione);
+	statiAccettazione = NULL;
 
 
 	return 0;
@@ -267,7 +281,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	listaProcessi *processiAttiviHead = NULL;	//lista dei processi che sono in esecuzione in questo momento
 	listaProcessi *indice = NULL;	//indice usato per scansionare la lista dei processi attivi (è una struttura <processo, next>)
 	processo *indiceProcesso = NULL; //indice usato per lavorare sul singolo processo
-	unsigned long newPidCounter;	//contatore per decidere che pid dare al nuovo processo
 	listaTr *headTransizione = NULL;	//testa della lista delle transizioni da eseguire
 	listaTr *indiceTransizione = NULL;	//indice per scansionare tutta la lista di transizioni possibili
 
@@ -276,10 +289,9 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 
 	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO); //creo il nastro iniziale lungo 1024 + 1024(tutti blank a sx e la striga + altri blank a destra)
-	init = createProcess(init, 0, 0, 0, nastroInit);	//creo il processo iniziale
+	init = createProcess(init, 0, 0, nastroInit);	//creo il processo iniziale (processo - testina - stato - nastro)
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);	//metto il processo init nella lista dei processi attivi
-	newPidCounter = 1; //il nuovo processo avrà PID 1
 
 
 
@@ -315,8 +327,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
 					if(indiceProcesso->stato != indiceTransizione->fine || indiceTransizione->mossa != 'S' || indiceTransizione->scritto != carattere){
-						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, newPidCounter, indiceTransizione, dimensioneStringa, input);
-						newPidCounter++;
+						processiAttiviHead = copyProcesso(processiAttiviHead, indiceProcesso, indiceTransizione, dimensioneStringa, input);
 					}
 					else
 						exitStatus = 'U';
@@ -379,15 +390,14 @@ listaTr *pushTransizione(listaTr *head, transizione t){
 	return head;
 }
 
-processo *createProcess(processo *p, int testina, unsigned int stato, unsigned long pid, nstr *nastro){
+processo *createProcess(processo *p, int testina, unsigned int stato, nstr *nastro){
 
 	p = (processo *)malloc(sizeof(processo));	//alloca il nuovo processo
 	if(!p){
 		fprintf(stderr, "Errore allocazione memoria nuovo nastro\n");
 		return p;
 	}
-	//assegnazione del PID
-	p->pid = pid;
+
 	p->testina = testina;
 	p->stato = stato;
 	p->nastro = nastro;
@@ -406,9 +416,9 @@ nstr *createNastroInit(nstr *n, char *stringa, unsigned int dimNastro){
 	n->dimRight = dimNastro; //la dimensione a destra e' 1024
 
 	for(i = 0; i < n->dimLeft; i++)
-		(n->left)[i] = '_';
+		(n->left)[i] = '_'; //tutto il nastro a sinistra e' BLANK
 	for(i = 0; stringa[i] != '\0' && i < n->dimRight; i++)
-		(n->right)[i] = stringa[i];
+		(n->right)[i] = stringa[i]; //metto la stringa sul nastro finche' non finisce la stringa o finisce il nastro allocato
 	for(; i < n->dimRight; i++)
 		(n->right)[i] = '_';
 
@@ -561,12 +571,11 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, unsigned long newPid, listaTr *transizione, size_t dimensioneStringa, char *input){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, listaTr *transizione, size_t dimensioneStringa, char *input){
 	processo *nuovo;
 	char carattere;
 
 	nuovo = (processo *)malloc(sizeof(processo));
-	nuovo->pid = newPid;
 	nuovo->nMosseFatte = toCopy->nMosseFatte + 1;
 
 	(toCopy->nastro->whoShares)++;
