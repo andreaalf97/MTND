@@ -275,7 +275,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	char carattere;	//usato per sapere che carattere è puntato dalla testina sul nastro
 
 
-	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO); //creo il nastro iniziale (tutti blank a sx e la striga + altri blank a destra)
+	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO); //creo il nastro iniziale lungo 1024 + 1024(tutti blank a sx e la striga + altri blank a destra)
 	init = createProcess(init, 0, 0, 0, nastroInit);	//creo il processo iniziale
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);	//metto il processo init nella lista dei processi attivi
@@ -398,12 +398,12 @@ processo *createProcess(processo *p, int testina, unsigned int stato, unsigned l
 
 nstr *createNastroInit(nstr *n, char *stringa, unsigned int dimNastro){
 	unsigned int i;
-	n = (nstr *)malloc(sizeof(nstr));
+	n = (nstr *)malloc(sizeof(nstr)); //alloco una struttura nastro
 
-	n->left = (char *)malloc(dimNastro * sizeof(char));
-	n->dimLeft = dimNastro;
-	n->right = (char *)malloc(dimNastro * sizeof(char));
-	n->dimRight = dimNastro;
+	n->left = (char *)malloc(dimNastro * sizeof(char)); //alloco 1024 caratteri a sinistra
+	n->dimLeft = dimNastro;	//la dimensione a sinistra e' 1024
+	n->right = (char *)malloc(dimNastro * sizeof(char));	//alloco 1024 caratteri a destra
+	n->dimRight = dimNastro; //la dimensione a destra e' 1024
 
 	for(i = 0; i < n->dimLeft; i++)
 		(n->left)[i] = '_';
