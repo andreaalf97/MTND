@@ -27,7 +27,7 @@ typedef struct processo_s {
 	nstr *nastro;
 	int testina;
 	unsigned int stato;
-	unsigned int pid;
+	unsigned long pid;
 	unsigned int nMosseFatte;
 } processo;
 
@@ -42,15 +42,15 @@ typedef struct listaProcessi_s {
 transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *); //legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
 void creaRigheCaratteri(int *); //trasforma il vettore da [0 / 1] a [-1 / 0, 1, 2, ...]
 void leggiStatiAccettazione(bool *); //prende un vettore e pone a 1 v[i] se i è uno stato di accettazione
-void leggiMax(unsigned int *);
-listaTr **creaMatrice(listaTr **, transizione *, unsigned int, unsigned int, int *, unsigned int);
+void leggiMax(unsigned int *); //legge max
+listaTr **creaMatrice(listaTr **, transizione *, unsigned int, unsigned int, int *, unsigned int); //crea la matrice delle transizioni
 
 unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
 listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni (per lettura file input)
 
 char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
 
-processo *createProcess(processo *, int, unsigned int, unsigned int, nstr *);	//crea un nuovo processo
+processo *createProcess(processo *, int, unsigned int, unsigned long, nstr *);	//crea un nuovo processo
 nstr *createNastroInit(nstr *, char *, unsigned int);	//data la stringa input e MAX, costruisce il nastro
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
@@ -60,7 +60,7 @@ char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina su
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
 void muoviTestina(processo *, char, size_t, char *);	//sposta la testina
 void copyOwnNastro(processo *);	//crea un nuovo nastro e lo assegna al processo in input, copiando il nastro precedente
-listaProcessi *copyProcesso(listaProcessi *, processo *, int, listaTr *, size_t, char *);	//copia un processo
+listaProcessi *copyProcesso(listaProcessi *, processo *, unsigned long, listaTr *, size_t, char *);	//copia un processo
 
 void freeListaTr(listaTr *);
 
@@ -162,6 +162,9 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 		sscanf(temp, "%u%s%s%s%u", &(vettoreTransizioni[*nTransizioni].inizio), &(vettoreTransizioni[*nTransizioni].letto), &(vettoreTransizioni[*nTransizioni].scritto), &(vettoreTransizioni[*nTransizioni].mossa), &(vettoreTransizioni[*nTransizioni].fine));
 		//Questa sscanf legge la linea e mette i vari parametri al posto giusto
 
+		// if(vettoreTransizioni[*nTransizioni].letto == ' ' || vettoreTransizioni[*nTransizioni].scritto == ' ' || vettoreTransizioni[*nTransizioni].mossa == ' ')
+		// 	exit(1);
+
 		//qui sotto calcolo quale sia lo stato piu' grande
 		if(vettoreTransizioni[*nTransizioni].inizio > *statoMassimo)
 			*statoMassimo = vettoreTransizioni[*nTransizioni].inizio;
@@ -259,26 +262,24 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, unsign
 char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri, size_t dimensioneStringa){
 	char exitStatus = '0';
 
-	//****************************
-	processo *init = NULL;
-	nstr *nastroInit = NULL;
-	listaProcessi *processiAttiviHead = NULL;
-	listaProcessi *indice = NULL;
-	processo *indiceProcesso = NULL;
-	int newPidCounter;
-	listaTr *headTransizione = NULL;
-	listaTr *indiceTransizione = NULL;
+	processo *init = NULL; //processo iniziale da cui forkano tutti gli altri
+	nstr *nastroInit = NULL;	//usato per creare il nastro iniziale
+	listaProcessi *processiAttiviHead = NULL;	//lista dei processi che sono in esecuzione in questo momento
+	listaProcessi *indice = NULL;	//indice usato per scansionare la lista dei processi attivi (è una struttura <processo, next>)
+	processo *indiceProcesso = NULL; //indice usato per lavorare sul singolo processo
+	unsigned long newPidCounter;	//contatore per decidere che pid dare al nuovo processo
+	listaTr *headTransizione = NULL;	//testa della lista delle transizioni da eseguire
+	listaTr *indiceTransizione = NULL;	//indice per scansionare tutta la lista di transizioni possibili
 
-	unsigned int posizione;
-	char carattere;
-	//****************************
+	unsigned int posizione;	//usato per calcolare la posizione nella matrice delle transizioni
+	char carattere;	//usato per sapere che carattere è puntato dalla testina sul nastro
 
 
-	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO);
-	init = createProcess(init, 0, 0, 0, nastroInit);
+	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO); //creo il nastro iniziale (tutti blank a sx e la striga + altri blank a destra)
+	init = createProcess(init, 0, 0, 0, nastroInit);	//creo il processo iniziale
 
-	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
-	newPidCounter = 1;
+	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);	//metto il processo init nella lista dei processi attivi
+	newPidCounter = 1; //il nuovo processo avrà PID 1
 
 
 
@@ -359,12 +360,10 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	return exitStatus;
 }
 
-//funzione che ritorna l'elemento nella cella <i, j> in una matrice alta height
 unsigned int pos(unsigned int i, int j, int B) {
 	return ((i * B) + j);
 }
 
-//funzione che aggiunge in testa alla lista in posizione <i, j> la transizione specificata nel secondo parametro
 listaTr *pushTransizione(listaTr *head, transizione t){
 	listaTr *nuovo;
 	if((nuovo = (listaTr *)malloc(sizeof(listaTr)))){
@@ -380,9 +379,7 @@ listaTr *pushTransizione(listaTr *head, transizione t){
 	return head;
 }
 
-//Execute Machine Functions
-
-processo *createProcess(processo *p, int testina, unsigned int stato, unsigned int pid, nstr *nastro){
+processo *createProcess(processo *p, int testina, unsigned int stato, unsigned long pid, nstr *nastro){
 
 	p = (processo *)malloc(sizeof(processo));	//alloca il nuovo processo
 	if(!p){
@@ -564,7 +561,7 @@ void copyOwnNastro(processo *p){
 	return;
 }
 
-listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, int newPid, listaTr *transizione, size_t dimensioneStringa, char *input){
+listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, unsigned long newPid, listaTr *transizione, size_t dimensioneStringa, char *input){
 	processo *nuovo;
 	char carattere;
 
