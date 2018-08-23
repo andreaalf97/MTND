@@ -75,7 +75,7 @@ int main(int argc, char *argv[]){
 	unsigned int i;
 
 	size_t llinea = 0;
-	signed size_t nread;
+	ssize_t nread;
 	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline', nread è il numero di caratteri letti
 	transizione *vettoreTransizioni = NULL;	//vettore che contiene tutte le transizioni possibili
 	unsigned int nTransizioni = 0;	//contatore per il numero di transizioni, e quindi la dimensione di vettoreTransizioni
