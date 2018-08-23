@@ -1,4 +1,4 @@
-#define DIMNASTRO 1024
+#define DIMNASTRO 64
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -14,7 +14,7 @@ typedef struct transizioni_s {
 typedef struct listaTransizioni_s {
 	struct listaTransizioni_s *next;	//puntatore alla transizione successiva
 	char scritto, mossa;							//SCRITTO = carattere da scrivere; MOSSA = R, L o STOP
-	unsigned int fine;													//stato in cui andare
+	unsigned int fine;								//stato in cui andare
 }	listaTr;
 
 typedef struct nastro_s {
@@ -27,7 +27,7 @@ typedef struct processo_s {
 	nstr *nastro;
 	int testina;
 	unsigned int stato;
-	unsigned int nMosseFatte;
+	unsigned long nMosseFatte;
 } processo;
 
 typedef struct listaProcessi_s {
@@ -41,16 +41,16 @@ typedef struct listaProcessi_s {
 transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *); //legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
 void creaRigheCaratteri(int *); //trasforma il vettore da [0 / 1] a [-1 / 0, 1, 2, ...]
 void leggiStatiAccettazione(bool *); //prende un vettore e pone a 1 v[i] se i è uno stato di accettazione
-void leggiMax(unsigned int *); //legge max
+void leggiMax(unsigned long *); //legge max
 listaTr **creaMatrice(listaTr **, transizione *, unsigned int, unsigned int, int *, unsigned int); //crea la matrice delle transizioni
 
 unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
 listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni (per lettura file input)
 
-char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
+char executeMachine(listaTr **, unsigned int, bool *, unsigned long, char *, int *, size_t);	//esegue la macchina
 
 processo *createProcess(processo *, int, unsigned int, nstr *);	//crea un nuovo processo
-nstr *createNastroInit(nstr *, char *, unsigned int);	//data la stringa input e MAX, costruisce il nastro
+nstr *createNastroInit(nstr *, char *, unsigned short);	//data la stringa input e MAX, costruisce il nastro
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
 void freeElementoListaProcessi(listaProcessi *);
@@ -85,7 +85,7 @@ int main(int argc, char *argv[]){
 
 	bool *statiAccettazione = NULL;	//indica ogni stato se lo stato i-esimo e' di accettazione (1) o meno (0)
 
-	unsigned int max;	//indica il numero massimo di mosse effettuabili dalla macchina
+	unsigned long max;	//indica il numero massimo di mosse effettuabili dalla macchina
 
 	listaTr **matrice = NULL;
 
@@ -223,12 +223,12 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	return;
 }
 
-void leggiMax(unsigned int *max){
+void leggiMax(unsigned long *max){
 	char *temp = NULL;
 	size_t llinea = 0;
 
 	getline(&temp, &llinea, stdin);
-	sscanf(temp, "%u", max);
+	sscanf(temp, "%lu", max);
 
 	free(temp);
 	temp = NULL;
@@ -273,7 +273,7 @@ listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, unsign
 }
 
 
-char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri, size_t dimensioneStringa){
+char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned long max, char *input, int *righeCaratteri, size_t dimensioneStringa){
 	char exitStatus = '0';
 
 	processo *init = NULL; //processo iniziale da cui forkano tutti gli altri
@@ -296,12 +296,12 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 
 	while(processiAttiviHead){ //finche' ci sono processi attivi
-		indice = processiAttiviHead; //punta all'elemento di tipo listaProcessi che sto considerando
+		indice = processiAttiviHead; //punta all'elemento di tipo listaProcessi che sto considerando, adesso punta al primo processo della lista di quelli attivi
 		while(indice){	//scorri tutta la lista dei processi attivi
 			indiceProcesso = indice->p;	//punta alla struttura 'processo' che sto considerando
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
-				freeListaProcessi(processiAttiviHead);
+				freeListaProcessi(processiAttiviHead); //libero tutti i processi che ci sono ancora attivi
 				return '1';
 			}
 
@@ -367,7 +367,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 		}
 	}
 
-
+	//se non ho terminato prima, una volta che non ho più processi da eseguire, ritorno lo stato di uscita (che a questo punto può solo essere 0 o U)
 	return exitStatus;
 }
 
@@ -406,14 +406,14 @@ processo *createProcess(processo *p, int testina, unsigned int stato, nstr *nast
 	return p;
 }
 
-nstr *createNastroInit(nstr *n, char *stringa, unsigned int dimNastro){
+nstr *createNastroInit(nstr *n, char *stringa, unsigned short dimNastro){
 	unsigned int i;
 	n = (nstr *)malloc(sizeof(nstr)); //alloco una struttura nastro
 
-	n->left = (char *)malloc(dimNastro * sizeof(char)); //alloco 1024 caratteri a sinistra
-	n->dimLeft = dimNastro;	//la dimensione a sinistra e' 1024
-	n->right = (char *)malloc(dimNastro * sizeof(char));	//alloco 1024 caratteri a destra
-	n->dimRight = dimNastro; //la dimensione a destra e' 1024
+	n->left = (char *)malloc(dimNastro * sizeof(char)); //alloco DIMNASTRO caratteri a sinistra
+	n->dimLeft = dimNastro;	//la dimensione a sinistra e' DIMNASTRO
+	n->right = (char *)malloc(dimNastro * sizeof(char));	//alloco DIMNASTRO caratteri a destra
+	n->dimRight = dimNastro; //la dimensione a destra e' DIMNASTRO
 
 	for(i = 0; i < n->dimLeft; i++)
 		(n->left)[i] = '_'; //tutto il nastro a sinistra e' BLANK
@@ -445,32 +445,31 @@ listaProcessi *pushListaProcessi(listaProcessi *head, processo *p){
 }
 
 listaProcessi *popListaProcessi(listaProcessi *head, processo *p){
-    // Store head node
+    // salvo la testa della lista
     listaProcessi *temp = head;
-		listaProcessi *prev;
+		listaProcessi *prev; //tengo traccia del nodo precedente
 
-    // If head node itself holds the key to be deleted
+    // se l'elemento da eliminare si trova in testa
     if (temp != NULL && temp->p == p)
     {
-        head = head->next;	// Changed head
+        head = head->next;	// Cambio direttamente la testa della lista, libero e ritorno
         freeElementoListaProcessi(temp);	// free old head
         return head;
     }
 
-    // Search for the key to be deleted, keep track of the
-    // previous node as we need to change 'prev->next'
+    // Altrimenti ricerco il nodo da eliminare, tenendo traccia del precedente
     while (temp != NULL && temp->p != p){
         prev = temp;
         temp = temp->next;
     }
 
-    // If key was not present in linked list
+    // Se non trovo il nodo
     if (temp == NULL) return head;
 
-    // Unlink the node from linked list
+    // Elimino il collegamente al nodo da eliminare
     prev->next = temp->next;
 
-    freeElementoListaProcessi(temp);  // Free memory
+    freeElementoListaProcessi(temp);  // libero e ritorno
 		return head;
 }
 
@@ -497,7 +496,7 @@ void freeElementoListaProcessi(listaProcessi *el){
 
 void freeListaProcessi(listaProcessi *head){
 	while(head)
-		head = popListaProcessi(head, head->p);
+		head = popListaProcessi(head, head->p); //elimino l'elemento in testa alla lista (e di conseguenza la testa si aggiorna automaticamente)
 	return;
 }
 
@@ -522,8 +521,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)++;	//muovo la testina
 		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
 			i = p->nastro->dimRight; //punto alla prima cella non allocata del nastro
-			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) + DIMNASTRO); //raddoppio il nastro
-			p->nastro->dimRight = (p->nastro->dimRight) + DIMNASTRO;	//raddoppio il contatore della dimensione
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2); //raddoppio il nastro
+			p->nastro->dimRight = (p->nastro->dimRight) * 2;	//raddoppio il contatore della dimensione
 
 			for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
 				(p->nastro->right)[i] = input[i];
@@ -537,8 +536,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)--;
 		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
 			i = p->nastro->dimLeft;
-			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) + DIMNASTRO);
-			p->nastro->dimLeft = (p->nastro->dimLeft) + DIMNASTRO;
+			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) * 2);
+			p->nastro->dimLeft = (p->nastro->dimLeft) * 2;
 
 			for(; i < p->nastro->dimLeft; i++)
 				(p->nastro->left)[i] = '_';
