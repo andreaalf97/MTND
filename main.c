@@ -281,6 +281,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	listaProcessi *processiAttiviHead = NULL;	//lista dei processi che sono in esecuzione in questo momento
 	listaProcessi *indice = NULL;	//indice usato per scansionare la lista dei processi attivi (è una struttura <processo, next>)
 	processo *indiceProcesso = NULL; //indice usato per lavorare sul singolo processo
+	processo *toPop = NULL;
 	listaTr *headTransizione = NULL;	//testa della lista delle transizioni da eseguire
 	listaTr *indiceTransizione = NULL;	//indice per scansionare tutta la lista di transizioni possibili
 
@@ -307,15 +308,17 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 			if(indiceProcesso->nMosseFatte > max){
 				exitStatus = 'U';
+				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-				break;
+				continue;
 			}
 
 
 			carattere = carattereLetto(indiceProcesso);
 			if(righeCaratteri[(int)carattere] == -1){
+				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-				break;
+				continue;
 			}
 
 			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
@@ -355,9 +358,9 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceProcesso->stato = headTransizione->fine; //cambio lo stato del processo
 			}
 			else{	//se non ci sono transizioni possibili
-				//indice = indice->next;
+				indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-				break;
+				continue;
 			}
 
 
