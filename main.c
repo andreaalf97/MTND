@@ -37,29 +37,24 @@ typedef struct listaProcessi_s {
 } listaProcessi;
 
 
-unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
-listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni
-char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
 
 //FUNZIONI DI LETTURA INPUT:
-transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *);
-void leggiStatiAccettazione(bool *);
+transizione *leggiTransizioni(transizione *, unsigned int *, unsigned int *, int *, unsigned int *); //legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
+void creaRigheCaratteri(int *); //trasforma il vettore da [0 / 1] a [-1 / 0, 1, 2, ...]
+void leggiStatiAccettazione(bool *); //prende un vettore e pone a 1 v[i] se i è uno stato di accettazione
 void leggiMax(unsigned int *);
-void creaRigheCaratteri(int *);
 listaTr **creaMatrice(listaTr **, transizione *, unsigned int, unsigned int, int *, unsigned int);
 
-//FUNZIONI PER DEBUGGING
-char rigaToCarattere(int, int *);
-void stampaLista(listaTr *);
-void showMatrix(listaTr **, unsigned int, unsigned int, int *);
+unsigned int pos(unsigned int, int, int);	//ritorna la posizione <i, j> nella matrice
+listaTr *pushTransizione(listaTr *, transizione);	//push nella lista transizioni (per lettura file input)
 
+char executeMachine(listaTr **, unsigned int, bool *, unsigned int, char *, int *, size_t);	//esegue la macchina
 
-processo *createProcess(processo *, int, unsigned int, unsigned int, nstr *);	//crea un nuovo processo (usata solo per init)
+processo *createProcess(processo *, int, unsigned int, unsigned int, nstr *);	//crea un nuovo processo
 nstr *createNastroInit(nstr *, char *, unsigned int);	//data la stringa input e MAX, costruisce il nastro
 listaProcessi *pushListaProcessi(listaProcessi *, processo *);	//push nella lista dei processi attivi
 listaProcessi *popListaProcessi(listaProcessi *, processo *);	//pop dalla lista dei processi attivi
 void freeElementoListaProcessi(listaProcessi *);
-
 void freeListaProcessi(listaProcessi *);	//elimina la lista dei processi attivi
 char carattereLetto(processo *);	//ritorna il carattere puntato dalla testina sul nastro
 void scriviSuNastro(processo *, char);	//scrive sul nastro del processo indicato
@@ -80,29 +75,28 @@ int main(int argc, char *argv[]){
 	unsigned int i;
 
 	size_t llinea = 0;
-	size_t nread;
-	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline'
+	signed size_t nread;
+	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline', nread è il numero di caratteri letti
 	transizione *vettoreTransizioni = NULL;	//vettore che contiene tutte le transizioni possibili
-	unsigned int nTransizioni = 0;	//contatore per il numero di transizioni
+	unsigned int nTransizioni = 0;	//contatore per il numero di transizioni, e quindi la dimensione di vettoreTransizioni
 	unsigned int statoMassimo = 0;	//indica quale stato e' il piu' grande
-	int *righeCaratteri = (int *)calloc(256, sizeof(int));	//indica ogni carattere in quale riga della matrice puo' essere trovato
-	//prima pero' usa lo stesso vettore per indicare se un carattere e' presente tra quelli possibili o no
+	int *righeCaratteri = (int *)calloc(256, sizeof(int));	//indica ogni carattere in quale riga della matrice puo' essere trovato [-1 se non presente]
+	//prima pero' uso lo stesso vettore per indicare se un carattere e' presente tra quelli possibili o no
 	unsigned int nCaratteriPresenti = 0;	//indica quanti caratteri diversi sono presenti
 
-	bool *statiAccettazione = NULL;	//indica ogni stato se e' di accettazione (1) o meno (0)
+	bool *statiAccettazione = NULL;	//indica ogni stato se lo stato i-esimo e' di accettazione (1) o meno (0)
 
 	unsigned int max;	//indica il numero massimo di mosse effettuabili dalla macchina
 
 	listaTr **matrice = NULL;
 
 	//***********************************************
-
 	vettoreTransizioni = leggiTransizioni(vettoreTransizioni, &nTransizioni, &statoMassimo, righeCaratteri, &nCaratteriPresenti);
 	//legge le transizioni dallo stdin e le salva in vettoreTransizioni, salvando anche tutti gli altri parametri che deduce leggendo l'input
 	creaRigheCaratteri(righeCaratteri);	//trasforma il vettore dei caratteri presenti in quello che indica ogni carattere a che riga corrisponde
-	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);
-	//crea la matrice delle transizioni
-	free(vettoreTransizioni);
+	matrice = creaMatrice(matrice, vettoreTransizioni, nTransizioni, statoMassimo, righeCaratteri, nCaratteriPresenti);//crea la matrice delle transizioni
+
+	free(vettoreTransizioni); //a questo punto non mi serve più il vettore delle transizioni e posso liberarlo
 	vettoreTransizioni = NULL;
 
 	statiAccettazione = (bool *)calloc(statoMassimo+1, sizeof(bool));	//alloco un vettore lungo quanto il numero di stati
@@ -134,20 +128,7 @@ int main(int argc, char *argv[]){
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
 
-	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
-		freeListaTr(matrice[i]);
-	}
 
-	free(matrice);
-	matrice = NULL;
-
-	free(temp);
-	temp = NULL;
-	free(righeCaratteri);
-	righeCaratteri = NULL;
-	free(statiAccettazione);
-	statiAccettazione = NULL;
-	//FASE DI OUTPUT
 	return 0;
 }
 
@@ -156,23 +137,23 @@ int main(int argc, char *argv[]){
 
 
 transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTransizioni, unsigned int *statoMassimo, int *caratteriPresenti, unsigned int *nCaratteriPresenti) {
-	char *temp = NULL;
-	char blank = '_';
-	size_t llinea = 0;
+	char *temp = NULL; //per lettura tramite getline
+	char blank = '_';	//per leggibilità
+	size_t llinea = 0;	//per getline
 
-	unsigned int dimVett = 2;
-	*nTransizioni = 0;
-	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione));
+	unsigned int dimVett = 2;	//dimensione iniziale del vettore delle transizioni
+	*nTransizioni = 0;	//numero di transizioni lette
+	vettoreTransizioni = (transizione *)malloc(2 * sizeof(transizione)); //alloco subito 2 celle per il vettore della transizioni possibili
 
-	getline(&temp, &llinea, stdin);	//legge la prima linea dell'input
+	getline(&temp, &llinea, stdin);	//legge la prima linea del file di input
 	if(strcmp("tr\n", temp) != 0){
 		fprintf(stderr, "Il file non inizia per tr\n");
 		return 0;
-	}	//controlla che il file input inizi per TR
+	}	//controlla che il file input inizi per TR, si potrebbe anche omettere ma tanto è O(1)
 
 	getline(&temp, &llinea, stdin);	//legge la seconda linea dell'input
 	while(strcmp(temp, "acc\n")){		//finche' non trova acc
-		//Riallocazione di memoria -- Se serve piu' memoria alloco il doppio di quella occupata
+		//Riallocazione di memoria -- Se serve piu' memoria rialloco il doppio di quella occupata
 		if(*nTransizioni >= dimVett){
 			vettoreTransizioni = (transizione *)realloc(vettoreTransizioni, (dimVett * sizeof(transizione)) * 2);
 			dimVett *= 2;
@@ -197,6 +178,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 		getline(&temp, &llinea, stdin);
 	}
 
+	//se non ho trovato il blank tra i caratteri presenti nelle transizioni lo aggiungo al vettore
 	if(!caratteriPresenti[(int)blank]){
 		caratteriPresenti[(int)blank] = 1;
 		(*nCaratteriPresenti)++;
@@ -206,6 +188,7 @@ transizione *leggiTransizioni(transizione *vettoreTransizioni, unsigned int *nTr
 	temp = NULL;
 	return vettoreTransizioni;
 }
+
 void leggiStatiAccettazione(bool *statiAccettazione){
 	unsigned int i;
 	char *temp = NULL;
@@ -222,6 +205,7 @@ void leggiStatiAccettazione(bool *statiAccettazione){
 	temp = NULL;
 	return;
 }
+
 void leggiMax(unsigned int *max){
 	char *temp = NULL;
 	size_t llinea = 0;
@@ -233,45 +217,45 @@ void leggiMax(unsigned int *max){
 	temp = NULL;
 	return;
 }
+
 void creaRigheCaratteri(int *righeCaratteri){
 	unsigned int i;
-	int count = 0;
-	for(i = 0; i < 256; i++){
+	int count = 0;	//contatore per ricordarsi a che riga sono arrivato
+	for(i = 0; i < 256; i++){	//scansiona tutti i 256 caratteri e vede se sono presenti
 		if(righeCaratteri[i]){
-			righeCaratteri[i] = count;
+			righeCaratteri[i] = count;	//gli assegna la riga che gli spetta
 			count++;
 		}
 		else
-			righeCaratteri[i] = -1;
+			righeCaratteri[i] = -1; //altrimenti gli assegna -1
 	}
 
 	return;
 }
+
 listaTr **creaMatrice(listaTr **matrice, transizione *vettoreTransizioni, unsigned int nTransizioni, unsigned int statoMassimo, int *righeCaratteri, unsigned int nCaratteriPresenti){
 	unsigned int i;
-	unsigned int dim, posizione;
+	unsigned int dim, //dimensione della matrice (vista linearmente)
+		posizione;	//equivalenza tra tupla <i, j> e intero singolo
 
 	//devo fare una tabella di puntatori a NULL grande = (statoMassimo+1) x nCaratteriPresenti
-	dim = (statoMassimo + 1) * nCaratteriPresenti;
-	matrice = (listaTr **)calloc(dim, sizeof(listaTr *));
+	dim = (statoMassimo + 1) * nCaratteriPresenti; //dimensione lineare
+	matrice = (listaTr **)calloc(dim, sizeof(listaTr *)); //non so se 'calloc' vale anche per inizializzare a NULL, ma nei test funziona quindi sticazzi
 	// for(i = 0; i < dim; i++)
 	// 	matrice[i] = NULL;
 
 	//Per ogni transizione che parte dallo stato x leggendo y aggiungo alla lista corrispondente
 	//tale transizione.
 	for(i = 0; i < nTransizioni; i++){
-		posizione = pos(vettoreTransizioni[i].inizio, righeCaratteri[(int)vettoreTransizioni[i].letto], nCaratteriPresenti);
-		matrice[posizione] = pushTransizione(matrice[posizione], vettoreTransizioni[i]);
+		posizione = pos(vettoreTransizioni[i].inizio, righeCaratteri[(int)vettoreTransizioni[i].letto], nCaratteriPresenti); //posizione(stato in cui mi trovo, carattere che sto leggendo, altezza della matrice)
+		matrice[posizione] = pushTransizione(matrice[posizione], vettoreTransizioni[i]); //aggiungo la transizione "alleggerita" alla lista delle transizioni possibili
 		//qui inserisco nella posizione <i, j> = <stato, carattere in input> la transizione
 	}
 
-	return matrice;
+	return matrice; //ridondanza, credo
 }
 
 
-
-//*****************************************************************
-//funzione che esegue la macchina sull'input dato
 char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *statiAccettazione, unsigned int max, char *input, int *righeCaratteri, size_t dimensioneStringa){
 	char exitStatus = '0';
 
@@ -288,18 +272,12 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	unsigned int posizione;
 	char carattere;
 	//****************************
-	//L'esecuzione della macchina si basa sulla creazione di processi ogni volta che incontro un NON determinismo
 
-	//printf("Inizio esecuzione macchina\n");
 
-	//creazione processo iniziale:
 	nastroInit = createNastroInit(nastroInit, input, DIMNASTRO);
-	//printf("Ho creato il nastro per init\n");
 	init = createProcess(init, 0, 0, 0, nastroInit);
-	//printf("Ho creato il processo INIT\n");
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, init);
-	//printf("Ho inserito INIT nella lista processi attivi\n");
 	newPidCounter = 1;
 
 
@@ -310,15 +288,12 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 			indiceProcesso = indice->p;	//punta alla struttura 'processo' che sto considerando
 
 			if(statiAccettazione[indiceProcesso->stato]){ //se sono in uno stato di accettazione ho finito
-				//printf("Mi trovo in uno stato di accettazione\n");
 				freeListaProcessi(processiAttiviHead);
 				return '1';
 			}
 
 			if(indiceProcesso->nMosseFatte > max){
-				//printf("Ho eseguito piu' mosse di max\n");
 				exitStatus = 'U';
-				//indice = indice->next;
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 				break;
 			}
@@ -462,8 +437,7 @@ listaProcessi *pushListaProcessi(listaProcessi *head, processo *p){
 	return head;
 }
 
-listaProcessi *popListaProcessi(listaProcessi *head, processo *p)
-{
+listaProcessi *popListaProcessi(listaProcessi *head, processo *p){
     // Store head node
     listaProcessi *temp = head;
 		listaProcessi *prev;
@@ -535,12 +509,6 @@ void scriviSuNastro(processo *p, char toWrite){
 	return;
 }
 
-//NASTRO lungo 10
-// a b c a b c a b c a
-// 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19
-//STRINGA lunga 13
-// a b c a b c a b c a  b  c  a
-// 0 1 2 3 4 5 6 7 8 9 10 11 12
 void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input){
 	unsigned int i;
 	if(mossa == 'R'){	//se devo spostarmi a destra
@@ -640,42 +608,4 @@ void freeListaTr(listaTr *head){
     }
 
 		return;
-}
-//*****************TESTING*****************************************
-
-char rigaToCarattere(int j, int* righeCaratteri){
-	unsigned int i;
-	for(i = 0; i < 256; i++){
-		if(righeCaratteri[i] == j)
-			return (char)i;
-	}
-	return '^';
-}
-void stampaLista(listaTr *head){
-	if(!head)
-		return;
-	printf("Scritto: %c, Mossa: %c, Fine: %d\n", head->scritto, head->mossa, head->fine);
-	stampaLista(head->next);
-	return;
-}
-
-void showMatrix(listaTr **matrice, unsigned int statoMassimo, unsigned int nCaratteriPresenti, int *righeCaratteri){
-	unsigned int i, j;
-	printf("  ");
-	for(i = 0; i < nCaratteriPresenti; i++)
-		printf("%c ", rigaToCarattere(i, righeCaratteri));
-	printf("\n");
-
-	for(i = 0; i < statoMassimo+1; i++){
-		printf("%d ", i);
-		for(j = 0; j < nCaratteriPresenti; j++){
-			if(matrice[pos(j, i, nCaratteriPresenti)])
-				printf("O ");
-			else
-				printf("X ");
-		}
-		printf("\n");
-	}
-
-	return;
 }
