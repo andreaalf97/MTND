@@ -326,7 +326,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 
 			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
-				indiceTransizione = headTransizione->next;
+				indiceTransizione = headTransizione->next; //indice per scansionare la lista di mosse possibili
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
 					if(indiceProcesso->stato != indiceTransizione->fine || indiceTransizione->mossa != 'S' || indiceTransizione->scritto != carattere){
@@ -358,8 +358,8 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				indiceProcesso->stato = headTransizione->fine; //cambio lo stato del processo
 			}
 			else{	//se non ci sono transizioni possibili
-				indice = indice->next;
-				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				indice = indice->next; //passo al ramo successivo
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //elimino questo branch dalla coda di esecuzione
 				continue;
 			}
 
