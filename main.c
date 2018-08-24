@@ -342,14 +342,14 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S' && indiceProcesso->stato == headTransizione->fine){
 					//se scrivo lo stesso carattere che leggo, non muovo la testina e lo stato in cui mi trovo è anche quello di destinazione allora sono in un loop
 					exitStatus = 'U';
+					indice = indice->next;
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
-					break;
+					continue;
 				}
 
-				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1){
-					//se devo scrivere ma il nastro e' in condivisione lo copio
+				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1) //se devo scrivere ma il nastro e' in condivisione lo copio
 					copyOwnNastro(indiceProcesso);	//creo un nuovo nastro, copia di quello vecchio
-				}
+
 
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
 				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa, input); //sposto la testina
@@ -575,27 +575,24 @@ void copyOwnNastro(processo *p){
 }
 
 listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy, listaTr *transizione, size_t dimensioneStringa, char *input){
-	processo *nuovo;
-	char carattere;
+	processo *nuovo; //nuovo processo
+	char carattere; //carattere letto sul nastro
 
-	nuovo = (processo *)malloc(sizeof(processo));
-	nuovo->nMosseFatte = toCopy->nMosseFatte + 1;
+	nuovo = (processo *)malloc(sizeof(processo)); //alloco lo spazio per un nuovo processo
+	nuovo->nMosseFatte = toCopy->nMosseFatte + 1;	//aumento il numero di mosse eseguite sul processo nuovo
 
-	(toCopy->nastro->whoShares)++;
-	nuovo->stato = toCopy->stato;
-	nuovo->nastro = toCopy->nastro;
-	nuovo->testina = toCopy->testina;
+	(toCopy->nastro->whoShares)++;	//aumento il numero di condivisori del nastro
+	nuovo->stato = transizione->fine;	//pongo il processo sullo stato in cui si trovava il padre
+	nuovo->nastro = toCopy->nastro;	//metto il nastro in condivisione (puntano allo stesso indirizzo)
+	nuovo->testina = toCopy->testina; //pongo la testina al posto giusto
 
 
-	carattere = carattereLetto(nuovo);
-	if(transizione->scritto != carattere && nuovo->nastro->whoShares > 1){
-		copyOwnNastro(nuovo);
-
-		scriviSuNastro(nuovo, transizione->scritto);
-		//printf("Ho scritto %c sul mio nastro\n", transizione->scritto);
+	carattere = carattereLetto(nuovo);	//leggo dal nastro
+	if(transizione->scritto != carattere && nuovo->nastro->whoShares > 1){	//se il nastro deve essere scritto ed è in condivisione
+		copyOwnNastro(nuovo); //mi alloco un nastro nuovo
+		scriviSuNastro(nuovo, transizione->scritto);	//ci scrivo sopra
 	}
 
-	nuovo->stato = transizione->fine;
 	muoviTestina(nuovo, transizione->mossa, dimensioneStringa, input);
 
 	processiAttiviHead = pushListaProcessi(processiAttiviHead, nuovo);
