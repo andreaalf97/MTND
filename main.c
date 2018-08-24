@@ -306,23 +306,23 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				return '1';
 			}
 
-			if(indiceProcesso->nMosseFatte > max){
+			if(indiceProcesso->nMosseFatte > max){	//se ho finito le mosse a disposizione devo chiudere questo branch
 				exitStatus = 'U';
-				indice = indice->next;
-				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+				indice = indice->next;	//passo al branch successivo
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //libero il branch su cui stavo lavorando
 				continue;
 			}
 
 
-			carattere = carattereLetto(indiceProcesso);
-			if(righeCaratteri[(int)carattere] == -1){
-				indice = indice->next;
-				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
+			carattere = carattereLetto(indiceProcesso);	//carattere letto dal nastro (puntato dalla testina)
+			if(righeCaratteri[(int)carattere] == -1){	//se il carattere letto non è nemmeno tra quelli possibili chiudo il branch con '0' <-- non ci sono transizioni possibili
+				indice = indice->next;	//branch successivo
+				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
 				continue;
 			}
 
-			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti);
-			headTransizione = matrice[posizione]; //testa della lista di transizioni
+			posizione = pos(indiceProcesso->stato, righeCaratteri[(int)carattere], nCaratteriPresenti); //calcolo in che cella sta la transizione che sto considerando
+			headTransizione = matrice[posizione]; //testa della lista di transizioni possibili
 
 
 			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
@@ -338,18 +338,17 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 					indiceTransizione = indiceTransizione->next;
 				}
 
-				//eseguo la transizione:
+				//eseguo la transizione in testa alla lista
 				if(headTransizione->scritto == carattere && headTransizione->mossa == 'S' && indiceProcesso->stato == headTransizione->fine){
+					//se scrivo lo stesso carattere che leggo, non muovo la testina e lo stato in cui mi trovo è anche quello di destinazione allora sono in un loop
 					exitStatus = 'U';
 					processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso);
 					break;
 				}
 
-				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1){	//se devo scrivere ma il nastro e' in condivisione lo copio
-					//COW
-					(indiceProcesso->nastro->whoShares)--; //elimino questo processo da tutte le liste di condivisione
-
-					copyOwnNastro(indiceProcesso);
+				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1){
+					//se devo scrivere ma il nastro e' in condivisione lo copio
+					copyOwnNastro(indiceProcesso);	//creo un nuovo nastro, copia di quello vecchio
 				}
 
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
@@ -556,11 +555,13 @@ void copyOwnNastro(processo *p){
 	nstr *nuovo;
 	nuovo = (nstr *)malloc(sizeof(nstr));
 
+	(p->nastro->whoShares)--; //diminuisco il numero dei condivisori del nastro vecchio
+
 	nuovo->dimLeft = p->nastro->dimLeft;
 	nuovo->dimRight = p->nastro->dimRight;
 
-	nuovo->left = (char *)malloc(nuovo->dimLeft * sizeof(char));
-	nuovo->right = (char *)malloc(nuovo->dimRight * sizeof(char));
+	nuovo->left = (char *)malloc((nuovo->dimLeft) * sizeof(char));
+	nuovo->right = (char *)malloc((nuovo->dimRight) * sizeof(char));
 
 	for(i = 0; i < nuovo->dimLeft; i++)
 		(nuovo->left)[i] = (p->nastro->left)[i];
@@ -588,11 +589,7 @@ listaProcessi *copyProcesso(listaProcessi *processiAttiviHead, processo *toCopy,
 
 	carattere = carattereLetto(nuovo);
 	if(transizione->scritto != carattere && nuovo->nastro->whoShares > 1){
-		//printf("Il nastro e' condiviso\n");
-		(nuovo->nastro->whoShares)--; //elimino questo processo da tutte le liste di condivisione
-		//printf("Eseguito popWhoShares\n");
 		copyOwnNastro(nuovo);
-		//printf("Copiato il mio nastro\n");
 
 		scriviSuNastro(nuovo, transizione->scritto);
 		//printf("Ho scritto %c sul mio nastro\n", transizione->scritto);
