@@ -1,9 +1,0 @@
-tr
-0 a a R 5
-5 _ _ S 5
-acc
-18
-max
-1000
-run
-a
