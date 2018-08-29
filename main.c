@@ -327,22 +327,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
 
-				if(headTransizione->next == NULL && indiceProcesso->stato == headTransizione->fine && carattere == '_'){
-					if(headTransizione->mossa == 'R' && indiceProcesso->testina >= 0 && indiceProcesso->testina ==  ((indiceProcesso->nastro->dimRight) - 1)){
-						indice = indice->next;	//branch successivo
-						exitStatus = 'U';
-						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
-						continue;
-					}
-					if(headTransizione->mossa == 'L' && indiceProcesso->testina < 0 && indiceProcesso->testina == -(indiceProcesso->nastro->dimLeft)){
-						indice = indice->next;	//branch successivo
-						exitStatus = 'U';
-						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
-						continue;
-					}
-				}
-
-
 				indiceTransizione = headTransizione->next; //indice per scansionare la lista di mosse possibili
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
@@ -367,7 +351,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1) //se devo scrivere ma il nastro e' in condivisione lo copio
 					copyOwnNastro(indiceProcesso);	//creo un nuovo nastro, copia di quello vecchio
 
-
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
 				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa, input); //sposto la testina
 
@@ -378,8 +361,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //elimino questo branch dalla coda di esecuzione
 				continue;
 			}
-
-
 
 			(indiceProcesso->nMosseFatte)++; //se ho eseguito una mossa aggiorno il contatore del processo
 			indice = indice->next;
