@@ -281,7 +281,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 	listaProcessi *processiAttiviHead = NULL;	//lista dei processi che sono in esecuzione in questo momento
 	listaProcessi *indice = NULL;	//indice usato per scansionare la lista dei processi attivi (è una struttura <processo, next>)
 	processo *indiceProcesso = NULL; //indice usato per lavorare sul singolo processo
-	processo *toPop = NULL;
 	listaTr *headTransizione = NULL;	//testa della lista delle transizioni da eseguire
 	listaTr *indiceTransizione = NULL;	//indice per scansionare tutta la lista di transizioni possibili
 
