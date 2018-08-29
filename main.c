@@ -71,6 +71,7 @@ void freeListaTr(listaTr *);
 
 
 int main(){
+	unsigned int i;
 	size_t llinea = 0;
 	int nread;
 	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline', nread è il numero di caratteri letti
@@ -124,7 +125,23 @@ int main(){
 
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
-	exit(0);
+
+
+	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
+		freeListaTr(matrice[i]);
+	}
+
+	free(matrice);
+	matrice = NULL;
+
+	free(temp);
+	temp = NULL;
+	free(righeCaratteri);
+	righeCaratteri = NULL;
+	free(statiAccettazione);
+	statiAccettazione = NULL;
+
+
 	return 0;
 }
 
