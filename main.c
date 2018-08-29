@@ -1,10 +1,9 @@
-#define DIMNASTRO 32
+#define DIMNASTRO 1024
 
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
 #include<stdbool.h>
-
 
 typedef struct transizioni_s {
 	unsigned int inizio, fine;
@@ -126,23 +125,7 @@ int main(int argc, char *argv[]){
 
 		printf("%c\n", executeMachine(matrice, nCaratteriPresenti, statiAccettazione, max, temp, righeCaratteri, nread));
 	}
-
-
-	for(i = 0; i < ((statoMassimo + 1) * nCaratteriPresenti); i++){
-		freeListaTr(matrice[i]);
-	}
-
-	free(matrice);
-	matrice = NULL;
-
-	free(temp);
-	temp = NULL;
-	free(righeCaratteri);
-	righeCaratteri = NULL;
-	free(statiAccettazione);
-	statiAccettazione = NULL;
-
-
+	exit(0);
 	return 0;
 }
 
@@ -325,21 +308,6 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 
 			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
-
-				if(headTransizione->next == NULL && indiceProcesso->stato == headTransizione->fine && carattere == '_'){
-					if(headTransizione->mossa == 'R' && indiceProcesso->testina >= 0 && indiceProcesso->testina ==  ((indiceProcesso->nastro->dimRight) - 1)){
-						indice = indice->next;	//branch successivo
-						exitStatus = 'U';
-						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
-						continue;
-					}
-					if(headTransizione->mossa == 'L' && indiceProcesso->testina < 0 && indiceProcesso->testina == -(indiceProcesso->nastro->dimLeft)){
-						indice = indice->next;	//branch successivo
-						exitStatus = 'U';
-						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
-						continue;
-					}
-				}
 
 
 				indiceTransizione = headTransizione->next; //indice per scansionare la lista di mosse possibili
@@ -542,10 +510,14 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) + DIMNASTRO); //raddoppio il nastro
 			p->nastro->dimRight = (p->nastro->dimRight) + DIMNASTRO;	//raddoppio il contatore della dimensione
 
-			for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
-				(p->nastro->right)[i] = input[i];
-			for(; i < p->nastro->dimRight; i++) //aggiungo tanti _ quanti ne servono
-				(p->nastro->right)[i] = '_';
+			if(i >= dimensioneStringa)
+				memset(&((p->nastro->right)[i]), '_', DIMNASTRO);
+			else{
+				for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
+					(p->nastro->right)[i] = input[i];
+				for(; i < p->nastro->dimRight; i++) //aggiungo tanti _ quanti ne servono
+					(p->nastro->right)[i] = '_';
+			}
 		}
 		return;
 	}
@@ -557,8 +529,7 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) + DIMNASTRO);
 			p->nastro->dimLeft = (p->nastro->dimLeft) + DIMNASTRO;
 
-			for(; i < p->nastro->dimLeft; i++)
-				(p->nastro->left)[i] = '_';
+			memset(&((p->nastro->left)[i]), '_', DIMNASTRO);
 		}
 		return;
 	}

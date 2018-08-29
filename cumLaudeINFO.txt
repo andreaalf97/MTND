@@ -8,4 +8,4 @@ Stati di accettazione: 2
 Max: tra 9.929.687 e 10.000.000
 
 Stringhe in ingresso: 111
-I time out:
+I time out: after 104 strings
