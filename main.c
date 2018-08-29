@@ -1,4 +1,4 @@
-#define DIMNASTRO 64
+#define DIMNASTRO 32
 
 #include<stdio.h>
 #include<stdlib.h>
@@ -327,6 +327,22 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 
 			if(headTransizione != NULL){	//se esiste almeno una transizione possibile
 
+				if(headTransizione->next == NULL && indiceProcesso->stato == headTransizione->fine && carattere == '_'){
+					if(headTransizione->mossa == 'R' && indiceProcesso->testina >= 0 && indiceProcesso->testina ==  ((indiceProcesso->nastro->dimRight) - 1)){
+						indice = indice->next;	//branch successivo
+						exitStatus = 'U';
+						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
+						continue;
+					}
+					if(headTransizione->mossa == 'L' && indiceProcesso->testina < 0 && indiceProcesso->testina == -(indiceProcesso->nastro->dimLeft)){
+						indice = indice->next;	//branch successivo
+						exitStatus = 'U';
+						processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //chiudo il branch e continuo
+						continue;
+					}
+				}
+
+
 				indiceTransizione = headTransizione->next; //indice per scansionare la lista di mosse possibili
 				while(indiceTransizione){ //se c'e' piu' di una mossa possibile
 					//Crea un nuovo processo identico e mettilo in lista con il nastro in condivisione
@@ -351,6 +367,7 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				if(headTransizione->scritto != carattere && indiceProcesso->nastro->whoShares > 1) //se devo scrivere ma il nastro e' in condivisione lo copio
 					copyOwnNastro(indiceProcesso);	//creo un nuovo nastro, copia di quello vecchio
 
+
 				scriviSuNastro(indiceProcesso, headTransizione->scritto); //scrivo sul nastro
 				muoviTestina(indiceProcesso, headTransizione->mossa, dimensioneStringa, input); //sposto la testina
 
@@ -361,6 +378,8 @@ char executeMachine(listaTr **matrice, unsigned int nCaratteriPresenti, bool *st
 				processiAttiviHead = popListaProcessi(processiAttiviHead, indiceProcesso); //elimino questo branch dalla coda di esecuzione
 				continue;
 			}
+
+
 
 			(indiceProcesso->nMosseFatte)++; //se ho eseguito una mossa aggiorno il contatore del processo
 			indice = indice->next;
@@ -521,8 +540,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)++;	//muovo la testina
 		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
 			i = p->nastro->dimRight; //punto alla prima cella non allocata del nastro
-			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) * 2); //raddoppio il nastro
-			p->nastro->dimRight = (p->nastro->dimRight) * 2;	//raddoppio il contatore della dimensione
+			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) + DIMNASTRO); //raddoppio il nastro
+			p->nastro->dimRight = (p->nastro->dimRight) + DIMNASTRO;	//raddoppio il contatore della dimensione
 
 			for(; i < dimensioneStringa && i < p->nastro->dimRight; i++)	//finisco di copiare la stringa
 				(p->nastro->right)[i] = input[i];
@@ -536,8 +555,8 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 		(p->testina)--;
 		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
 			i = p->nastro->dimLeft;
-			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) * 2);
-			p->nastro->dimLeft = (p->nastro->dimLeft) * 2;
+			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) + DIMNASTRO);
+			p->nastro->dimLeft = (p->nastro->dimLeft) + DIMNASTRO;
 
 			for(; i < p->nastro->dimLeft; i++)
 				(p->nastro->left)[i] = '_';
