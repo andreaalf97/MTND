@@ -6,3 +6,6 @@ Caratteri presenti: tra 5 e 10
 Stato Massimo: tra 55 e 70
 Stati di accettazione: 2
 Max: tra 9.929.687 e 10.000.000
+
+Stringhe in ingresso: 111
+I time out:
