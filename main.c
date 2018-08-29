@@ -69,9 +69,7 @@ void freeListaTr(listaTr *);
 
 
 
-int main(int argc, char *argv[]){
-	unsigned int i;
-
+int main(){
 	size_t llinea = 0;
 	int nread;
 	char *temp = NULL;	//llinea e temp servono per la lettura dell'input attraverso la funzione 'getline', nread è il numero di caratteri letti
@@ -505,7 +503,7 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 	unsigned int i;
 	if(mossa == 'R'){	//se devo spostarmi a destra
 		(p->testina)++;	//muovo la testina
-		if(p->testina > 0 && p->testina >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
+		if(p->testina > 0 && (unsigned)(p->testina) >=  p->nastro->dimRight){	//se sto puntando a una cella del nastro non ancora allocata a destra
 			i = p->nastro->dimRight; //punto alla prima cella non allocata del nastro
 			p->nastro->right = (char *)realloc(p->nastro->right, (p->nastro->dimRight * sizeof(char)) + DIMNASTRO); //raddoppio il nastro
 			p->nastro->dimRight = (p->nastro->dimRight) + DIMNASTRO;	//raddoppio il contatore della dimensione
@@ -524,7 +522,7 @@ void muoviTestina(processo *p, char mossa, size_t dimensioneStringa, char *input
 
 	if(mossa == 'L'){
 		(p->testina)--;
-		if(p->testina < 0 && -(p->testina) >=  p->nastro->dimLeft){
+		if(p->testina < 0 && (unsigned)(-(p->testina)) >=  p->nastro->dimLeft){
 			i = p->nastro->dimLeft;
 			p->nastro->left = (char *)realloc(p->nastro->left, (p->nastro->dimLeft * sizeof(char)) + DIMNASTRO);
 			p->nastro->dimLeft = (p->nastro->dimLeft) + DIMNASTRO;
