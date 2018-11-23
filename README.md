@@ -1,5 +1,5 @@
 # MTND
-## College Project: The purpose of the project is to develop a NON DETERMINISTIC Touring Machine Simulator that needs to run in as little time as possible and that needs to use as little memory as possible.
+## College Project: The purpose of the project is to develop a NON DETERMINISTIC Turing Machine Simulator that needs to run in as little time as possible and that needs to use as little memory as possible.
 ### Open "main.c" to view
 <br/>
 My program reads the first part of the input file once (which is provided on the standard input) and creates a linked list to store all the different transitions, while keeping track of other parameters such as the biggest state, the amount of different chars that appear in the transitions and a few more things.
